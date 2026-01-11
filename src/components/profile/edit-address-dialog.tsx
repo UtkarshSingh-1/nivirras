@@ -44,13 +44,37 @@ export function EditAddressDialog({ open, onOpenChange, address, onSave }: EditA
     city: address?.city || "",
     state: address?.state || "",
     pincode: address?.pincode || "",
-    country: "India", // Always India
+    country: "India",
     type: address?.type || "home" as 'home' | 'work' | 'other',
     isDefault: address?.isDefault || false,
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!/^[A-Za-z\s]{1,25}$/.test(formData.name)) {
+      return toast({
+        title: "Invalid Name",
+        description: "Name must contain only alphabets (max 25 characters).",
+        variant: "destructive",
+      })
+    }
+
+    if (!/^[0-9]{10}$/.test(formData.phone)) {
+      return toast({
+        title: "Invalid Phone",
+        description: "Phone must be 10 digits and numbers only.",
+        variant: "destructive",
+      })
+    }
+
+    if (!/^[0-9]{6}$/.test(formData.pincode)) {
+      return toast({
+        title: "Invalid PIN Code",
+        description: "PIN code must be 6 digits.",
+        variant: "destructive",
+      })
+    }
 
     try {
       const url = address 
@@ -98,23 +122,33 @@ export function EditAddressDialog({ open, onOpenChange, address, onSave }: EditA
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
+            
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
                 <Input
                   id="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  maxLength={25}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^A-Za-z\s]/g, "")
+                    setFormData({ ...formData, name: value })
+                  }}
                   required
                   className="border-0"
                 />
               </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
                 <Input
                   id="phone"
+                  maxLength={10}
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9]/g, "")
+                    setFormData({ ...formData, phone: value })
+                  }}
                   required
                   className="border-0"
                 />
@@ -123,10 +157,7 @@ export function EditAddressDialog({ open, onOpenChange, address, onSave }: EditA
 
             <div className="space-y-2">
               <Label htmlFor="type">Address Type</Label>
-              <Select
-                value={formData.type}
-                onValueChange={(value: 'home' | 'work' | 'other') => setFormData({ ...formData, type: value })}
-              >
+              <Select value={formData.type} onValueChange={(value: 'home' | 'work' | 'other') => setFormData({ ...formData, type: value })}>
                 <SelectTrigger className="border-0">
                   <SelectValue />
                 </SelectTrigger>
@@ -187,11 +218,16 @@ export function EditAddressDialog({ open, onOpenChange, address, onSave }: EditA
                 <Input
                   id="pincode"
                   value={formData.pincode}
-                  onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
+                  maxLength={6}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9]/g, "")
+                    setFormData({ ...formData, pincode: value })
+                  }}
                   required
                   className="border-0"
                 />
               </div>
+
               <div className="space-y-2">
                 <Label htmlFor="country">Country</Label>
                 <Input
