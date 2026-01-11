@@ -1,4 +1,4 @@
-"use client"
+ "use client"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -155,16 +155,25 @@ export function EditAddressDialog({ open, onOpenChange, address, onSave }: EditA
                   className="border-0"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="state">State</Label>
-                <Input
-                  id="state"
-                  value={formData.state}
-                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                  required
-                  className="border-0"
-                />
-              </div>
+             <div className="space-y-2">
+  <Label htmlFor="state">State</Label>
+  <Select
+    value={formData.state}
+    onValueChange={(value) => setFormData({ ...formData, state: value })}
+  >
+    <SelectTrigger className="border-0">
+      <SelectValue placeholder="Select State" />
+    </SelectTrigger>
+    <SelectContent className="border-0">
+      {INDIAN_STATES.map((state) => (
+        <SelectItem key={state} value={state}>
+          {state}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+</div>
+
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
