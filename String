@@ -50,25 +50,25 @@ model WishlistItem {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String?
-  email         String         @unique
-  emailVerified DateTime?      @map("email_verified")
-  image         String?
-  password      String?        @db.Text
-  role          Role           @default(USER)
-  accounts      Account[]
-  sessions      Session[]
-  orders        Order[]
-  cart          CartItem[]
-  addresses     Address[]
-  wishlistItems WishlistItem[]
-  reviews       Review[]
-  promoCodeUsages PromoCodeUsage[]
-  returnRequests ReturnRequest[]
-  exchangeRequests ExchangeRequest[]
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
+  id                String            @id @default(cuid())
+  name              String?
+  email             String            @unique
+  emailVerified     DateTime?         @map("email_verified")
+  image             String?
+  password          String?           @db.Text
+  role              Role              @default(USER)
+  accounts          Account[]
+  sessions          Session[]
+  orders            Order[]
+  cart              CartItem[]
+  addresses         Address[]
+  wishlistItems     WishlistItem[]
+  reviews           Review[]
+  promoCodeUsages   PromoCodeUsage[]
+  returnRequests    ReturnRequest[]
+  exchangeRequests  ExchangeRequest[]
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -184,8 +184,8 @@ model Order {
   shippingAddress   Address?      @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
   addressId         String        @map("address_id")
   promoCodeUsage    PromoCodeUsage?
-  returnRequests    ReturnRequest[]
-  exchangeRequests  ExchangeRequest[]
+  returnRequest     ReturnRequest?
+  exchangeRequest   ExchangeRequest?
   createdAt         DateTime      @default(now()) @map("created_at")
   updatedAt         DateTime      @updatedAt @map("updated_at")
 
@@ -229,6 +229,49 @@ model Address {
   @@map("addresses")
 }
 
+model PromoCodeUsage {
+  id        String   @id @default(cuid())
+  code      String
+  userId    String   @map("user_id")
+  orderId   String?  @unique @map("order_id")
+  usedAt    DateTime @default(now()) @map("used_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, code])
+  @@index([userId])
+  @@index([code])
+  @@map("promo_code_usages")
+}
+
+model ReturnRequest {
+  id        String      @id @default(cuid())
+  orderId   String      @unique
+  userId    String
+  reason    String
+  status    ReturnStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+}
+
+model ExchangeRequest {
+  id        String        @id @default(cuid())
+  orderId   String        @unique
+  userId    String
+  oldSize   String
+  newSize   String
+  reason    String?
+  status    ExchangeStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+}
+
 enum Role {
   USER
   ADMIN
@@ -263,15 +306,6 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
-
-  RETURN_REQUESTED
-  RETURN_REJECTED
-  RETURN_APPROVED
-
-  EXCHANGE_REQUESTED
-  EXCHANGE_REJECTED
-  EXCHANGE_APPROVED
-  EXCHANGED
 }
 
 enum PaymentStatus {
@@ -287,46 +321,16 @@ enum AddressType {
   other
 }
 
-model PromoCodeUsage {
-  id        String   @id @default(cuid())
-  code      String
-  userId    String   @map("user_id")
-  orderId   String?  @unique @map("order_id")
-  usedAt    DateTime @default(now()) @map("used_at")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  order     Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
-
-  @@unique([userId, code])
-  @@index([userId])
-  @@index([code])
-  @@map("promo_code_usages")
+enum ReturnStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
 }
 
-model ReturnRequest {
-  id        String   @id @default(cuid())
-  orderId   String
-  userId    String
-  reason    String
-  images    Json?
-  status    String   @default("PENDING")
-  adminNote String?
-  createdAt DateTime @default(now())
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model ExchangeRequest {
-  id          String   @id @default(cuid())
-  orderId     String
-  userId      String
-  reason      String
-  requestedSize String?
-  requestedColor String?
-  status      String   @default("PENDING")
-  adminNote   String?
-  createdAt   DateTime @default(now())
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum ExchangeStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
 }
