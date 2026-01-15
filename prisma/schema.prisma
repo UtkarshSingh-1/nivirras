@@ -332,16 +332,19 @@ model ReturnRequest {
 }
 
 model ExchangeRequest {
-  id          String   @id @default(cuid())
-  orderId     String
-  userId      String
-  reason      String
-  requestedSize String?
-  requestedColor String?
-  status      String   @default("PENDING")
-  adminNote   String?
-  createdAt   DateTime @default(now())
+  id             String         @id @default(cuid())
+  orderId        String
+  userId         String
+  reason         String
+  oldSize        Size?
+  newSize        Size?
+  oldColor       Color?
+  newColor       Color?
+  status         ExchangeStatus @default(PENDING)
+  adminNote      String?
+  createdAt      DateTime       @default(now())
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
