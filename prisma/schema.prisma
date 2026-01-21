@@ -194,13 +194,13 @@ model Order {
 
   // Address (Snapshot)
   addressId         String        @map("address_id")
-  shippingName      String
-  shippingPhone     String
-  shippingStreet    String
-  shippingCity      String
-  shippingState     String
-  shippingPincode   String
-  shippingCountry   String
+  shippingName      String?
+  shippingPhone     String?
+  shippingStreet    String?
+  shippingCity      String?
+  shippingState     String?
+  shippingPincode   String?
+  shippingCountry   String?
   shippingAddressId String?
   shippingAddress   Address?      @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
 
@@ -397,7 +397,17 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
   RETURNED
+
+  RETURN_REQUESTED
+  RETURN_REJECTED
+  RETURN_APPROVED
+
+  EXCHANGE_REQUESTED
+  EXCHANGE_REJECTED
+  EXCHANGE_APPROVED
+  EXCHANGED
 }
+
 
 enum PaymentStatus {
   PENDING
@@ -438,6 +448,7 @@ model EmailOTP {
   createdAt DateTime @default(now())
 
   @@index([email])
+  @@map("email_otps")
 }
 
 enum OTPPurpose {
