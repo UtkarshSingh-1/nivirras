@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { BadgeCheck, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -11,25 +10,20 @@ export interface PromoDisplay {
   reasons: string[]
 }
 
-export function EligiblePromoList() {
-  const [promos, setPromos] = useState<PromoDisplay[]>([])
+interface EligiblePromoListProps {
+  items: PromoDisplay[]
+  subtotal: number
+  isNewUser: boolean
+}
 
-  useEffect(() => {
-    fetch("/api/promo-codes/list")
-      .then(res => res.json())
-      .then(data => {
-        if (data.promoCodes) setPromos(data.promoCodes)
-      })
-      .catch(() => {})
-  }, [])
-
-  if (promos.length === 0) return null
+export function EligiblePromoList({ items, subtotal, isNewUser }: EligiblePromoListProps) {
+  if (!items || items.length === 0) return null
 
   return (
     <div className="mb-3 border rounded p-3 bg-muted/20 space-y-2">
       <p className="text-sm font-semibold">Available Offers</p>
 
-      {promos.map(promo => (
+      {items.map(promo => (
         <div
           key={promo.code}
           className={cn(
@@ -46,6 +40,7 @@ export function EligiblePromoList() {
               </span>
             )}
           </div>
+
           {promo.eligible ? (
             <BadgeCheck className="w-4 h-4 text-green-600" />
           ) : (
