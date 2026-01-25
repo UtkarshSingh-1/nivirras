@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 
 export async function GET() {
   const reels = await prisma.reel.findMany({
-    orderBy: { createdAt: "desc" }
+    orderBy: { createdAt: "desc" },
   });
 
   return NextResponse.json({ reels });

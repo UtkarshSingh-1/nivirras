@@ -36,12 +36,9 @@ export default function ReelsManager() {
 
   async function handleUpload() {
     if (!file) return alert("Select a video first.");
-
     if (!file.type.startsWith("video/")) return alert("File must be a video.");
-
     if (file.size > 50 * 1024 * 1024) return alert("Max size is 50MB!");
 
-    // Aspect ratio validation (9:16 vertical)
     const dim: any = await getVideoDimensions(file);
     const ratio = dim.height / dim.width;
     const expected = 16 / 9;
@@ -52,7 +49,6 @@ export default function ReelsManager() {
 
     setUploading(true);
 
-    // Upload to Cloudinary (unsigned upload)
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
@@ -65,7 +61,6 @@ export default function ReelsManager() {
 
     const { secure_url, public_id } = uploadRes.data;
 
-    // Save to database
     await axios.post("/api/reels/save", {
       videoUrl: secure_url,
       publicId: public_id,
@@ -78,7 +73,6 @@ export default function ReelsManager() {
 
   async function handleDelete(id: string, publicId: string) {
     if (!confirm("Delete this reel?")) return;
-
     await axios.post("/api/reels/delete", { id, publicId });
     await loadReels();
   }

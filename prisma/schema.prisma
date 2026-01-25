@@ -365,11 +365,10 @@ model Settings {
 model Reel {
   id        String   @id @default(cuid())
   videoUrl  String
-  publicId  String
+  publicId  String    // <--- Add this
   createdAt DateTime @default(now())
-
-  @@map("reels")
 }
+
 
 // ---------------------------------------------
 // Enums
