@@ -130,7 +130,7 @@ export async function PUT(
   }
 }
 
-// DELETE /api/admin/products/[productId] - Delete product
+// DELETE /api/admin/products/[productId] - Hard delete product
 export async function DELETE(
   request: NextRequest,
   context: ProductParams
@@ -150,19 +150,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
-    // Check for existing orders
-    const orderCount = await prisma.orderItem.count({
-      where: { productId: (await context.params).productId },
-    })
-
-    if (orderCount > 0) {
-      return NextResponse.json(
-        { error: 'Cannot delete product with existing orders. Archive it instead.' },
-        { status: 400 }
-      )
-    }
-
-    // Delete the product
+    // Hard delete the product
     await prisma.product.delete({
       where: { id: (await context.params).productId },
     })
@@ -171,8 +159,8 @@ export async function DELETE(
       success: true,
       message: 'Product deleted successfully',
     })
-  } catch {
-    console.error('Error deleting product')
+  } catch (error) {
+    console.error('Error deleting product:', error)
     return NextResponse.json(
       { error: 'Failed to delete product' },
       { status: 500 }
