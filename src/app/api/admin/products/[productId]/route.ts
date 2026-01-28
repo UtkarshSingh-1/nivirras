@@ -24,7 +24,7 @@ interface ProductParams {
   }>
 }
 
-// PUT /api/admin/products/[productId] - Update product
+// PUT /api/admin/products/[productId]
 export async function PUT(
   request: NextRequest,
   context: ProductParams
@@ -39,31 +39,24 @@ export async function PUT(
     const validatedData = updateProductSchema.parse(body)
     const { productId } = await context.params
 
-    // Check if product exists
-    const existingProduct = await prisma.product.findUnique({
-      where: { id: productId },
-    })
-
+    const existingProduct = await prisma.product.findUnique({ where: { id: productId } })
     if (!existingProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
-    // Check slug uniqueness
     if (validatedData.slug !== existingProduct.slug) {
       const conflictingProduct = await prisma.product.findFirst({
-        where: { 
+        where: {
           slug: validatedData.slug,
           id: { not: productId }
         },
       })
 
       if (conflictingProduct) {
-        const timestamp = Date.now()
-        validatedData.slug = `${validatedData.slug}-${timestamp}`
+        validatedData.slug = `${validatedData.slug}-${Date.now()}`
       }
     }
 
-    // Check category
     const category = await prisma.category.findUnique({
       where: { id: validatedData.categoryId },
     })
@@ -79,33 +72,22 @@ export async function PUT(
     const allowedColors = ['BLACK','WHITE','GRAY','RED','BLUE','GREEN','YELLOW','ORANGE','PURPLE','PINK']
 
     const sizesEnum = (validatedData.sizes || [])
-      .map((s) => s.toUpperCase())
-      .filter((s) => allowedSizes.includes(s)) as any
+      .map(s => s.toUpperCase())
+      .filter(s => allowedSizes.includes(s)) as any
 
     const colorsEnum = (validatedData.colors || [])
-      .map((c) => c.toUpperCase())
-      .filter((c) => allowedColors.includes(c)) as any
+      .map(c => c.toUpperCase())
+      .filter(c => allowedColors.includes(c)) as any
 
     const product = await prisma.product.update({
       where: { id: productId },
       data: {
-        name: validatedData.name,
-        description: validatedData.description,
-        price: validatedData.price,
-        comparePrice: validatedData.comparePrice,
-        categoryId: validatedData.categoryId,
-        images: validatedData.images,
+        ...validatedData,
         sizes: sizesEnum,
         colors: colorsEnum,
-        stock: validatedData.stock,
-        featured: validatedData.featured,
-        trending: validatedData.trending,
-        slug: validatedData.slug,
         updatedAt: new Date(),
       },
-      include: {
-        category: true,
-      },
+      include: { category: true }
     })
 
     return NextResponse.json({
@@ -130,7 +112,7 @@ export async function PUT(
   }
 }
 
-// DELETE /api/admin/products/[productId] - Hard delete with cascade
+// DELETE /api/admin/products/[productId]
 export async function DELETE(
   request: NextRequest,
   context: ProductParams
@@ -143,7 +125,6 @@ export async function DELETE(
 
     const { productId } = await context.params
 
-    // Check if product exists
     const existingProduct = await prisma.product.findUnique({
       where: { id: productId },
     })
@@ -152,13 +133,11 @@ export async function DELETE(
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
-    // Perform cascading deletion
-    await prisma.$transaction([
-      prisma.orderItem.deleteMany({ where: { productId } }),
-      prisma.wishlistItem.deleteMany({ where: { productId } }),
-      prisma.cartItem?.deleteMany?.({ where: { productId } }).catch(() => {}), // if cartItem exists
-      prisma.product.delete({ where: { id: productId } })
-    ])
+    // Manual delete ONLY for OrderItem (blocks deletion)
+    await prisma.$transaction(async (tx) => {
+      await tx.orderItem.deleteMany({ where: { productId } })
+      await tx.product.delete({ where: { id: productId } })
+    })
 
     return NextResponse.json({
       success: true,
@@ -173,3 +152,4 @@ export async function DELETE(
     )
   }
 }
+
