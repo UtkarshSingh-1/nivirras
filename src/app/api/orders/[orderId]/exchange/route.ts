@@ -4,12 +4,13 @@ import { prisma } from "@/lib/db"
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ orderId: string }> }
+  { params }: { params: { orderId: string } }
 ) {
   const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!session?.user?.id)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const { orderId } = await params
+  const { orderId } = params
   const { itemId, reason, newSize, newColor } = await req.json()
 
   const order = await prisma.order.findFirst({
@@ -17,7 +18,8 @@ export async function POST(
     include: { items: true }
   })
 
-  if (!order) return NextResponse.json({ error: "Not eligible" }, { status: 400 })
+  if (!order)
+    return NextResponse.json({ error: "Not eligible" }, { status: 400 })
 
   const item = order.items.find(i => i.id === itemId)
 
@@ -30,6 +32,7 @@ export async function POST(
       newSize,
       oldColor: item?.color ?? null,
       newColor,
+      status: "REQUESTED"
     }
   })
 

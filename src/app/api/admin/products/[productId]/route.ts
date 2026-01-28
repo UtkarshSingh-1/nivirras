@@ -24,7 +24,7 @@ interface ProductParams {
   }>
 }
 
-// PUT /api/admin/products/[productId] - Update product
+// PUT /api/admin/products/[productId]
 export async function PUT(
   request: NextRequest,
   context: ProductParams
@@ -37,33 +37,26 @@ export async function PUT(
 
     const body = await request.json()
     const validatedData = updateProductSchema.parse(body)
+    const { productId } = await context.params
 
-    // Check if product exists
-    const existingProduct = await prisma.product.findUnique({
-      where: { id: (await context.params).productId },
-    })
-
+    const existingProduct = await prisma.product.findUnique({ where: { id: productId } })
     if (!existingProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
-    // Check if slug conflicts with other products
     if (validatedData.slug !== existingProduct.slug) {
       const conflictingProduct = await prisma.product.findFirst({
-        where: { 
+        where: {
           slug: validatedData.slug,
-          id: { not: (await context.params).productId }
+          id: { not: productId }
         },
       })
 
       if (conflictingProduct) {
-        // Generate unique slug
-        const timestamp = Date.now()
-        validatedData.slug = `${validatedData.slug}-${timestamp}`
+        validatedData.slug = `${validatedData.slug}-${Date.now()}`
       }
     }
 
-    // Check if category exists
     const category = await prisma.category.findUnique({
       where: { id: validatedData.categoryId },
     })
@@ -75,38 +68,26 @@ export async function PUT(
       )
     }
 
-    // Map incoming strings to Prisma enums for sizes and colors
     const allowedSizes = ['XS','S','M','L','XL','XXL']
     const allowedColors = ['BLACK','WHITE','GRAY','RED','BLUE','GREEN','YELLOW','ORANGE','PURPLE','PINK']
 
     const sizesEnum = (validatedData.sizes || [])
-      .map((s) => (typeof s === 'string' ? s.toUpperCase() : s))
-      .filter((s) => allowedSizes.includes(s)) as any
+      .map(s => s.toUpperCase())
+      .filter(s => allowedSizes.includes(s)) as any
 
     const colorsEnum = (validatedData.colors || [])
-      .map((c) => (typeof c === 'string' ? c.toUpperCase() : c))
-      .filter((c) => allowedColors.includes(c)) as any
+      .map(c => c.toUpperCase())
+      .filter(c => allowedColors.includes(c)) as any
 
     const product = await prisma.product.update({
-      where: { id: (await context.params).productId },
+      where: { id: productId },
       data: {
-        name: validatedData.name,
-        description: validatedData.description,
-        price: validatedData.price,
-        comparePrice: validatedData.comparePrice,
-        categoryId: validatedData.categoryId,
-        images: validatedData.images,
+        ...validatedData,
         sizes: sizesEnum,
         colors: colorsEnum,
-        stock: validatedData.stock,
-        featured: validatedData.featured,
-        trending: validatedData.trending,
-        slug: validatedData.slug,
         updatedAt: new Date(),
       },
-      include: {
-        category: true,
-      },
+      include: { category: true }
     })
 
     return NextResponse.json({
@@ -114,6 +95,7 @@ export async function PUT(
       message: 'Product updated successfully',
       product,
     })
+
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -130,7 +112,7 @@ export async function PUT(
   }
 }
 
-// DELETE /api/admin/products/[productId] - Delete product
+// DELETE /api/admin/products/[productId]
 export async function DELETE(
   request: NextRequest,
   context: ProductParams
@@ -141,38 +123,29 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if product exists
+    const { productId } = await context.params
+
     const existingProduct = await prisma.product.findUnique({
-      where: { id: (await context.params).productId },
+      where: { id: productId },
     })
 
     if (!existingProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
-    // Check for existing orders
-    const orderCount = await prisma.orderItem.count({
-      where: { productId: (await context.params).productId },
-    })
-
-    if (orderCount > 0) {
-      return NextResponse.json(
-        { error: 'Cannot delete product with existing orders. Archive it instead.' },
-        { status: 400 }
-      )
-    }
-
-    // Delete the product
-    await prisma.product.delete({
-      where: { id: (await context.params).productId },
+    // Manual delete ONLY for OrderItem (blocks deletion)
+    await prisma.$transaction(async (tx) => {
+      await tx.orderItem.deleteMany({ where: { productId } })
+      await tx.product.delete({ where: { id: productId } })
     })
 
     return NextResponse.json({
       success: true,
       message: 'Product deleted successfully',
     })
-  } catch {
-    console.error('Error deleting product')
+
+  } catch (error) {
+    console.error('Error deleting product:', error)
     return NextResponse.json(
       { error: 'Failed to delete product' },
       { status: 500 }

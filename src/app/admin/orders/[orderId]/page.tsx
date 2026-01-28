@@ -46,19 +46,21 @@ export default async function AdminOrderDetailsPage({
     notFound()
   }
 
-  // Serialize the order to convert Decimal fields to numbers
+  // Serialize Decimal + Date fields
   const serializedOrder = {
     ...order,
     total: Number(order.total),
     subtotal: Number(order.subtotal),
     tax: Number(order.tax),
     shipping: Number(order.shipping),
+    discount: order.discount ? Number(order.discount) : null,
     createdAt: order.createdAt.toISOString(),
     updatedAt: order.updatedAt.toISOString(),
     items: order.items.map((item: any) => ({
       ...item,
       price: Number(item.price),
       createdAt: item.createdAt.toISOString(),
+      updatedAt: item.updatedAt.toISOString(),
       product: {
         ...item.product,
         price: Number(item.product.price),
