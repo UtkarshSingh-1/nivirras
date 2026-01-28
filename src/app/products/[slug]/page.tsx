@@ -9,20 +9,25 @@ import { ReviewSection } from "@/components/product/review-section"
 import { prisma } from "@/lib/db"
 import { jsonToStringArray } from "@/lib/utils"
 
+// ⬇️ Prevent build-time DB calls
+export const dynamic = "force-dynamic"
+
 export default async function ProductPage({
   params,
 }: {
   params: Promise<{ slug: string }>
 }) {
+  const { slug } = await params
+
   const product = await prisma.product.findUnique({
-    where: { slug: (await params).slug },
+    where: { slug },
     include: {
       category: true,
     },
   })
 
   if (!product) {
-    notFound()
+    return notFound()
   }
 
   // Extract arrays
@@ -31,7 +36,7 @@ export default async function ProductPage({
   const colors = jsonToStringArray(product.colors) as string[]
   const storyImages = jsonToStringArray(product.storyImages) as string[]
 
-  // Serialize product
+  // Serialized product (avoid Prisma Decimals)
   const serializedProduct = {
     id: product.id,
     name: product.name,
@@ -48,8 +53,6 @@ export default async function ProductPage({
     },
     storyContent: product.storyContent,
     storyTitle: product.storyTitle,
-
-    // 👇 NEW: Provide storyImage + full array
     storyImage: storyImages[0] ?? images[0],
     storyImages,
   }
@@ -89,16 +92,4 @@ export default async function ProductPage({
       <Footer />
     </>
   )
-}
-
-export async function generateStaticParams() {
-  const products = await prisma.product.findMany({
-    select: { slug: true },
-  })
-
-  type ProductSlug = (typeof products)[number]
-
-  return products.map((product: ProductSlug) => ({
-    slug: product.slug,
-  }))
 }
