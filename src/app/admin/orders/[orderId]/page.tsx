@@ -13,9 +13,9 @@ export default async function AdminOrderDetailsPage({
 }) {
   const { orderId } = await params
   const session = await auth()
-  
-  if (!session?.user || session.user.role !== 'ADMIN') {
-    redirect('/')
+
+  if (!session?.user || session.user.role !== "ADMIN") {
+    redirect("/")
   }
 
   const order = await prisma.order.findUnique({
@@ -42,11 +42,9 @@ export default async function AdminOrderDetailsPage({
     },
   })
 
-  if (!order) {
-    notFound()
-  }
+  if (!order) notFound()
 
-  // Serialize Decimal + Date fields
+  // ✅ Serialize Decimal + Date fields safely
   const serializedOrder = {
     ...order,
     total: Number(order.total),
@@ -56,29 +54,36 @@ export default async function AdminOrderDetailsPage({
     discount: order.discount ? Number(order.discount) : null,
     createdAt: order.createdAt.toISOString(),
     updatedAt: order.updatedAt.toISOString(),
-    items: order.items.map((item: any) => ({
+
+    items: order.items.map((item) => ({
       ...item,
       price: Number(item.price),
-      createdAt: item.createdAt.toISOString(),
-      updatedAt: item.updatedAt.toISOString(),
+      createdAt: item.createdAt.toISOString(), // ✅ exists
+      // ❌ REMOVED updatedAt (does not exist)
+
       product: {
         ...item.product,
         price: Number(item.product.price),
-        comparePrice: item.product.comparePrice ? Number(item.product.comparePrice) : null,
+        comparePrice: item.product.comparePrice
+          ? Number(item.product.comparePrice)
+          : null,
         createdAt: item.product.createdAt.toISOString(),
         updatedAt: item.product.updatedAt.toISOString(),
         category: {
           ...item.product.category,
           createdAt: item.product.category.createdAt.toISOString(),
           updatedAt: item.product.category.updatedAt.toISOString(),
-        }
-      }
+        },
+      },
     })),
-    shippingAddress: order.shippingAddress ? {
-      ...order.shippingAddress,
-      createdAt: order.shippingAddress.createdAt.toISOString(),
-      updatedAt: order.shippingAddress.updatedAt.toISOString(),
-    } : null,
+
+    shippingAddress: order.shippingAddress
+      ? {
+          ...order.shippingAddress,
+          createdAt: order.shippingAddress.createdAt.toISOString(),
+          updatedAt: order.shippingAddress.updatedAt.toISOString(),
+        }
+      : null,
   }
 
   return (

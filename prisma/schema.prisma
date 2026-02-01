@@ -7,8 +7,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 // -------------------------------------------------------
@@ -215,16 +216,22 @@ model Order {
   razorpayOrderId   String? @map("razorpay_order_id")
   razorpayPaymentId String? @map("razorpay_payment_id")
 
-  // ---------- Address Snapshot ----------
-  shippingName      String?
-  shippingPhone     String?
-  shippingStreet    String?
-  shippingCity      String?
-  shippingState     String?
-  shippingPincode   String?
-  shippingCountry   String?
+  // ---------- Billing Address ----------
+  addressId String?
+  address   Address? @relation("BillingAddress", fields: [addressId], references: [id])
+
+  // ---------- Shipping Address ----------
   shippingAddressId String?
   shippingAddress   Address? @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+
+  // ---------- Shipping Snapshot ----------
+  shippingName    String?
+  shippingPhone   String?
+  shippingStreet  String?
+  shippingCity    String?
+  shippingState   String?
+  shippingPincode String?
+  shippingCountry String?
 
   // ---------- Items ----------
   items OrderItem[]
@@ -295,8 +302,10 @@ model Address {
   isDefault Boolean     @default(false)
   userId    String
 
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  orders Order[] @relation("ShippingAddress")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  billingOrders  Order[] @relation("BillingAddress")
+  shippingOrders Order[] @relation("ShippingAddress")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -343,7 +352,27 @@ model PromoCodeUsage {
   user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
 
+  @@unique([userId, code])
   @@map("promo_code_usages")
+}
+
+model PromoCode {
+  id            String       @id @default(cuid())
+  code          String       @unique
+  description   String?
+  discountType  DiscountType
+  discountValue Decimal      @db.Decimal(10, 2)
+  minOrderValue Decimal?     @db.Decimal(10, 2)
+
+  firstOrderOnly Boolean @default(false)
+  showInBanner   Boolean @default(false)
+  isActive       Boolean @default(true)
+
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("promo_codes")
 }
 
 // -------------------------------------------------------
@@ -490,6 +519,11 @@ enum RefundStatus {
   COMPLETED
 }
 
+enum PaymentMethod {
+  PREPAID
+  COD
+}
+
 enum WalletType {
   CREDIT
   DEBIT
@@ -516,4 +550,9 @@ model EmailOTP {
 enum OTPPurpose {
   VERIFY_EMAIL
   RESET_PASSWORD
+}
+
+enum DiscountType {
+  PERCENT
+  FLAT
 }

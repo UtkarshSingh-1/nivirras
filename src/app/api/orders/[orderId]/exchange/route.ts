@@ -1,45 +1,21 @@
-import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { NextResponse } from "next/server"
 
 export async function POST(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { orderId: string } }
 ) {
-  const session = await auth()
-  if (!session?.user?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const body = await req.json()
 
-  const { orderId } = params
-  const { itemId, reason, newSize, newColor } = await req.json()
-
-  const order = await prisma.order.findFirst({
-    where: { id: orderId, userId: session.user.id, status: "DELIVERED" },
-    include: { items: true }
-  })
-
-  if (!order)
-    return NextResponse.json({ error: "Not eligible" }, { status: 400 })
-
-  const item = order.items.find(i => i.id === itemId)
-
-  await prisma.exchangeRequest.create({
+  const exchange = await prisma.exchangeRequest.create({
     data: {
-      orderId,
-      userId: session.user.id,
-      reason,
-      oldSize: item?.size ?? null,
-      newSize,
-      oldColor: item?.color ?? null,
-      newColor,
-      status: "REQUESTED"
-    }
+      orderId: params.orderId,
+      userId: body.userId,
+      reason: body.reason,
+      oldSize: body.oldSize,
+      newSize: body.newSize,
+    },
   })
 
-  await prisma.order.update({
-    where: { id: orderId },
-    data: { exchangeStatus: "REQUESTED" }
-  })
-
-  return NextResponse.json({ success: true })
+  return NextResponse.json(exchange)
 }

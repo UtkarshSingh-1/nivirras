@@ -1,39 +1,19 @@
-import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { NextResponse } from "next/server"
 
 export async function POST(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { orderId: string } }
 ) {
-  const session = await auth()
-  if (!session?.user?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const body = await req.json()
 
-  const { orderId } = params
-  const { reason, images } = await req.json()
-
-  const order = await prisma.order.findFirst({
-    where: { id: orderId, userId: session.user.id, status: "DELIVERED" }
-  })
-
-  if (!order)
-    return NextResponse.json({ error: "Not eligible" }, { status: 400 })
-
-  await prisma.returnRequest.create({
+  const request = await prisma.returnRequest.create({
     data: {
-      orderId,
-      userId: session.user.id,
-      reason,
-      images,
-      status: "REQUESTED"
-    }
+      orderId: params.orderId,
+      userId: body.userId,
+      reason: body.reason,
+    },
   })
 
-  await prisma.order.update({
-    where: { id: orderId },
-    data: { returnStatus: "REQUESTED" }
-  })
-
-  return NextResponse.json({ success: true })
+  return NextResponse.json(request)
 }
