@@ -1,111 +1,182 @@
+import { auth } from "@/lib/auth"
+import { redirect } from "next/navigation"
 import { prisma } from "@/lib/db"
+import Link from "next/link"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { RefreshCcw, Download } from "lucide-react"
+
+import ApproveButton from "./[id]/approve-button"
+import RejectButton from "./[id]/reject-button"
+
+import { ExchangeStatus } from "@prisma/client"
+
+type Filter = "ALL" | ExchangeStatus
 
 export default async function AdminExchangesPage({
   searchParams,
 }: {
-  searchParams: { status?: string }
+  searchParams?: { status?: Filter }
 }) {
-  const status = searchParams.status
+  const session = await auth()
+  if (!session?.user || session.user.role !== "ADMIN") {
+    redirect("/")
+  }
 
-  const exchanges = await prisma.exchangeRequest.findMany({
-    where: status ? { status } : {},
-    include: {
-      user: true,
-      order: {
-        include: {
-          items: { include: { product: true } },
+  const status = searchParams?.status
+
+  const where =
+    status && status !== "ALL"
+      ? { status: status as ExchangeStatus }
+      : {}
+
+  const [exchanges, counts] = await Promise.all([
+    prisma.exchangeRequest.findMany({
+      where,
+      include: {
+        order: {
+          include: {
+            address: true,
+            items: {
+              include: {
+                product: true,
+              },
+            },
+          },
         },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  })
+      orderBy: { createdAt: "desc" },
+    }),
+
+    prisma.exchangeRequest.groupBy({
+      by: ["status"],
+      _count: true,
+    }),
+  ])
+
+  const countMap = counts.reduce<Record<string, number>>((acc, c) => {
+    acc[c.status] = c._count
+    return acc
+  }, {})
 
   return (
-    <div className="space-y-6">
-      <Header />
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Exchange Requests</h1>
 
-      {exchanges.length === 0 && (
-        <EmptyState text="No exchange requests found" />
-      )}
-
-      {exchanges.map(e => (
-        <div key={e.id} className="border rounded-lg p-5 space-y-4">
-          <div className="flex justify-between">
-            <div>
-              <p className="font-semibold">
-                Order #{e.orderId.slice(-6)}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {e.user.email}
-              </p>
-            </div>
-            <Badge>{e.status}</Badge>
-          </div>
-
-          <div className="text-sm">
-            <p>
-              <b>Exchange:</b> {e.oldSize} → {e.newSize}
-            </p>
-          </div>
-
-          <div className="text-sm">
-            <p className="font-medium">Items</p>
-            {e.order.items.map(item => (
-              <p key={item.id}>
-                {item.product.name} × {item.quantity}
-              </p>
-            ))}
-          </div>
-
-          {e.status === "REQUESTED" && (
-            <div className="flex gap-2">
-              <form action={`/api/admin/exchanges/${e.id}?action=pickup`} method="post">
-                <Button size="sm">Schedule Pickup</Button>
-              </form>
-              <form action={`/api/admin/exchanges/${e.id}?action=approve`} method="post">
-                <Button size="sm" variant="outline">Approve Exchange</Button>
-              </form>
-              <form action={`/api/admin/exchanges/${e.id}?action=reject`} method="post">
-                <Button size="sm" variant="destructive">Reject</Button>
-              </form>
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function Header() {
-  return (
-    <div className="flex justify-between items-center">
-      <div className="flex gap-2">
-        <Filter label="All" />
-        <Filter label="REQUESTED" />
-        <Filter label="APPROVED" />
-        <Filter label="REJECTED" />
+        {/* CSV Export */}
+        <Button asChild variant="outline">
+          <Link href="/api/admin/exchanges?export=csv">
+            <Download className="h-4 w-4 mr-2" />
+            Export CSV
+          </Link>
+        </Button>
       </div>
-      <a href="/api/admin/exchanges/export">
-        <Button variant="outline" size="sm">Export CSV</Button>
-      </a>
-    </div>
-  )
-}
 
-function Filter({ label }: { label: string }) {
-  return (
-    <a href={`/admin/exchanges${label === "All" ? "" : `?status=${label}`}`}>
-      <Button size="sm" variant="outline">{label}</Button>
-    </a>
-  )
-}
+      {/* Filters */}
+      <div className="flex gap-2">
+        {(["ALL", "REQUESTED", "APPROVED", "REJECTED"] as Filter[]).map((s) => (
+          <Link
+            key={s}
+            href={`/admin/exchanges${s !== "ALL" ? `?status=${s}` : ""}`}
+          >
+            <Badge
+              variant={status === s || (!status && s === "ALL") ? "default" : "outline"}
+              className="cursor-pointer"
+            >
+              {s} {s !== "ALL" && `(${countMap[s] ?? 0})`}
+            </Badge>
+          </Link>
+        ))}
+      </div>
 
-function EmptyState({ text }: { text: string }) {
-  return (
-    <div className="border rounded-lg p-12 text-center text-muted-foreground">
-      {text}
+      {/* Table */}
+      <div className="border rounded-lg overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-muted">
+            <tr>
+              <th className="p-3 text-left">Order</th>
+              <th className="p-3 text-left">Customer</th>
+              <th className="p-3 text-left">Address</th>
+              <th className="p-3 text-left">Items</th>
+              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-left">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {exchanges.map((ex) => (
+              <tr key={ex.id} className="border-t">
+                <td className="p-3 font-medium">{ex.orderId}</td>
+
+                <td className="p-3">
+                  {ex.order.userId}
+                </td>
+
+                <td className="p-3">
+                  {ex.order.address ? (
+                    <>
+                      <div>{ex.order.address.street}</div>
+                      <div className="text-muted-foreground">
+                        {ex.order.address.city}, {ex.order.address.pincode}
+                      </div>
+                    </>
+                  ) : (
+                    <span className="text-muted-foreground">No address</span>
+                  )}
+                </td>
+
+                <td className="p-3">
+                  {ex.order.items.map((item) => (
+                    <div key={item.id}>
+                      {item.product.name} × {item.quantity}
+                    </div>
+                  ))}
+                </td>
+
+                <td className="p-3">
+                  <Badge
+                    variant={
+                      ex.status === "REQUESTED"
+                        ? "outline"
+                        : ex.status === "APPROVED"
+                        ? "default"
+                        : "destructive"
+                    }
+                  >
+                    {ex.status}
+                  </Badge>
+                </td>
+
+                <td className="p-3 flex gap-2">
+                  {ex.status === "REQUESTED" && (
+                    <>
+                      <ApproveButton id={ex.id} />
+                      <RejectButton id={ex.id} />
+                    </>
+                  )}
+                  {ex.status !== "REQUESTED" && (
+                    <span className="text-muted-foreground flex items-center gap-1">
+                      <RefreshCcw className="h-4 w-4" />
+                      Processed
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+
+            {exchanges.length === 0 && (
+              <tr>
+                <td colSpan={6} className="p-6 text-center text-muted-foreground">
+                  No exchange requests found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
