@@ -1,26 +1,60 @@
-import { prisma } from "@/lib/db"
 import { NextResponse } from "next/server"
+import { prisma } from "@/lib/db"
+import { auth } from "@/lib/auth"
 
+/* -------------------------------- PATCH -------------------------------- */
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { action } = await req.json()
+  const session = await auth()
 
-  const statusMap: Record<string, string> = {
-    approve: "APPROVED",
-    reject: "REJECTED",
-    pickup: "PICKUP_SCHEDULED",
+  if (!session?.user || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  if (!statusMap[action]) {
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 })
+  const { id } = await params
+  const body = await req.json()
+
+  const { status } = body
+
+  if (!status || !["APPROVED", "REJECTED"].includes(status)) {
+    return NextResponse.json({ error: "Invalid status" }, { status: 400 })
   }
 
-  const updated = await prisma.exchangeRequest.update({
-    where: { id: params.id },
-    data: { status: statusMap[action] as any },
+  const exchange = await prisma.exchangeRequest.update({
+    where: { id },
+    data: { status },
   })
 
-  return NextResponse.json(updated)
+  return NextResponse.json({ success: true, exchange })
+}
+
+/* -------------------------------- GET -------------------------------- */
+export async function GET(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth()
+
+  if (!session?.user || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const { id } = await params
+
+  const exchange = await prisma.exchangeRequest.findUnique({
+    where: { id },
+    include: {
+      order: true,
+      items: true,
+      user: true,
+    },
+  })
+
+  if (!exchange) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 })
+  }
+
+  return NextResponse.json(exchange)
 }
