@@ -363,6 +363,7 @@ model PromoCode {
   discountType  DiscountType
   discountValue Decimal      @db.Decimal(10, 2)
   minOrderValue Decimal?     @db.Decimal(10, 2)
+  maxDiscount    Decimal? 
 
   firstOrderOnly Boolean @default(false)
   showInBanner   Boolean @default(false)
