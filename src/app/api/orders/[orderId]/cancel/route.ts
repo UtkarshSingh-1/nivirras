@@ -42,8 +42,8 @@ export async function POST(
 
     let refundData: {
       paymentStatus?: 'REFUNDED'
-      refundMethod?: 'ORIGINAL_SOURCE'
-      refundStatus?: 'INITIATED'
+      refundMethod?: 'ORIGINAL_SOURCE' | 'WALLET'
+      refundStatus?: 'INITIATED' | 'COMPLETED'
       refundAmount?: number
     } = {}
 
