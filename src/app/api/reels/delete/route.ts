@@ -1,28 +1,23 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import axios from "axios";
 
 export async function POST(req: Request) {
-  const { id, publicId } = await req.json();
+  const { id } = await req.json();
 
-  if (!id || !publicId) {
+  if (!id) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
-  // Delete from DB
+  const reel = await prisma.reel.findUnique({
+    where: { id },
+    select: { mediaId: true },
+  });
+
   await prisma.reel.delete({ where: { id } });
 
-  // Delete from Cloudinary
-  await axios.post(
-    `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/video/delete_by_token`,
-    { public_id: publicId },
-    {
-      auth: {
-        username: process.env.CLOUDINARY_API_KEY!,
-        password: process.env.CLOUDINARY_API_SECRET!,
-      },
-    }
-  );
+  if (reel?.mediaId) {
+    await prisma.media.deleteMany({ where: { id: reel.mediaId } });
+  }
 
   return NextResponse.json({ success: true });
 }

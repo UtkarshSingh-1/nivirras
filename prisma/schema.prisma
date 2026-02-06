@@ -447,10 +447,22 @@ model Settings {
 model Reel {
   id        String   @id @default(cuid())
   videoUrl  String
-  publicId  String
+  publicId  String?
+  mediaId   String?
   createdAt DateTime @default(now())
 
   @@map("reels")
+}
+
+model Media {
+  id        String    @id @default(cuid())
+  mimeType  String
+  size      Int
+  kind      MediaKind
+  data      Bytes     @db.LongBlob
+  createdAt DateTime  @default(now())
+
+  @@map("media")
 }
 
 // -------------------------------------------------------
@@ -553,6 +565,11 @@ enum WalletReason {
   REFUND
   PURCHASE
   MANUAL
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
 }
 
 model EmailOTP {

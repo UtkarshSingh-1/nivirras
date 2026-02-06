@@ -47,7 +47,7 @@ export function ReviewForm({ productId, onReviewSubmitted }: ReviewFormProps) {
       return toast({ variant: "destructive", title: "Invalid File" })
     }
 
-    if (isVideo && file.size > 10 * 1024 * 1024) {
+    if (isVideo && file.size > 15 * 1024 * 1024) {
       return toast({ variant: "destructive", title: "Video ≤ 10MB only" })
     }
 

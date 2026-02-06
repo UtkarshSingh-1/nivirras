@@ -149,6 +149,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
     const uploadPromises = Array.from(files).map(async (file) => {
       const formData = new FormData()
       formData.append('file', file)
+      formData.append('purpose', 'product_image')
       formData.append('folder', 'products')
 
       try {
@@ -268,6 +269,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
     const uploadPromises = Array.from(files).map(async (file) => {
       const formData = new FormData()
       formData.append('file', file)
+      formData.append('purpose', 'story_image')
       formData.append('folder', 'products')
 
       try {

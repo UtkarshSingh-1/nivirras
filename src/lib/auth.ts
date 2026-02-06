@@ -9,6 +9,8 @@ import { prisma } from "@/lib/db"
 export const config = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true,
+  debug: process.env.NODE_ENV === "development",
 
   providers: [
     Google({

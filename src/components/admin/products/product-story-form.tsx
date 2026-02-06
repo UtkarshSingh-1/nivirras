@@ -40,6 +40,7 @@ export function ProductStoryForm({ product }: ProductStoryFormProps) {
       const uploadPromises = Array.from(files).map(async (file) => {
         const formData = new FormData()
         formData.append("file", file)
+        formData.append("purpose", "story_image")
 
         const response = await fetch("/api/upload", {
           method: "POST",

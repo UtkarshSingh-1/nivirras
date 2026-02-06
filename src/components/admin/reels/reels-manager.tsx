@@ -6,7 +6,6 @@ import axios from "axios";
 interface Reel {
   id: string;
   videoUrl: string;
-  publicId: string;
 }
 
 export default function ReelsManager() {
@@ -51,19 +50,11 @@ export default function ReelsManager() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
-    formData.append("folder", process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER!);
 
-    const uploadRes = await axios.post(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload`,
-      formData
-    );
-
-    const { secure_url, public_id } = uploadRes.data;
+    const uploadRes = await axios.post("/api/reels/upload", formData);
 
     await axios.post("/api/reels/save", {
-      videoUrl: secure_url,
-      publicId: public_id,
+      mediaId: uploadRes.data.mediaId,
     });
 
     setFile(null);
@@ -71,9 +62,9 @@ export default function ReelsManager() {
     await loadReels();
   }
 
-  async function handleDelete(id: string, publicId: string) {
+  async function handleDelete(id: string) {
     if (!confirm("Delete this reel?")) return;
-    await axios.post("/api/reels/delete", { id, publicId });
+    await axios.post("/api/reels/delete", { id });
     await loadReels();
   }
 
@@ -100,7 +91,7 @@ export default function ReelsManager() {
           <div key={reel.id} className="relative">
             <video src={reel.videoUrl} controls className="w-full rounded" />
             <button
-              onClick={() => handleDelete(reel.id, reel.publicId)}
+              onClick={() => handleDelete(reel.id)}
               className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded"
             >
               Delete

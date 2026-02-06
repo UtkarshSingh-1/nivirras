@@ -11,24 +11,29 @@ export default function ReviewForm({ productId, onAdd }: any) {
   const [loading, setLoading] = useState(false)
 
   async function uploadFile(file: File) {
-    if (file.type.startsWith("video") && file.size > 10 * 1024 * 1024) {
-      alert("Max video size is 10MB")
+    if (file.type.startsWith("video") && file.size > 15 * 1024 * 1024) {
+      alert("Max video size is 15MB")
+      return
+    }
+
+    if (file.type.startsWith("image") && file.size > 5 * 1024 * 1024) {
+      alert("Max image size is 5MB")
       return
     }
 
     const formData = new FormData()
     formData.append("file", file)
-    formData.append("upload_preset", "your_upload_preset")
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/upload",
-      { method: "POST", body: formData }
-    )
-
+    const res = await fetch("/api/review/upload", { method: "POST", body: formData })
     const data = await res.json()
+    if (data.error) {
+      alert(data.error)
+      return
+    }
+
     setMedia(prev => [...prev, {
       type: file.type.startsWith("video") ? "video" : "image",
-      url: data.secure_url
+      url: data.url
     }])
   }
 
