@@ -15,7 +15,7 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 })
   }
 
-  return new NextResponse(media.data, {
+  return new NextResponse(media.data as unknown as BodyInit, {
     status: 200,
     headers: {
       "Content-Type": media.mimeType,
