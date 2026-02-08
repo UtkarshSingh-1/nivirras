@@ -9,6 +9,10 @@ function getArg(flag) {
   return process.argv[index + 1] || null;
 }
 
+const LOCKED_ADMIN_EMAILS = new Set([
+  "twwryuk1801@gmail.com",
+]);
+
 async function main() {
   const email =
     getArg("--email") || process.env.ADMIN_EMAIL || process.env.SEED_ADMIN_EMAIL;
@@ -17,6 +21,7 @@ async function main() {
     process.env.ADMIN_PASSWORD ||
     process.env.SEED_ADMIN_PASSWORD;
   const name = getArg("--name") || process.env.ADMIN_NAME || null;
+  const force = process.argv.includes("--force");
 
   if (!email) {
     throw new Error("Email is required. Use --email or ADMIN_EMAIL.");
@@ -37,6 +42,10 @@ async function main() {
   const existing = await prisma.user.findUnique({ where: { email } });
 
   if (existing) {
+    if (LOCKED_ADMIN_EMAILS.has(email) && !force) {
+      return `Locked admin user unchanged: ${email} (use --force to override)`;
+    }
+
     await prisma.user.update({
       where: { email },
       data,
