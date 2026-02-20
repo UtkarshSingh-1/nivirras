@@ -837,6 +837,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
                   id="featured"
                   checked={formData.featured}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, featured: checked }))}
+                  className="data-[state=checked]:bg-[#8B6F47] data-[state=unchecked]:bg-[#D9C9B3]"
                 />
               </div>
 
@@ -851,6 +852,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
                   id="trending"
                   checked={formData.trending}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, trending: checked }))}
+                  className="data-[state=checked]:bg-[#8B6F47] data-[state=unchecked]:bg-[#D9C9B3]"
                 />
               </div>
             </div>

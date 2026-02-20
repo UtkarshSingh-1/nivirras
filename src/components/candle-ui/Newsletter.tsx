@@ -73,24 +73,26 @@ export function Newsletter() {
             className="max-w-md mx-auto"
           >
             <div className="relative">
-              <div className="flex items-center gap-2 bg-white/70 backdrop-blur-md rounded-full shadow-lg border border-white/50 p-2 hover:shadow-xl transition-shadow">
-                <Mail className="w-5 h-5 text-[#8B6F47] ml-4" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="flex-1 bg-transparent border-none outline-none px-2 py-3 text-[#4A3F35] placeholder:text-[#8B6F47]/50"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                  required
-                  suppressHydrationWarning
-                />
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2 bg-white/70 backdrop-blur-md rounded-3xl sm:rounded-full shadow-lg border border-white/50 p-3 sm:p-2 hover:shadow-xl transition-shadow">
+                <div className="flex items-center gap-2 w-full min-w-0">
+                  <Mail className="w-5 h-5 text-[#8B6F47] ml-2 sm:ml-4 shrink-0" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full min-w-0 bg-transparent border-none outline-none px-2 py-3 text-[#4A3F35] placeholder:text-[#8B6F47]/50"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                    required
+                    suppressHydrationWarning
+                  />
+                </div>
 
                 <motion.button
                   type="submit"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-6 py-3 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full flex items-center gap-2 shadow-md"
+                  className="w-full sm:w-auto justify-center px-6 py-3 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full flex items-center gap-2 shadow-md"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <span>Subscribe</span>

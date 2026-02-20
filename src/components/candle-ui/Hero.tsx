@@ -75,26 +75,32 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/products" prefetch>
-                <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(139, 111, 71, 0.3)" }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg transition-all"
+              <motion.div
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(139, 111, 71, 0.3)" }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href="/products"
+                  prefetch
+                  className="inline-flex px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg transition-all"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   Shop Collection
-                </motion.button>
-              </Link>
-              <Link href="/products?trending=true" prefetch>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-white/70 backdrop-blur-sm text-[#6B5743] rounded-full border border-[#E8DFD4] hover:border-[#C9A66B] transition-all"
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href="/products?trending=true"
+                  prefetch
+                  className="inline-flex px-8 py-4 bg-white/70 backdrop-blur-sm text-[#6B5743] rounded-full border border-[#E8DFD4] hover:border-[#C9A66B] transition-all"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   Explore Scents
-                </motion.button>
-              </Link>
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
 
