@@ -3,10 +3,19 @@ import { prisma } from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!
-})
+function getRazorpayClient() {
+  const keyId = process.env.RAZORPAY_KEY_ID
+  const keySecret = process.env.RAZORPAY_KEY_SECRET
+
+  if (!keyId || !keySecret) {
+    return null
+  }
+
+  return new Razorpay({
+    key_id: keyId,
+    key_secret: keySecret,
+  })
+}
 
 export async function POST(
   req: NextRequest,
@@ -25,6 +34,14 @@ export async function POST(
 
   if (!order || order.paymentStatus !== "PAID") {
     return NextResponse.json({ error: "Refund not allowed" }, { status: 400 })
+  }
+
+  const razorpay = getRazorpayClient()
+  if (!razorpay) {
+    return NextResponse.json(
+      { error: "Payment gateway is not configured" },
+      { status: 500 }
+    )
   }
 
   const refund = await razorpay.payments.refund(order.razorpayPaymentId!, {
