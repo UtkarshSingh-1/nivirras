@@ -118,7 +118,24 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
-}: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
+}: (React.ComponentProps<typeof RechartsPrimitive.Tooltip> & {
+  label?: React.ReactNode;
+  labelFormatter?: (value: React.ReactNode, payload: Array<any>) => React.ReactNode;
+  formatter?: (
+    value: number | string,
+    name: string,
+    item: any,
+    index: number,
+    payload: Record<string, any>,
+  ) => React.ReactNode;
+  payload?: Array<{
+    color?: string;
+    dataKey?: string | number;
+    name?: string;
+    value?: number | string;
+    payload?: Record<string, any>;
+  }>;
+}) &
   React.ComponentProps<"div"> & {
     hideLabel?: boolean;
     hideIndicator?: boolean;
@@ -182,7 +199,7 @@ function ChartTooltipContent({
         {payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
-          const indicatorColor = color || item.payload.fill || item.color;
+          const indicatorColor = color || item.payload?.fill || item.color;
 
           return (
             <div
@@ -193,7 +210,13 @@ function ChartTooltipContent({
               )}
             >
               {formatter && item?.value !== undefined && item.name ? (
-                formatter(item.value, item.name, item, index, item.payload)
+                (formatter as any)(
+                  item.value,
+                  item.name,
+                  item,
+                  index,
+                  item.payload ?? {},
+                )
               ) : (
                 <>
                   {itemConfig?.icon ? (
@@ -256,8 +279,14 @@ function ChartLegendContent({
   payload,
   verticalAlign = "bottom",
   nameKey,
-}: React.ComponentProps<"div"> &
-  Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+}: React.ComponentProps<"div"> & {
+    payload?: Array<{
+      color?: string;
+      dataKey?: string | number;
+      value?: string | number;
+      payload?: Record<string, any>;
+    }>;
+    verticalAlign?: "top" | "bottom" | "middle";
     hideIcon?: boolean;
     nameKey?: string;
   }) {
