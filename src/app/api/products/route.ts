@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
-  const timeoutId = setTimeout(() => {
-    console.error('Products API timeout - operation took too long')
-  }, 10000) // 10 second timeout
-
   try {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
@@ -16,6 +12,14 @@ export async function GET(request: NextRequest) {
     const maxPrice = searchParams.get('maxPrice')
     const sort = searchParams.get('sort') || 'createdAt'
     const order = searchParams.get('order') || 'desc'
+
+    // Validate sort field against allowlist
+    const permittedSorts = ['name', 'price', 'createdAt', 'updatedAt', 'rating']
+    const validSort = permittedSorts.includes(sort) ? sort : 'createdAt'
+
+    // Validate order value against allowlist
+    const permittedOrders = ['asc', 'desc']
+    const validOrder = permittedOrders.includes(order) ? order : 'desc'
 
     const skip = (page - 1) * limit
 
@@ -39,9 +43,8 @@ export async function GET(request: NextRequest) {
     }
 
     const orderBy: any = {}
-    orderBy[sort] = order
+    orderBy[validSort] = validOrder
 
-    // Add timeout to database operations
     const productsPromise = prisma.product.findMany({
       where,
       include: {
@@ -54,14 +57,7 @@ export async function GET(request: NextRequest) {
 
     const countPromise = prisma.product.count({ where })
 
-    const [products, total] = await Promise.race([
-      Promise.all([productsPromise, countPromise]),
-      new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Database query timeout')), 8000)
-      )
-    ]) as [any[], number]
-
-    clearTimeout(timeoutId)
+    const [products, total] = await Promise.all([productsPromise, countPromise])
 
     return NextResponse.json({
       products,
@@ -73,7 +69,6 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    clearTimeout(timeoutId)
     console.error('Error fetching products:', error)
     
     // Return empty result instead of error for better UX
@@ -86,6 +81,6 @@ export async function GET(request: NextRequest) {
         pages: 0,
       },
       error: 'Unable to load products at this time'
-    }, { status: 200 })
+    }, { status: 500 })
   }
 }

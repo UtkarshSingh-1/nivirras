@@ -66,38 +66,33 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
   let total = 0
 
   try {
-    const [productsResult, totalResult] = await Promise.race([
-      Promise.all([
-        prisma.product.findMany({
-          where,
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            price: true,
-            comparePrice: true,
-            images: true,
-            featured: true,
-            trending: true,
-            category: {
-              select: { name: true, slug: true }
-            }
-          },
-          skip,
-          take: limit,
-          orderBy,
-        }),
-        prisma.product.count({ where }),
-      ]),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Database query timeout')), 8000)
-      )
-    ]) as [any[], number]
+    const [productsResult, totalResult] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          price: true,
+          comparePrice: true,
+          images: true,
+          featured: true,
+          trending: true,
+          category: {
+            select: { name: true, slug: true }
+          }
+        },
+        skip,
+        take: limit,
+        orderBy,
+      }),
+      prisma.product.count({ where }),
+    ])
 
     products = productsResult
     total = totalResult
   } catch (error) {
-    // If database is unreachable or times out, render empty state
+    // If database is unreachable, render empty state
     console.error('[ProductGrid] Database error:', error)
     products = []
     total = 0

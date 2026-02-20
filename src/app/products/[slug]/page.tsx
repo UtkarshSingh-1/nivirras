@@ -6,9 +6,23 @@ import { RelatedProducts } from "@/components/product/related-products"
 import { ReviewSection } from "@/components/product/review-section"
 import { prisma } from "@/lib/db"
 import { jsonToStringArray } from "@/lib/utils"
+import { unstable_cache } from "next/cache"
 
-// Prevent build-time DB calls
-export const dynamic = "force-dynamic"
+export const revalidate = 120
+
+async function getProductBySlug(slug: string) {
+  return unstable_cache(
+    async () =>
+      prisma.product.findUnique({
+        where: { slug },
+        include: {
+          category: true,
+        },
+      }),
+    [`product-by-slug-${slug}`],
+    { revalidate: 120 }
+  )()
+}
 
 export default async function ProductPage({
   params,
@@ -17,12 +31,13 @@ export default async function ProductPage({
 }) {
   const { slug } = await params
 
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: {
-      category: true,
-    },
-  })
+  let product: Awaited<ReturnType<typeof getProductBySlug>> | null = null
+  try {
+    product = await getProductBySlug(slug)
+  } catch (error) {
+    console.error("[ProductPage] Error loading product:", error)
+    throw new Error("Failed to load product")
+  }
 
   if (!product) {
     return notFound()

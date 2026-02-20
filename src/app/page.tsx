@@ -5,12 +5,12 @@ import { Categories } from "@/components/candle-ui/Categories";
 import { About } from "@/components/candle-ui/About";
 import { Testimonials } from "@/components/candle-ui/Testimonials";
 import { Newsletter } from "@/components/candle-ui/Newsletter";
+import { unstable_cache } from "next/cache";
 
-export default async function HomePage() {
-  let featuredProducts: Array<any> = [];
+export const revalidate = 120
 
-  // Fetch products properly
-  try {
+const getHomeFeaturedProducts = unstable_cache(
+  async () => {
     const featuredRaw = await prisma.product.findMany({
       where: { featured: true },
       take: 4,
@@ -38,9 +38,8 @@ export default async function HomePage() {
         : [],
     });
 
-    featuredProducts = featuredRaw.map(serialize);
+    let featuredProducts = featuredRaw.map(serialize);
 
-    // Fallback if no featured
     if (featuredProducts.length === 0) {
       const anyProducts = await prisma.product.findMany({
         take: 4,
@@ -62,6 +61,17 @@ export default async function HomePage() {
       featuredProducts = anyProducts.map(serialize);
     }
 
+    return featuredProducts;
+  },
+  ["home-featured-products"],
+  { revalidate: 120 }
+)
+
+export default async function HomePage() {
+  let featuredProducts: Array<any> = [];
+
+  try {
+    featuredProducts = await getHomeFeaturedProducts()
   } catch (e) {
     console.error("Database connection error:", e);
   }

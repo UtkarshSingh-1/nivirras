@@ -35,6 +35,20 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Warm up likely next routes for snappier navigations.
+    router.prefetch("/products");
+    router.prefetch("/cart");
+    router.prefetch("/contact");
+    if (session?.user) {
+      router.prefetch("/profile");
+      router.prefetch("/orders");
+      if (session.user.role === "ADMIN") {
+        router.prefetch("/admin");
+      }
+    }
+  }, [router, session?.user, session?.user?.role]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -55,7 +69,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/">
+          <Link href="/" prefetch>
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="text-2xl tracking-wider cursor-pointer"
@@ -110,7 +124,7 @@ export function Navbar() {
             </div>
 
             {/* Cart */}
-            <Link href="/cart">
+            <Link href="/cart" prefetch>
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -141,14 +155,14 @@ export function Navbar() {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/profile">Profile</Link>
+                    <Link href="/profile" prefetch>Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/orders">Orders</Link>
+                    <Link href="/orders" prefetch>Orders</Link>
                   </DropdownMenuItem>
                   {session.user.role === "ADMIN" && (
                     <DropdownMenuItem asChild>
-                      <Link href="/admin">Admin Dashboard</Link>
+                      <Link href="/admin" prefetch>Admin Dashboard</Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
@@ -206,6 +220,7 @@ function NavLink({ href, children, mobile, onClick }: { href: string; children: 
   return (
     <Link
       href={href}
+      prefetch
       onClick={onClick}
       className={`block text-[#6B5743] hover:text-[#8B6F47] transition-colors ${mobile ? "text-base px-3 py-2 hover:bg-[#8B6F47]/5 rounded-md" : "text-sm"
         }`}
