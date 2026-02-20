@@ -42,33 +42,33 @@ export function TopProducts() {
       setProducts([
         {
           id: '1',
-          name: 'Classic Black T-Shirt',
-          slug: 'classic-black-tshirt',
-          price: 999,
-          images: ['/placeholder-product.jpg'],
+          name: 'Lavender Dreams',
+          slug: 'lavender-dreams',
+          price: 799,
+          images: ['https://images.unsplash.com/photo-1608181831718-c9fef52e8a52?w=600'],
           salesCount: 124,
           revenue: 123876,
-          category: { name: 'T-Shirts' }
+          category: { name: 'Soy Candles' }
         },
         {
           id: '2',
-          name: 'Crimson Red Premium Tee',
-          slug: 'crimson-red-premium-tee',
-          price: 1299,
-          images: ['/placeholder-product.jpg'],
+          name: 'Sandalwood & Amber',
+          slug: 'sandalwood-amber',
+          price: 849,
+          images: ['https://images.unsplash.com/photo-1602523961358-f9f03dd557db?w=600'],
           salesCount: 98,
           revenue: 127302,
-          category: { name: 'Premium' }
+          category: { name: 'Scented Candles' }
         },
         {
           id: '3',
-          name: 'Vintage Grey Cotton Shirt',
-          slug: 'vintage-grey-cotton-shirt',
-          price: 1499,
-          images: ['/placeholder-product.jpg'],
+          name: 'Winter Spice',
+          slug: 'winter-spice',
+          price: 799,
+          images: ['https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=600'],
           salesCount: 76,
           revenue: 113924,
-          category: { name: 'Vintage' }
+          category: { name: 'Seasonal' }
         }
       ])
     } finally {
@@ -105,7 +105,7 @@ export function TopProducts() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-crimson-600" />
+            <TrendingUp className="h-5 w-5 text-[#8B6F47]" />
             Top Products
           </CardTitle>
           <CardDescription>Best performing products by sales</CardDescription>
@@ -131,7 +131,7 @@ export function TopProducts() {
                 className="flex items-center gap-3 p-3 bg-muted/30 hover:bg-muted/50 transition-colors"
               >
                 <div className="relative flex-shrink-0">
-                  <div className="absolute -top-1 -left-1 w-5 h-5 bg-crimson-600 text-white text-xs flex items-center justify-center font-bold">
+                  <div className="absolute -top-1 -left-1 w-5 h-5 bg-[#8B6F47] text-white text-xs flex items-center justify-center font-bold">
                     {index + 1}
                   </div>
                   <Image
@@ -143,9 +143,9 @@ export function TopProducts() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <Link 
+                  <Link
                     href={`/products/${product.slug}`}
-                    className="font-medium text-sm hover:text-crimson-600 transition-colors line-clamp-1"
+                    className="font-medium text-sm hover:text-[#8B6F47] transition-colors line-clamp-1"
                   >
                     {product.name}
                   </Link>

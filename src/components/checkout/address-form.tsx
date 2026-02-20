@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Plus, MapPin, Edit, Trash2 } from "lucide-react"
 import { toast } from "@/components/ui/use-toast"
@@ -192,11 +191,130 @@ export function AddressForm({
   return (
     <Card className="border-0 shadow-md">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MapPin className="h-5 w-5" />
-          Delivery Address
-        </CardTitle>
-        <CardDescription>Select your delivery address</CardDescription>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="h-5 w-5" />
+              Delivery Address
+            </CardTitle>
+            <CardDescription>Select your delivery address</CardDescription>
+          </div>
+
+          <Dialog
+            open={isAddingNew}
+            onOpenChange={(open) => {
+              setIsAddingNew(open)
+              if (!open) {
+                setEditingAddress(null)
+                resetForm()
+              }
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                <Plus className="mr-2 h-4 w-4" /> Add Address
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{editingAddress ? "Edit Address" : "Add Address"}</DialogTitle>
+              </DialogHeader>
+
+              <form onSubmit={handleSubmit} className="space-y-3">
+
+                <div>
+                  <Label>Name</Label>
+                  <Input
+                    value={formData.name}
+                    maxLength={25}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value.replace(/[^A-Za-z\s]/g, "") })
+                    }
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label>Phone</Label>
+                  <Input
+                    value={formData.phone}
+                    maxLength={10}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value.replace(/[^0-9]/g, "") })
+                    }
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label>Street</Label>
+                  <Input
+                    value={formData.street}
+                    onChange={(e) => setFormData({ ...formData, street: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label>State</Label>
+                  <Select
+                    value={formData.state}
+                    onValueChange={(val) => setFormData({ ...formData, state: val })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select State" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-60 overflow-y-auto">
+                      {INDIAN_STATES.map((st) => (
+                        <SelectItem key={st} value={st}>{st}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>City</Label>
+                  <Input
+                    value={formData.city}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label>Pincode</Label>
+                  <Input
+                    value={formData.pincode}
+                    maxLength={6}
+                    onChange={(e) =>
+                      setFormData({ ...formData, pincode: e.target.value.replace(/[^0-9]/g, "") })
+                    }
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label>Country</Label>
+                  <Input
+                    value="India"
+                    disabled
+                    className="bg-muted/50 text-muted-foreground"
+                  />
+                </div>
+
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={() => setIsAddingNew(false)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit">Save</Button>
+                </DialogFooter>
+
+              </form>
+
+            </DialogContent>
+          </Dialog>
+        </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
@@ -232,131 +350,6 @@ export function AddressForm({
             </div>
           </RadioGroup>
         )}
-
-        <Separator />
-
-        {/* ADD / EDIT DIALOG */}
-        <Dialog
-          open={isAddingNew}
-          onOpenChange={(open) => {
-            setIsAddingNew(open)
-            if (!open) {
-              setEditingAddress(null)
-              resetForm()
-            }
-          }}
-        >
-          <DialogTrigger asChild>
-            <Button variant="outline" className="w-full">
-              <Plus className="mr-2 h-4 w-4" /> Add New Address
-            </Button>
-          </DialogTrigger>
-
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{editingAddress ? "Edit Address" : "Add Address"}</DialogTitle>
-            </DialogHeader>
-
-            <form onSubmit={handleSubmit} className="space-y-3">
-
-              <div>
-                <Label>Name</Label>
-                <Input
-                  value={formData.name}
-                  maxLength={25}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value.replace(/[^A-Za-z\s]/g, "") })
-                  }
-                  required
-                />
-              </div>
-
-              <div>
-                <Label>Phone</Label>
-                <Input
-                  value={formData.phone}
-                  maxLength={10}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value.replace(/[^0-9]/g, "") })
-                  }
-                  required
-                />
-              </div>
-
-              <div>
-                <Label>Street</Label>
-                <Input
-                  value={formData.street}
-                  onChange={(e) => setFormData({ ...formData, street: e.target.value })}
-                  required
-                />
-              </div>
-
-              
-
-              {/* STATE DROPDOWN */}
-              <div>
-                <Label>State</Label>
-                <Select
-                  value={formData.state}
-                  onValueChange={(val) => setFormData({ ...formData, state: val })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select State" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-60 overflow-y-auto"
-                  >
-                    {INDIAN_STATES.map((st) => (
-                      <SelectItem key={st} value={st}>{st}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* CITY */}
-              <div>
-                <Label>City</Label>
-                <Input
-                  value={formData.city}
-                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  required
-                />
-              </div>
-
-              {/* PINCODE */}
-              <div>
-                <Label>Pincode</Label>
-                <Input
-                  value={formData.pincode}
-                  maxLength={6}
-                  onChange={(e) =>
-                    setFormData({ ...formData, pincode: e.target.value.replace(/[^0-9]/g, "") })
-                  }
-                  required
-                />
-              </div>
-
-              {/* COUNTRY FIXED */}
-              <div>
-                <Label>Country</Label>
-                <Input
-                  value="India"
-                  disabled
-                  className="bg-muted/50 text-muted-foreground"
-                />
-              </div>
-
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setIsAddingNew(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit">Save</Button>
-              </DialogFooter>
-
-            </form>
-
-          </DialogContent>
-        </Dialog>
 
       </CardContent>
     </Card>

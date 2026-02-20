@@ -60,7 +60,7 @@ export function OrderSummary({
           {items.map((item) => (
             <div key={item.id} className="flex gap-3 p-3 bg-muted/30 rounded">
               <Image
-                src={item.product.images[0] || "/placeholder-product.jpg"}
+                src={getSafeImageSrc(item.product.images)}
                 alt={item.product.name}
                 width={48}
                 height={48}
@@ -113,9 +113,9 @@ export function OrderSummary({
 
           <Separator />
 
-          <div className="flex justify-between font-semibold text-lg">
+          <div className="flex justify-between font-semibold text-lg text-[#3D2B1F]">
             <span>Total</span>
-            <span className="text-crimson-700">
+            <span className="text-[#8B6F47]">
               {formatPrice(total)}
             </span>
           </div>
@@ -123,4 +123,25 @@ export function OrderSummary({
       </CardContent>
     </Card>
   )
+}
+
+function getSafeImageSrc(images?: string[]) {
+  const fallback = "/placeholder-product.jpg"
+
+  if (!Array.isArray(images) || images.length === 0) return fallback
+  const candidate = (images[0] || "").trim()
+  if (!candidate) return fallback
+
+  if (candidate.startsWith("/")) return candidate
+
+  try {
+    const parsed = new URL(candidate)
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+      return candidate
+    }
+  } catch {
+    return fallback
+  }
+
+  return fallback
 }

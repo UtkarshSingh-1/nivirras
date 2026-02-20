@@ -1,52 +1,48 @@
-import type { Metadata } from "next"
-import Script from "next/script"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
-import { SessionProvider } from "next-auth/react"
-import { CartProvider } from "@/contexts/cart-context"
-import { auth } from "@/lib/auth"
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./app.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SessionProvider } from "next-auth/react";
+import { CartProvider } from "@/contexts/cart-context";
+import { Toaster } from "@/components/ui/sonner";
+import { Navbar } from "@/components/candle-ui/Navbar";
+import { Footer } from "@/components/candle-ui/Footer";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ASHMARK - Premium T-Shirts",
-  description: "Discover premium quality t-shirts with unique designs. Shop the latest trends at ASHMARK.",
-}
+  title: "Nivirras Collections | Premium Artisan Candles",
+  description: "Handcrafted candles for your serenity.",
+};
 
 export default async function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
-  const session = await auth()
-
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        {/* Razorpay Script */}
-        <Script src="https://checkout.razorpay.com/v1/checkout.js" />
-      </head>
       <body className={inter.className}>
-        <SessionProvider session={session}>
+        <SessionProvider>
           <CartProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="dark"
+              defaultTheme="light"
               enableSystem={false}
               disableTransitionOnChange
             >
-              {children}
+              <div className="flex flex-col min-h-screen">
+                <Navbar />
+                <main className="flex-grow pt-20">
+                  {children}
+                </main>
+                <Footer />
+              </div>
               <Toaster />
             </ThemeProvider>
           </CartProvider>
         </SessionProvider>
       </body>
     </html>
-  )
+  );
 }

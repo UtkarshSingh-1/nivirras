@@ -29,7 +29,7 @@ export function generateSlug(text: string): string {
 }
 export function jsonToStringArray(value: unknown): string[] {
   if (Array.isArray(value)) {
-    return value.filter((item): item is string => typeof item === 'string')
+    return value.filter((item): item is string => typeof item === 'string' && item.trim() !== '')
   }
   if (value === null || value === undefined) {
     return []

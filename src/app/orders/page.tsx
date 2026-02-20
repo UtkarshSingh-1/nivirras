@@ -1,7 +1,5 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { OrdersList } from "@/components/orders/orders-list"
 import { OrdersHeader } from "@/components/orders/orders-header"
 import { Suspense } from "react"
@@ -19,9 +17,7 @@ export default async function OrdersPage({
   }
 
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen bg-muted/20">
+    <><main className="min-h-screen bg-muted/20">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <OrdersHeader />
           <Suspense fallback={<OrdersPageSkeleton />}>
@@ -31,9 +27,7 @@ export default async function OrdersPage({
             />
           </Suspense>
         </div>
-      </main>
-      <Footer />
-    </>
+      </main></>
   )
 }
 

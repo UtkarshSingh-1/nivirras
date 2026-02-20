@@ -28,6 +28,7 @@ interface CartItemProps {
 
 export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   const { product, quantity, size, color } = item;
+  const imageSrc = getSafeImageSrc(product.images);
 
   return (
     <Card>
@@ -35,7 +36,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
         <div className="flex gap-4">
           <Link href={`/products/${product.slug}`} className="flex-shrink-0">
             <Image
-              src={product.images[0] || "/placeholder-product.jpg"}
+              src={imageSrc}
               alt={product.name}
               width={80}
               height={80}
@@ -46,7 +47,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
           <div className="flex-1 min-w-0">
             <Link
               href={`/products/${product.slug}`}
-              className="font-medium hover:text-crimson-600 transition-colors line-clamp-2"
+              className="font-medium hover:text-[#8B6F47] transition-colors line-clamp-2"
             >
               {product.name}
             </Link>
@@ -103,4 +104,25 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
       </CardContent>
     </Card>
   );
+}
+
+function getSafeImageSrc(images?: string[]) {
+  const fallback = "/placeholder-product.jpg";
+
+  if (!Array.isArray(images) || images.length === 0) return fallback;
+  const candidate = (images[0] || "").trim();
+  if (!candidate) return fallback;
+
+  if (candidate.startsWith("/")) return candidate;
+
+  try {
+    const parsed = new URL(candidate);
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+      return candidate;
+    }
+  } catch {
+    return fallback;
+  }
+
+  return fallback;
 }

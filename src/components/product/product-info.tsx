@@ -53,10 +53,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
   const discountPercentage = product.comparePrice
     ? Math.round(
-        ((Number(product.comparePrice) - Number(product.price)) /
-          Number(product.comparePrice)) *
-          100
-      )
+      ((Number(product.comparePrice) - Number(product.price)) /
+        Number(product.comparePrice)) *
+      100
+    )
     : 0;
 
   const addToCart = async () => {
@@ -88,7 +88,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         selectedSize || undefined,
         selectedColor || undefined
       );
-      
+
       toast({
         title: "Added to Cart",
         description: "Product has been added to your cart",
@@ -164,7 +164,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       <div>
         <div className="flex items-center gap-2 mb-2">
           {product.featured && (
-            <Badge className="bg-crimson-600">Featured</Badge>
+            <Badge className="bg-[#8B6F47]">Featured</Badge>
           )}
           {product.trending && <Badge variant="secondary">Trending</Badge>}
           <Badge variant="outline">{product.category.name}</Badge>
@@ -232,7 +232,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <Label>Quantity</Label>
         <Select
           value={quantity.toString()}
-          onValueChange={(value) => setQuantity(parseInt(value))}
+          onValueChange={(val: string) => setQuantity(parseInt(val))}
         >
           <SelectTrigger className="w-24">
             <SelectValue />
@@ -260,15 +260,15 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <Button
           onClick={addToCart}
           disabled={isLoading || product.stock === 0}
-          className="w-full bg-crimson-600 hover:bg-crimson-700"
+          className="w-full bg-[#8B6F47] hover:bg-[#6B5743]"
           size="lg"
         >
           <ShoppingCart className="mr-2 h-5 w-5" />
           {isLoading
             ? "Adding..."
             : product.stock === 0
-            ? "Out of Stock"
-            : "Add to Cart"}
+              ? "Out of Stock"
+              : "Add to Cart"}
         </Button>
 
         <div className="flex gap-2">

@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -33,18 +31,19 @@ interface WishlistItem {
 }
 
 export default function WishlistPage() {
-    const { data: session } = useSession()
+    const { data: session, status } = useSession()
     const router = useRouter()
     const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (!session) {
-            router.push('/login')
+        if (status === "loading") return
+        if (status === "unauthenticated") {
+            router.replace('/login')
             return
         }
         fetchWishlist()
-    }, [session, router])
+    }, [status, router])
 
     const fetchWishlist = async () => {
         try {
@@ -139,14 +138,16 @@ export default function WishlistPage() {
         }
     }
 
+    if (status === "loading") {
+        return null
+    }
+
     if (!session) {
         return null
     }
 
     return (
-        <>
-            <Navbar />
-            <main className="min-h-screen">
+        <><main className="min-h-screen">
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     <div className="flex items-center justify-between mb-8">
                         <div>
@@ -272,8 +273,6 @@ export default function WishlistPage() {
                         </div>
                     )}
                 </div>
-            </main>
-            <Footer />
-        </>
+            </main></>
     )
 }

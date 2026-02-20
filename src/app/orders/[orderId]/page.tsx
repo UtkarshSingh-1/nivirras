@@ -1,8 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
 import OrderPageClient from "./pageClient";
 
 export default async function OrderDetailsPage({ params }: { params: Promise<{ orderId: string }> }) {
@@ -27,10 +25,6 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ o
   if (!order) notFound();
 
   return (
-    <>
-      <Navbar />
-      <OrderPageClient order={JSON.parse(JSON.stringify(order))} />
-      <Footer />
-    </>
+    <><OrderPageClient order={JSON.parse(JSON.stringify(order))} /></>
   );
 }

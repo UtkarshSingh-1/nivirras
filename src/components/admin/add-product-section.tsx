@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Package, TrendingUp, Video } from "lucide-react";
+import { Plus, Package, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import {
   Dialog,
@@ -20,20 +20,20 @@ export function AddProductSection() {
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Package className="w-5 h-5 text-crimson-600" />
+            <Package className="w-5 h-5 text-[#8B6F47]" />
             Product Management
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center py-8">
-            <div className="w-16 h-16 mx-auto mb-4 bg-crimson-50 dark:bg-crimson-900/20 rounded-full flex items-center justify-center">
-              <Plus className="w-8 h-8 text-crimson-600" />
+            <div className="w-16 h-16 mx-auto mb-4 bg-[#8B6F47]/10 rounded-full flex items-center justify-center">
+              <Plus className="w-8 h-8 text-[#8B6F47]" />
             </div>
             <h3 className="text-lg font-semibold mb-2">Add New Product</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Create and manage your product catalog
             </p>
-            <Button asChild className="bg-crimson-600 hover:bg-crimson-700">
+            <Button asChild className="bg-[#8B6F47] hover:bg-[#6B5743]">
               <Link href="/admin/products/add">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Product
@@ -66,44 +66,6 @@ export function AddProductSection() {
                   <TopProducts />
                 </DialogContent>
               </Dialog>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Reels Management Card */}
-      <Card className="border-0 shadow-md">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Video className="w-5 h-5 text-crimson-600" />
-            Reels Management
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="text-center py-8">
-            <div className="w-16 h-16 mx-auto mb-4 bg-crimson-50 dark:bg-crimson-900/20 rounded-full flex items-center justify-center">
-              <Video className="w-8 h-8 text-crimson-600" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Upload New Reels</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Upload & manage vertical reels for your landing page
-            </p>
-            <Button asChild className="bg-crimson-600 hover:bg-crimson-700">
-              <Link href="/admin/reels">
-                <Video className="w-4 h-4 mr-2" />
-                Manage Reels
-              </Link>
-            </Button>
-          </div>
-
-          <div className="border-t pt-4">
-            <div className="flex justify-center">
-              <Button variant="outline" size="sm" asChild className="border-0 bg-muted/30">
-                <Link href="/admin/reels">
-                  <Video className="w-4 h-4 mr-2" />
-                  View Reels
-                </Link>
-              </Button>
             </div>
           </div>
         </CardContent>

@@ -23,9 +23,10 @@ interface Address {
 
 interface AddressBookProps {
   userId: string
+  openAddAddress?: boolean
 }
 
-export function AddressBook({ userId }: AddressBookProps) {
+export function AddressBook({ userId, openAddAddress = false }: AddressBookProps) {
   const [addresses, setAddresses] = useState<Address[]>([])
   const [loading, setLoading] = useState(true)
   const [editingAddress, setEditingAddress] = useState<Address | null>(null)
@@ -34,6 +35,12 @@ export function AddressBook({ userId }: AddressBookProps) {
   useEffect(() => {
     fetchAddresses()
   }, [userId])
+
+  useEffect(() => {
+    if (!openAddAddress) return
+    setEditingAddress(null)
+    setEditDialogOpen(true)
+  }, [openAddAddress])
 
   const fetchAddresses = async () => {
     try {
@@ -160,7 +167,8 @@ export function AddressBook({ userId }: AddressBookProps) {
               setEditingAddress(null)
               setEditDialogOpen(true)
             }}
-            className="bg-crimson-600 hover:bg-crimson-700 border-0"
+            variant="outline"
+            className="border-0 bg-muted/30 hover:bg-muted/50"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Address
@@ -179,7 +187,8 @@ export function AddressBook({ userId }: AddressBookProps) {
                   setEditingAddress(null)
                   setEditDialogOpen(true)
                 }}
-                className="bg-crimson-600 hover:bg-crimson-700 border-0"
+                variant="outline"
+                className="border-0 bg-muted/30 hover:bg-muted/50"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Your First Address

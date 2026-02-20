@@ -36,8 +36,8 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
 
   if (search) {
     where.OR = [
-      { name: { contains: search } },
-      { description: { contains: search } },
+      { name: { contains: search, mode: 'insensitive' } },
+      { description: { contains: search, mode: 'insensitive' } },
     ]
   }
 
@@ -64,14 +64,24 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
 
   let products: any[] = []
   let total = 0
-  
+
   try {
     const [productsResult, totalResult] = await Promise.race([
       Promise.all([
         prisma.product.findMany({
           where,
-          include: {
-            category: true,
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            price: true,
+            comparePrice: true,
+            images: true,
+            featured: true,
+            trending: true,
+            category: {
+              select: { name: true, slug: true }
+            }
           },
           skip,
           take: limit,
@@ -79,16 +89,16 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
         }),
         prisma.product.count({ where }),
       ]),
-      new Promise((_, reject) => 
+      new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Database query timeout')), 8000)
       )
     ]) as [any[], number]
-    
+
     products = productsResult
     total = totalResult
   } catch (error) {
     // If database is unreachable or times out, render empty state
-    console.error('Database error:', error)
+    console.error('[ProductGrid] Database error:', error)
     products = []
     total = 0
   }
@@ -106,13 +116,20 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
             Showing {products.length} of {total} products
           </p>
         </div>
-        
+
         <ProductSort value={sort} />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((product) => (
-          <ProductCard key={product.id} product={{ ...product, price: product.price.toNumber(), comparePrice: product.comparePrice?.toNumber() }} />
+          <ProductCard
+            key={product.id}
+            product={{
+              ...product,
+              price: Number(product.price),
+              comparePrice: product.comparePrice ? Number(product.comparePrice) : null
+            }}
+          />
         ))}
       </div>
 
@@ -132,11 +149,11 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
               </Link>
             </Button>
           )}
-          
+
           <span className="px-4 py-2">
             Page {page} of {totalPages}
           </span>
-          
+
           {page < totalPages && (
             <Button variant="outline" asChild>
               <Link href={`?${(() => { const params = new URLSearchParams(); Object.entries(sp).forEach(([k, v]) => { if (typeof v === 'string') params.set(k, v) }); params.set('page', (page + 1).toString()); return params.toString() })()}`}>

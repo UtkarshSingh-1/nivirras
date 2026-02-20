@@ -1,5 +1,3 @@
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,9 +7,7 @@ import { Phone, Mail, Clock, Send } from "lucide-react"
 
 export default function SupportPage() {
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
+    <><main className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Hero Section */}
           <div className="text-center mb-16">
@@ -250,8 +246,6 @@ export default function SupportPage() {
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+      </main></>
   )
 }

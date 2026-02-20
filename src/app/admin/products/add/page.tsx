@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 
 export default async function AdminAddProductPage() {
   const session = await auth()
-  
+
   if (!session?.user || session.user.role !== 'ADMIN') {
     redirect('/')
   }
@@ -17,7 +17,7 @@ export default async function AdminAddProductPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-muted/20">
+      <main className="min-h-screen bg-[#FAF8F5]">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
@@ -27,10 +27,10 @@ export default async function AdminAddProductPage() {
                 Back to Products
               </Link>
             </Button>
-            
+
             <div className="flex-1">
               <h1 className="text-3xl font-bold flex items-center gap-2">
-                <Package className="w-8 h-8 text-crimson-600" />
+                <Package className="w-8 h-8 text-[#8B6F47]" />
                 Add New Product
               </h1>
               <p className="text-muted-foreground mt-1">

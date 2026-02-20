@@ -1,15 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import Image from "next/image"
 import { MapPin, Clock, Phone, Mail } from "lucide-react"
 
 export default function StorePage() {
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
+    <><main className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">Our Store</h1>
@@ -114,8 +110,6 @@ export default function StorePage() {
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+      </main></>
   )
 }

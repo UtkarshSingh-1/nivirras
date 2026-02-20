@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from "@/components/ui/table"
 import {
   DropdownMenu,
@@ -119,7 +119,7 @@ export function ProductsTable() {
       })
 
       if (response.ok) {
-        setProducts(products.map(p => 
+        setProducts(products.map(p =>
           p.id === productId ? { ...p, featured: !featured } : p
         ))
         toast({
@@ -166,7 +166,7 @@ export function ProductsTable() {
           <Package className="h-5 w-5" />
           Products Management
         </CardTitle>
-        <Button asChild className="bg-crimson-600 hover:bg-crimson-700 border-0">
+        <Button asChild className="bg-[#8B6F47] hover:bg-[#6B5743] border-0">
           <Link href="/admin/products/add">
             <Plus className="mr-2 h-4 w-4" />
             Add Product
@@ -222,9 +222,9 @@ export function ProductsTable() {
                       </TableCell>
                       <TableCell>
                         <div>
-                          <Link 
+                          <Link
                             href={`/products/${product.slug}`}
-                            className="font-medium hover:text-crimson-600 transition-colors line-clamp-1"
+                            className="font-medium hover:text-[#8B6F47] transition-colors line-clamp-1"
                           >
                             {product.name}
                           </Link>
@@ -257,7 +257,7 @@ export function ProductsTable() {
                       <TableCell>
                         <div className="flex flex-col gap-1">
                           {product.featured && (
-                            <Badge className="bg-crimson-600 text-xs border-0">Featured</Badge>
+                            <Badge className="bg-[#8B6F47] text-xs border-0">Featured</Badge>
                           )}
                           {product.trending && (
                             <Badge variant="secondary" className="text-xs border-0">Trending</Badge>

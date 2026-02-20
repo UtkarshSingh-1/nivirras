@@ -9,8 +9,12 @@ interface ProductImagesProps {
   name: string;
 }
 
-export function ProductImages({ images, name }: ProductImagesProps) {
+export function ProductImages({ images: rawImages, name }: ProductImagesProps) {
   const [selectedImage, setSelectedImage] = useState(0);
+
+  const images = Array.isArray(rawImages)
+    ? rawImages.filter(img => typeof img === 'string' && img.trim() !== '')
+    : []
 
   if (!images.length) {
     return (
@@ -25,7 +29,7 @@ export function ProductImages({ images, name }: ProductImagesProps) {
       {/* Main Image */}
       <div className="aspect-square overflow-hidden rounded-lg border bg-background flex items-center justify-center p-4">
         <Image
-          src={images[selectedImage]}
+          src={images[selectedImage] || "/placeholder-product.jpg"}
           alt={name}
           width={600}
           height={600}
@@ -35,7 +39,7 @@ export function ProductImages({ images, name }: ProductImagesProps) {
 
       {/* Thumbnail Images */}
       {images.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto">
+        <div className="flex gap-2 overflow-x-auto pb-2">
           {images.map((image, index) => (
             <button
               key={index}
@@ -43,7 +47,7 @@ export function ProductImages({ images, name }: ProductImagesProps) {
               className={cn(
                 "flex-shrink-0 aspect-square w-20 overflow-hidden rounded-md border-2 transition-colors",
                 selectedImage === index
-                  ? "border-crimson-600"
+                  ? "border-[#8B6F47]"
                   : "border-transparent hover:border-muted-foreground/25"
               )}
             >

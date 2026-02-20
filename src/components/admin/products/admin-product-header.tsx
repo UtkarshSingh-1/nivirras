@@ -4,12 +4,12 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { 
-  ArrowLeft, 
-  Edit, 
-  Eye, 
-  MoreHorizontal, 
-  Package, 
+import {
+  ArrowLeft,
+  Edit,
+  Eye,
+  MoreHorizontal,
+  Package,
   Star,
   TrendingUp,
   Copy,
@@ -85,10 +85,10 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
               Back to Products
             </Link>
           </Button>
-          
+
           <div className="flex-1">
             <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Package className="w-6 h-6 text-crimson-600" />
+              <Package className="w-6 h-6 text-[#8B6F47]" />
               {product.name}
             </h1>
             <p className="text-muted-foreground">
@@ -104,7 +104,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                 <ExternalLink className="w-3 h-3 ml-1" />
               </Link>
             </Button>
-            
+
             <Button variant="outline" asChild className="border-0 bg-muted/30">
               <Link href={`/admin/products/${product.id}/edit`}>
                 <Edit className="w-4 h-4 mr-2" />
@@ -159,7 +159,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                   {product.category.name}
                 </Badge>
                 {product.featured && (
-                  <Badge className="bg-crimson-600 border-0">
+                  <Badge className="bg-[#8B6F47] border-0">
                     <Star className="w-3 h-3 mr-1" />
                     Featured
                   </Badge>
@@ -171,7 +171,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                   </Badge>
                 )}
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <span className="text-2xl font-bold">{formatPrice(Number(product.price))}</span>
                 {product.comparePrice && (
@@ -179,9 +179,9 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                     <span className="text-lg text-muted-foreground line-through">
                       {formatPrice(Number(product.comparePrice))}
                     </span>
-                    <Badge className="bg-green-600 text-xs border-0">
+                    <Button asChild className="w-full bg-[#8B6F47] hover:bg-[#6B5743] border-0">
                       {discountPercentage}% OFF
-                    </Badge>
+                    </Button>
                   </>
                 )}
               </div>
@@ -191,16 +191,15 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
               <div>
                 <span className="text-muted-foreground">Stock:</span>
                 <div className="font-semibold flex items-center gap-2">
-                  <div className={`w-2 h-2 ${
-                    product.stock > 10 ? 'bg-green-500' : 
-                    product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'
-                  }`}></div>
-                  {product.stock > 10 ? 'In Stock' : 
-                   product.stock > 0 ? `${product.stock} left` : 'Out of Stock'
+                  <div className={`w-2 h-2 ${product.stock > 10 ? 'bg-green-500' :
+                      product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'
+                    }`}></div>
+                  {product.stock > 10 ? 'In Stock' :
+                    product.stock > 0 ? `${product.stock} left` : 'Out of Stock'
                   } ({product.stock} units)
                 </div>
               </div>
-              
+
               <div>
                 <span className="text-muted-foreground">Category:</span>
                 <div className="font-semibold">{product.category.name}</div>
@@ -212,7 +211,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
           <div className="space-y-4">
             <div className="grid gap-3">
               <div className="bg-muted/30 p-3 text-center">
-                <div className="text-xl font-bold text-crimson-600">156</div>
+                <div className="text-xl font-bold text-[#8B6F47]">156</div>
                 <div className="text-xs text-muted-foreground">Total Sales</div>
               </div>
               <div className="bg-muted/30 p-3 text-center">

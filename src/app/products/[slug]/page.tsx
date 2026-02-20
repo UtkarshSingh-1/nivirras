@@ -1,6 +1,4 @@
 import { notFound } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { ProductImages } from "@/components/product/product-images"
 import { ProductInfo } from "@/components/product/product-info"
 import { ProductTabs } from "@/components/product/product-tabs"
@@ -9,7 +7,7 @@ import { ReviewSection } from "@/components/product/review-section"
 import { prisma } from "@/lib/db"
 import { jsonToStringArray } from "@/lib/utils"
 
-// ⬇️ Prevent build-time DB calls
+// Prevent build-time DB calls
 export const dynamic = "force-dynamic"
 
 export default async function ProductPage({
@@ -30,13 +28,10 @@ export default async function ProductPage({
     return notFound()
   }
 
-  // Extract arrays
   const images = jsonToStringArray(product.images)
   const sizes = jsonToStringArray(product.sizes) as string[]
   const colors = jsonToStringArray(product.colors) as string[]
-  const storyImages = jsonToStringArray(product.storyImages) as string[]
 
-  // Serialized product (avoid Prisma Decimals)
   const serializedProduct = {
     id: product.id,
     name: product.name,
@@ -49,47 +44,39 @@ export default async function ProductPage({
     featured: product.featured,
     trending: product.trending,
     category: {
-      name: product.category.name,
+      name: product.category?.name || "Uncategorized",
     },
-    storyContent: product.storyContent,
-    storyTitle: product.storyTitle,
-    storyImage: storyImages[0] ?? images[0],
-    storyImages,
   }
 
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Product Images */}
-            <ProductImages images={images} name={serializedProduct.name} />
+    <div className="min-h-screen pt-24 bg-[#FAF8F5]">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Product Images */}
+          <ProductImages images={images} name={serializedProduct.name} />
 
-            {/* Product Info */}
-            <ProductInfo product={serializedProduct} />
-          </div>
-
-          {/* Product Details Tabs */}
-          <div className="mt-16">
-            <ProductTabs product={serializedProduct} />
-          </div>
-
-          {/* Reviews Section */}
-          <div className="mt-16">
-            <ReviewSection productId={product.id} />
-          </div>
-
-          {/* Related Products */}
-          <div className="mt-16">
-            <RelatedProducts
-              categoryId={product.categoryId}
-              currentProductId={product.id}
-            />
-          </div>
+          {/* Product Info */}
+          <ProductInfo product={serializedProduct} />
         </div>
-      </main>
-      <Footer />
-    </>
+
+        {/* Product Details Tabs */}
+        <div className="mt-16">
+          <ProductTabs product={serializedProduct} />
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-16 border-t pt-16">
+          <ReviewSection productId={product.id} />
+        </div>
+
+        {/* Related Products */}
+        <div className="mt-16 border-t pt-16">
+          <RelatedProducts
+            categoryId={product.categoryId}
+            currentProductId={product.id}
+          />
+        </div>
+      </div>
+    </div>
   )
 }

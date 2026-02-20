@@ -134,7 +134,12 @@ export function RecentOrders() {
                   {getStatusIcon(order.status, order.paymentStatus)}
                   <div>
                     <div className="font-medium text-sm">
-                      Order #{order.id.slice(-8).toUpperCase()}
+                      <Link
+                        href={`/admin/orders/${order.id}`}
+                        className="font-medium hover:text-[#8B6F47] transition-colors"
+                      >
+                        Order #{order.id.slice(-8).toUpperCase()}
+                      </Link>
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {order.user.name || order.user.email} •{" "}

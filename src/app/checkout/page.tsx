@@ -5,9 +5,6 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useRazorpay } from "react-razorpay"
 
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -33,7 +30,7 @@ type PromoDisplay = {
 /* -------------------- PAGE -------------------- */
 
 export default function CheckoutPage() {
-  const { data: session } = useSession()
+  const { status } = useSession()
   const router = useRouter()
   const { Razorpay, error } = useRazorpay()
 
@@ -197,7 +194,7 @@ export default function CheckoutPage() {
         amount: order.amount,
         currency: order.currency,
         order_id: order.razorpayOrderId,
-        name: "ASHMARK",
+        name: "Nivirras Collections",
         handler: async (response: any) => {
           await fetch("/api/payments/verify", {
             method: "POST",
@@ -225,17 +222,29 @@ export default function CheckoutPage() {
   /* -------------------- INIT -------------------- */
 
   useEffect(() => {
-    if (!session) router.push("/login")
+    if (status === "loading") return
+    if (status === "unauthenticated") {
+      router.replace("/login")
+      return
+    }
     fetchAddresses()
     fetchPromoDetails()
-  }, [session, fetchAddresses, fetchPromoDetails])
+  }, [status, router, fetchAddresses, fetchPromoDetails])
 
   /* -------------------- UI -------------------- */
 
+  if (status === "loading") {
+    return (
+      <main className="min-h-screen">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+        </div>
+      </main>
+    )
+  }
+
   return (
     <>
-      <Navbar />
-
       <main className="min-h-screen">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold mb-8">Checkout</h1>
@@ -304,7 +313,7 @@ export default function CheckoutPage() {
                   <Label>Payment Method</Label>
                   <RadioGroup
                     value={paymentMethod}
-                    onValueChange={(v) =>
+                    onValueChange={(v: string) =>
                       setPaymentMethod(v as "online" | "cod")
                     }
                   >
@@ -319,7 +328,7 @@ export default function CheckoutPage() {
                   </RadioGroup>
 
                   <Button
-                    className="w-full"
+                    className="w-full bg-[#8B6F47] hover:bg-[#6B5743]"
                     onClick={handlePayment}
                     disabled={processing}
                   >
@@ -339,8 +348,6 @@ export default function CheckoutPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </>
   )
 }

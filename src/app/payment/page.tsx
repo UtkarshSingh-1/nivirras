@@ -1,8 +1,6 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/db"
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { PaymentForm } from "@/components/payment/payment-form"
 import { PaymentSummary } from "@/components/payment/payment-summary"
 
@@ -63,9 +61,7 @@ export default async function PaymentPage({
   
 
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen bg-muted/20">
+    <><main className="min-h-screen bg-muted/20">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
@@ -79,8 +75,6 @@ export default async function PaymentPage({
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+      </main></>
   )
 }

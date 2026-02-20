@@ -1,33 +1,52 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { ProfileHeader } from "@/components/profile/profile-header"
 import { ProfileTabs } from "@/components/profile/profile-tabs"
 import { Suspense } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export default async function ProfilePage() {
-  const session = await auth();
+type ProfileSearchParams = {
+  tab?: string
+  addAddress?: string
+}
+
+export default async function ProfilePage({
+  searchParams,
+}: {
+  searchParams?: Promise<ProfileSearchParams>
+}) {
+  const session = await auth()
+  const resolvedSearchParams = (await searchParams) ?? {}
 
   if (!session?.user) {
-    redirect("/login");
+    redirect("/login")
   }
+
+  const allowedTabs = new Set(["orders", "addresses", "wishlist", "settings"])
+  const initialTab = allowedTabs.has(resolvedSearchParams.tab || "")
+    ? (resolvedSearchParams.tab as "orders" | "addresses" | "wishlist" | "settings")
+    : "orders"
+
+  const openAddAddress =
+    resolvedSearchParams.addAddress === "1" ||
+    resolvedSearchParams.addAddress === "true"
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-muted/20">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <Suspense fallback={<ProfileSkeleton />}>
             <ProfileHeader user={session.user} />
-            <ProfileTabs userId={session.user.id} />
+            <ProfileTabs
+              userId={session.user.id}
+              initialTab={initialTab}
+              openAddAddress={openAddAddress}
+            />
           </Suspense>
         </div>
       </main>
-      <Footer />
     </>
-  );
+  )
 }
 
 function ProfileSkeleton() {
@@ -46,5 +65,5 @@ function ProfileSkeleton() {
         <Skeleton className="h-96 w-full" />
       </div>
     </div>
-  );
+  )
 }

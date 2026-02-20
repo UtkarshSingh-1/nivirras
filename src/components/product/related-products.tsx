@@ -107,7 +107,7 @@ export function RelatedProducts({ categoryId, currentProductId }: RelatedProduct
             <p className="text-muted-foreground mb-4">
               Check out our full collection instead
             </p>
-            <Button asChild className="bg-crimson-600 hover:bg-crimson-700 border-0">
+            <Button asChild className="bg-[#8B6F47] hover:bg-[#6B5743] border-0">
               <Link href="/products">
                 Browse All Products
               </Link>
@@ -123,14 +123,14 @@ export function RelatedProducts({ categoryId, currentProductId }: RelatedProduct
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="flex items-center gap-2">
-            <Package className="h-5 w-5 text-crimson-600" />
+            <Package className="h-5 w-5 text-[#8B6F47]" />
             Related Products
           </CardTitle>
           <CardDescription>
             More products from the same category
           </CardDescription>
         </div>
-        
+
         {totalPages > 1 && (
           <div className="flex items-center gap-2">
             <Button
@@ -157,14 +157,14 @@ export function RelatedProducts({ categoryId, currentProductId }: RelatedProduct
           </div>
         )}
       </CardHeader>
-      
+
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {getCurrentProducts().map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        
+
         {totalPages > 1 && (
           <div className="flex justify-center mt-6">
             <div className="flex items-center gap-2">
@@ -172,15 +172,14 @@ export function RelatedProducts({ categoryId, currentProductId }: RelatedProduct
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i)}
-                  className={`w-2 h-2 transition-colors ${
-                    currentPage === i ? 'bg-crimson-600' : 'bg-muted-foreground/30'
-                  }`}
+                  className={`w-2 h-2 transition-colors ${currentPage === i ? 'bg-[#8B6F47]' : 'bg-muted-foreground/30'
+                    }`}
                 />
               ))}
             </div>
           </div>
         )}
-        
+
         <div className="text-center mt-6">
           <Button variant="outline" asChild className="border-0 bg-muted/30">
             <Link href="/products">

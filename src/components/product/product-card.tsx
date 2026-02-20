@@ -42,8 +42,12 @@ export function ProductCard({ product }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
-  const images = product.images.length > 0 ? product.images : ['/placeholder-product.jpg']
-  const hasMultipleImages = images.length > 1
+  const images = Array.isArray(product.images)
+    ? product.images.filter(img => typeof img === 'string' && img.trim() !== '')
+    : []
+
+  const displayImages = images.length > 0 ? images : ['/placeholder-product.jpg']
+  const hasMultipleImages = displayImages.length > 1
 
   const addToCart = async () => {
     setAdding(true)
@@ -110,31 +114,31 @@ export function ProductCard({ product }: ProductCardProps) {
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    setCurrentImageIndex((prev) => (prev + 1) % images.length)
+    setCurrentImageIndex((prev) => (prev + 1) % displayImages.length)
   }
 
   const prevImage = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
+    setCurrentImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length)
   }
 
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-shadow">
-      <div 
+      <div
         className="relative aspect-square overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <Link href={`/products/${product.slug}`}>
           <Image
-            src={images[currentImageIndex]}
+            src={displayImages[currentImageIndex]}
             alt={product.name}
             fill
             className="object-contain transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
-        
+
         {/* Image Navigation Buttons */}
         {hasMultipleImages && isHovered && (
           <>
@@ -160,7 +164,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Image Indicators */}
         {hasMultipleImages && (
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-            {images.map((_, index) => (
+            {displayImages.map((_, index) => (
               <button
                 key={index}
                 onClick={(e) => {
@@ -170,18 +174,18 @@ export function ProductCard({ product }: ProductCardProps) {
                 }}
                 className={cn(
                   "w-1.5 h-1.5 rounded-full transition-all",
-                  currentImageIndex === index 
-                    ? "bg-white w-4" 
+                  currentImageIndex === index
+                    ? "bg-white w-4"
                     : "bg-white/50"
                 )}
               />
             ))}
           </div>
         )}
-        
+
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {product.featured && (
-            <Badge className="bg-crimson-600">Featured</Badge>
+            <Badge className="bg-[#8B6F47]">Featured</Badge>
           )}
           {product.trending && (
             <Badge variant="secondary">Trending</Badge>
@@ -193,7 +197,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent) => {
             e.preventDefault()
             e.stopPropagation()
             addToWishlist()
@@ -210,7 +214,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.category.name}
         </div>
         <Link href={`/products/${product.slug}`}>
-          <h3 className="font-medium text-sm mb-2 line-clamp-2 hover:text-crimson-600 transition-colors">
+          <h3 className="font-medium text-sm mb-2 line-clamp-2 hover:text-[#8B6F47] transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -225,7 +229,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full bg-crimson-600 hover:bg-crimson-700" onClick={addToCart} disabled={adding || isPending || addingToWishlist}>
+        <Button className="w-full bg-[#8B6F47] hover:bg-[#6B5743]" onClick={addToCart} disabled={adding || isPending || addingToWishlist}>
           <ShoppingCart className="mr-2 h-4 w-4" />
           {adding ? 'Adding...' : 'Add to Cart'}
         </Button>

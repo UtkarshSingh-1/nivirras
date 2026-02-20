@@ -1,9 +1,6 @@
 import { Suspense } from "react"
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { ProductGrid } from "@/components/product/product-grid"
 import { ProductFilters } from "@/components/product/product-filters"
-import { ProductStoriesSection } from "@/components/product/product-stories-section"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MobileFilters } from "@/components/product/mobile-filters"
 
@@ -33,38 +30,38 @@ export default async function ProductsPage(
     featured: pick('featured'),
     trending: pick('trending'),
   }
+
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
-        {/* Product Stories Section */}
-        <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-          <ProductStoriesSection />
-        </Suspense>
-        
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Mobile Filter Toggle */}
-          <div className="lg:hidden mb-6">
-            <MobileFilters />
+    <div className="min-h-screen bg-[#FAF8F5] pt-24">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Page Heading */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-[#3D2B1F]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            Our Collection
+          </h1>
+          <p className="text-[#6B5743] mt-2">Handcrafted candles for every mood and moment.</p>
+        </div>
+
+        {/* Mobile Filter Toggle */}
+        <div className="lg:hidden mb-6">
+          <MobileFilters />
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Desktop Filters Sidebar */}
+          <div className="hidden lg:block lg:w-1/4">
+            <ProductFilters />
           </div>
-          
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Desktop Filters Sidebar */}
-            <div className="hidden lg:block lg:w-1/4">
-              <ProductFilters />
-            </div>
-            
-            {/* Products Grid */}
-            <div className="lg:w-3/4">
-              <Suspense fallback={<ProductGridSkeleton />}>
-                <ProductGrid searchParams={params} />
-              </Suspense>
-            </div>
+
+          {/* Products Grid */}
+          <div className="lg:w-3/4">
+            <Suspense fallback={<ProductGridSkeleton />}>
+              <ProductGrid searchParams={params} />
+            </Suspense>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+      </div>
+    </div>
   )
 }
 

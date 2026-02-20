@@ -1,5 +1,3 @@
-import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Truck, Clock, MapPin, Package, CheckCircle } from "lucide-react"
@@ -7,9 +5,7 @@ import Link from "next/link"
 
 export default function ShippingPage() {
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
+    <><main className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Hero Section */}
           <div className="text-center mb-16">
@@ -260,8 +256,6 @@ export default function ShippingPage() {
             </Card>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+      </main></>
   )
 }

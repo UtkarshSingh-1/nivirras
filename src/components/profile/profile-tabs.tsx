@@ -14,11 +14,13 @@ import {
 
 interface ProfileTabsProps {
   userId: string
+  initialTab?: "orders" | "addresses" | "wishlist" | "settings"
+  openAddAddress?: boolean
 }
 
-export function ProfileTabs({ userId }: ProfileTabsProps) {
+export function ProfileTabs({ userId, initialTab = "orders", openAddAddress = false }: ProfileTabsProps) {
   return (
-    <Tabs defaultValue="orders" className="w-full">
+    <Tabs defaultValue={initialTab} className="w-full">
       <TabsList className="grid grid-cols-4 w-full bg-background border-0 shadow-md p-1 mb-6">
         <TabsTrigger value="orders" className="flex items-center gap-2 data-[state=active]:bg-crimson-600 data-[state=active]:text-white">
           <ShoppingBag className="w-4 h-4" />
@@ -43,7 +45,7 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
       </TabsContent>
       
       <TabsContent value="addresses">
-        <AddressBook userId={userId} />
+        <AddressBook userId={userId} openAddAddress={openAddAddress} />
       </TabsContent>
       
       <TabsContent value="wishlist">

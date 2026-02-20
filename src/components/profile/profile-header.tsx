@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Mail, Calendar, Shield, Edit, Star } from "lucide-react"
+import { User, Mail, Calendar, Shield, Edit, Star, MapPin } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import { EditProfileDialog } from "@/components/profile/edit-profile-dialog"
 
@@ -121,14 +122,22 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
                   </div>
                 </div>
                 
-                <Button
-                  variant="outline"
-                  onClick={() => setEditDialogOpen(true)}
-                  className="border-0 bg-muted/30"
-                >
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit Profile
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  <Button asChild variant="outline" className="border-0 bg-muted/30">
+                    <Link href="/profile?tab=addresses&addAddress=1">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      Add Address
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setEditDialogOpen(true)}
+                    className="border-0 bg-muted/30"
+                  >
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit Profile
+                  </Button>
+                </div>
               </div>
 
               {/* Stats */}
