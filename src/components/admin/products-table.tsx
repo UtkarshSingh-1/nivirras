@@ -110,7 +110,7 @@ export function ProductsTable() {
 
   const toggleFeatured = async (productId: string, featured: boolean) => {
     try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
+      const response = await fetch(`/api/admin/products/${productId}/featured`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -53,6 +53,7 @@ export function AddProductForm() {
   const [categories, setCategories] = useState<any[]>([])
   const [newSize, setNewSize] = useState("")
   const [newColor, setNewColor] = useState("")
+  const DRAFT_KEY = "admin:add-product-draft"
 
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
@@ -75,6 +76,21 @@ export function AddProductForm() {
   // Fetch categories on component mount
   useEffect(() => {
     fetchCategories()
+  }, [])
+
+  useEffect(() => {
+    const draft = localStorage.getItem(DRAFT_KEY)
+    if (!draft) return
+    try {
+      const parsed = JSON.parse(draft) as ProductFormData
+      setFormData(parsed)
+      toast({
+        title: "Draft loaded",
+        description: "Restored your saved product draft.",
+      })
+    } catch {
+      localStorage.removeItem(DRAFT_KEY)
+    }
   }, [])
 
   const fetchCategories = async () => {
@@ -276,7 +292,7 @@ export function AddProductForm() {
   }
 
 
-  const handleSubmit = async (e: React.FormEvent, draft = false) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!formData.name.trim()) {
@@ -324,9 +340,10 @@ export function AddProductForm() {
 
       if (response.ok) {
         const result = await response.json()
+        localStorage.removeItem(DRAFT_KEY)
         toast({
           title: "Success",
-          description: `Product ${draft ? 'saved as draft' : 'created'} successfully`,
+          description: "Product created successfully",
         })
         router.push(`/admin/products/${result.product.id}`)
       } else {
@@ -345,9 +362,24 @@ export function AddProductForm() {
     }
   }
 
+  const handleSaveDraft = () => {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(formData))
+    toast({
+      title: "Draft saved",
+      description: "You can continue editing later from this browser.",
+    })
+  }
+
+  const handlePreview = () => {
+    toast({
+      title: "Preview",
+      description: "Preview card is shown on the right side.",
+    })
+  }
+
   return (
     <div className="space-y-6">
-      <form onSubmit={(e) => handleSubmit(e, false)}>
+      <form onSubmit={handleSubmit}>
         {/* Basic Information */}
         <Card className="border-0 shadow-md">
           <CardHeader>
@@ -671,7 +703,7 @@ export function AddProductForm() {
               <Button 
                 type="button"
                 variant="outline" 
-                onClick={(e) => handleSubmit(e, true)}
+                onClick={handleSaveDraft}
                 disabled={loading}
                 className="border-0 bg-muted/30"
               >
@@ -683,7 +715,7 @@ export function AddProductForm() {
                 type="button"
                 variant="outline"
                 className="border-0 bg-muted/30"
-                onClick={() => handleSubmit(new Event('submit') as any, true)}
+                onClick={handlePreview}
               >
                 <Eye className="w-4 h-4 mr-2" />
                 Preview
