@@ -5,6 +5,16 @@ import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+const MotionLink = motion(Link);
+
+const floatingParticles = [
+  { x: -18, duration: 3.2, delay: 0.1 },
+  { x: -7, duration: 3.8, delay: 0.5 },
+  { x: 2, duration: 4.1, delay: 0.9 },
+  { x: 11, duration: 3.5, delay: 1.3 },
+  { x: 20, duration: 4.4, delay: 1.7 },
+];
+
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-start justify-center overflow-hidden bg-gradient-to-br from-[#FAF8F5] via-[#F5EFE7] to-[#E8DFD4] -mt-20">
@@ -75,32 +85,26 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <motion.div
+              <MotionLink
+                href="/products"
+                prefetch
                 whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(139, 111, 71, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
+                className="inline-flex px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg transition-all"
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                <Link
-                  href="/products"
-                  prefetch
-                  className="inline-flex px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg transition-all"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Shop Collection
-                </Link>
-              </motion.div>
-              <motion.div
+                Shop Collection
+              </MotionLink>
+              <MotionLink
+                href="/products?trending=true"
+                prefetch
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="inline-flex px-8 py-4 bg-white/70 backdrop-blur-sm text-[#6B5743] rounded-full border border-[#E8DFD4] hover:border-[#C9A66B] transition-all"
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                <Link
-                  href="/products?trending=true"
-                  prefetch
-                  className="inline-flex px-8 py-4 bg-white/70 backdrop-blur-sm text-[#6B5743] rounded-full border border-[#E8DFD4] hover:border-[#C9A66B] transition-all"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Explore Scents
-                </Link>
-              </motion.div>
+                Explore Scents
+              </MotionLink>
             </div>
           </motion.div>
 
@@ -195,18 +199,18 @@ function CandleDisplay() {
       </motion.div>
 
       {/* Floating Particles */}
-      {[...Array(5)].map((_, i) => (
+      {floatingParticles.map((particle, i) => (
         <motion.div
           key={i}
           animate={{
             y: [0, -100],
             opacity: [0, 1, 0],
-            x: Math.random() * 50 - 25,
+            x: particle.x,
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: particle.duration,
             repeat: Infinity,
-            delay: Math.random() * 2,
+            delay: particle.delay,
           }}
           className="absolute bottom-20 left-1/2 w-1 h-1 bg-[#FFD700] rounded-full"
         />

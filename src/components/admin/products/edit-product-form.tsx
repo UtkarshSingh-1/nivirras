@@ -416,7 +416,9 @@ export function EditProductForm({ product }: EditProductFormProps) {
           description: "Product updated successfully",
         })
         setHasChanges(false)
-        router.push(`/admin/products/${product.id}`)
+        router.replace(`/admin/products/${product.id}`)
+        router.refresh()
+        return
       } else {
         const errorText = await response.text()
         console.error(

@@ -16,9 +16,20 @@ function getDatabaseUrl() {
     if (isSupabasePooler) {
       if (!url.searchParams.has('pgbouncer')) url.searchParams.set('pgbouncer', 'true')
       if (!url.searchParams.has('sslmode')) url.searchParams.set('sslmode', 'require')
-      if (!url.searchParams.has('connection_limit')) url.searchParams.set('connection_limit', '1')
-      if (!url.searchParams.has('connect_timeout')) url.searchParams.set('connect_timeout', '20')
-      if (!url.searchParams.has('pool_timeout')) url.searchParams.set('pool_timeout', '20')
+      const connectionLimit = Number(url.searchParams.get('connection_limit') ?? '')
+      const connectTimeout = Number(url.searchParams.get('connect_timeout') ?? '')
+      const poolTimeout = Number(url.searchParams.get('pool_timeout') ?? '')
+
+      // In dev/staging, very low limits (like 1) trigger frequent P2024 timeouts.
+      if (!Number.isFinite(connectionLimit) || connectionLimit < 3) {
+        url.searchParams.set('connection_limit', '3')
+      }
+      if (!Number.isFinite(connectTimeout) || connectTimeout < 20) {
+        url.searchParams.set('connect_timeout', '20')
+      }
+      if (!Number.isFinite(poolTimeout) || poolTimeout < 40) {
+        url.searchParams.set('pool_timeout', '40')
+      }
     }
 
     return url.toString()

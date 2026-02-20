@@ -7,6 +7,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    devtoolSegmentExplorer: false,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -57,6 +60,13 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+  webpack(config, { dev }) {
+    if (dev) {
+      // Avoid intermittent ENOENT on .next/cache/webpack/*.pack.gz in local dev.
+      config.cache = false;
+    }
+    return config;
   },
 };
 
