@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth"
 import { redirect, notFound } from "next/navigation"
 import { prisma } from "@/lib/db"
-import { Navbar } from "@/components/layout/navbar"
 import { AdminOrderDetails } from "@/components/admin/orders/admin-order-details"
 import { AdminOrderActions } from "@/components/admin/orders/admin-order-actions"
 import { AdminOrderTimeline } from "@/components/admin/orders/admin-order-timeline"
@@ -89,7 +88,6 @@ export default async function AdminOrderDetailsPage({
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-muted/20">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="grid gap-6 lg:grid-cols-3">

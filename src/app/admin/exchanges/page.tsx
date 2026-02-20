@@ -4,7 +4,6 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/layout/navbar"
 import { format } from "date-fns"
 
 type Filter = "REQUESTED" | "APPROVED" | "REJECTED"
@@ -52,8 +51,6 @@ export default async function AdminExchangesPage(props: any) {
   --------------------------------------------- */
   return (
     <>
-      <Navbar />
-
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Exchange Requests</h1>
@@ -156,3 +153,4 @@ export default async function AdminExchangesPage(props: any) {
     </>
   )
 }
+

@@ -2,7 +2,6 @@ import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Navbar } from "@/components/layout/navbar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { format } from "date-fns"
@@ -52,8 +51,6 @@ export default async function AdminReturnsPage(props: any) {
   --------------------------------------------- */
   return (
     <>
-      <Navbar />
-
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Return Requests</h1>
@@ -157,3 +154,4 @@ export default async function AdminReturnsPage(props: any) {
     </>
   )
 }
+

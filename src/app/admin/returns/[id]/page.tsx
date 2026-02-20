@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { redirect, notFound } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import ApproveReturnButton from "./approve-button"
@@ -35,7 +34,6 @@ export default async function AdminReturnDetailPage({
 
   return (
     <>
-      <Navbar />
       <main className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Return Request</h1>

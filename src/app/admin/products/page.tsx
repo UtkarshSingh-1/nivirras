@@ -1,6 +1,5 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
 import { Button } from "@/components/ui/button"
 import { ProductsTable } from "@/components/admin/products-table"
 import Link from "next/link"
@@ -15,7 +14,6 @@ export default async function AdminProductsPage() {
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-[#FAF8F5]">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-8">
@@ -34,3 +32,4 @@ export default async function AdminProductsPage() {
     </>
   )
 }
+

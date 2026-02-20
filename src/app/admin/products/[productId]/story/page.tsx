@@ -3,7 +3,6 @@ import Link from "next/link"
 import { ArrowLeft, BookOpen } from "lucide-react"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db"
-import { Navbar } from "@/components/layout/navbar"
 import { Button } from "@/components/ui/button"
 import { jsonToStringArray } from "@/lib/utils"
 import { ProductStoryForm } from "@/components/admin/products/product-story-form"
@@ -47,7 +46,6 @@ export default async function ProductStoryPage({
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-muted/20">
         <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
           <div className="flex items-center gap-4">

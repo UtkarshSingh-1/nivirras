@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/layout/navbar"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
@@ -11,7 +10,6 @@ export default async function RefundSettingsPage() {
 
   return (
     <>
-      <Navbar />
       <main className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Refund Settings</h1>
         <p className="text-muted-foreground">
@@ -21,3 +19,4 @@ export default async function RefundSettingsPage() {
     </>
   )
 }
+

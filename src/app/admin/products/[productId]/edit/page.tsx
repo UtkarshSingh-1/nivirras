@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth"
 import { redirect, notFound } from "next/navigation"
 import { prisma } from "@/lib/db"
-import { Navbar } from "@/components/layout/navbar"
 import { EditProductForm } from "@/components/admin/products/edit-product-form"
 import { EditProductPreview } from "@/components/admin/products/edit-product-preview"
 import { ArrowLeft, Package } from "lucide-react"
@@ -46,7 +45,6 @@ export default async function AdminEditProductPage({
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-[#FAF8F5]">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Header */}

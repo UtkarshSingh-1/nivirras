@@ -1,6 +1,5 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
 import { AddProductForm } from "@/components/admin/products/add-product-form"
 import { AddProductPreview } from "@/components/admin/products/add-product-preview"
 import { ArrowLeft, Package } from "lucide-react"
@@ -16,7 +15,6 @@ export default async function AdminAddProductPage() {
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-[#FAF8F5]">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Header */}
@@ -53,3 +51,4 @@ export default async function AdminAddProductPage() {
     </>
   )
 }
+
