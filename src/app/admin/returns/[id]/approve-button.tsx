@@ -1,6 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 export default function ApproveReturnButton({ id }: { id: string }) {
+  const router = useRouter();
+
   const approve = async () => {
     await fetch(`/api/admin/returns/${id}`, {
       method: "PATCH",
@@ -8,7 +12,7 @@ export default function ApproveReturnButton({ id }: { id: string }) {
       body: JSON.stringify({ status: "APPROVED" }),
     });
 
-    window.location.reload();
+    router.refresh();
   };
 
   return (

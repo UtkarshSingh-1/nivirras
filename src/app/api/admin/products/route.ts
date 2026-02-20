@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
+import { revalidateTag } from 'next/cache'
 
 const createProductSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -181,6 +182,7 @@ export async function POST(request: NextRequest) {
         category: true,
       },
     })
+    revalidateTag("products")
 
     return NextResponse.json({
       success: true,

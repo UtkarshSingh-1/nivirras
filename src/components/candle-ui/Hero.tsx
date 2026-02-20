@@ -2,6 +2,8 @@
 
 import { motion } from "motion/react";
 import { Sparkles } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -73,22 +75,26 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(139, 111, 71, 0.3)" }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg transition-all"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Shop Collection
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white/70 backdrop-blur-sm text-[#6B5743] rounded-full border border-[#E8DFD4] hover:border-[#C9A66B] transition-all"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Explore Scents
-              </motion.button>
+              <Link href="/products" prefetch>
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(139, 111, 71, 0.3)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg transition-all"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Shop Collection
+                </motion.button>
+              </Link>
+              <Link href="/products?trending=true" prefetch>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white/70 backdrop-blur-sm text-[#6B5743] rounded-full border border-[#E8DFD4] hover:border-[#C9A66B] transition-all"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Explore Scents
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
 
@@ -153,9 +159,13 @@ function CandleDisplay() {
         className="relative z-10"
       >
         <div className="relative rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm bg-white/30 border border-white/50 p-8">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1641837225643-f999493f6375?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBjYW5kbGUlMjBnbGFzcyUyMGphciUyMHdhcm0lMjBnbG93fGVufDF8fHx8MTc3MTUwODI5OXww&ixlib=rb-4.1.0&q=80&w=1080"
             alt="Luxury Candle"
+            width={1080}
+            height={1350}
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="w-full h-auto object-cover rounded-2xl"
           />
 

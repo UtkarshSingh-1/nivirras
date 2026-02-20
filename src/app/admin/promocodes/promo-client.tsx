@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DiscountType } from "@prisma/client"
+import { useRouter } from "next/navigation"
 
 type Promo = {
   id: string
@@ -31,6 +32,7 @@ export default function PromoClient({ promos }: { promos: Promo[] }) {
 
 function PromoCard({ promo }: { promo: Promo }) {
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const toggleActive = async () => {
     setLoading(true)
@@ -39,7 +41,7 @@ function PromoCard({ promo }: { promo: Promo }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isActive: !promo.isActive }),
     })
-    window.location.reload()
+    router.refresh()
   }
 
   return (

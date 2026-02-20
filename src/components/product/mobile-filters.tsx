@@ -8,7 +8,11 @@ import { ProductFilters } from "./product-filters"
 import { useSearchParams } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
 
-export function MobileFilters() {
+interface MobileFiltersProps {
+  initialCategories?: Array<{ id: string; name: string; slug: string }>
+}
+
+export function MobileFilters({ initialCategories = [] }: MobileFiltersProps) {
   const [open, setOpen] = useState(false)
   const searchParams = useSearchParams()
 
@@ -44,7 +48,7 @@ export function MobileFilters() {
           </SheetTitle>
         </SheetHeader>
         <div className="mt-6">
-          <ProductFilters />
+          <ProductFilters initialCategories={initialCategories} />
         </div>
       </SheetContent>
     </Sheet>

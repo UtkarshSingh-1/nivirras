@@ -16,15 +16,21 @@ interface Category {
   slug: string
 }
 
-export function ProductFilters() {
+interface ProductFiltersProps {
+  initialCategories?: Category[]
+}
+
+export function ProductFilters({ initialCategories = [] }: ProductFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categories, setCategories] = useState<Category[]>(initialCategories)
   const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '')
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '')
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '')
 
   useEffect(() => {
+    if (initialCategories.length > 0) return
+
     const fetchCategories = async () => {
       try {
         const controller = new AbortController()
@@ -49,7 +55,7 @@ export function ProductFilters() {
     }
     
     fetchCategories()
-  }, [])
+  }, [initialCategories])
 
   const updateFilters = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString())

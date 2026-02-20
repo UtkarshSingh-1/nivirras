@@ -1,9 +1,12 @@
+export const revalidate = 300
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Phone, Mail, Clock, Send } from "lucide-react"
+import Link from "next/link"
 
 export default function SupportPage() {
   return (
@@ -179,22 +182,22 @@ export default function SupportPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <a href="/faq" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
+                    <Link href="/faq" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
                       <div className="font-medium">Frequently Asked Questions</div>
                       <div className="text-sm text-muted-foreground">Find answers to common questions</div>
-                    </a>
-                    <a href="/size-guide" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
+                    </Link>
+                    <Link href="/size-guide" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
                       <div className="font-medium">Size Guide</div>
                       <div className="text-sm text-muted-foreground">Find your perfect fit</div>
-                    </a>
-                    <a href="/shipping" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
+                    </Link>
+                    <Link href="/shipping" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
                       <div className="font-medium">Shipping Information</div>
                       <div className="text-sm text-muted-foreground">Delivery times and options</div>
-                    </a>
-                    <a href="/returns" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
+                    </Link>
+                    <Link href="/returns" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
                       <div className="font-medium">Returns & Exchanges</div>
                       <div className="text-sm text-muted-foreground">Return policy and process</div>
-                    </a>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -249,3 +252,4 @@ export default function SupportPage() {
       </main></>
   )
 }
+

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface ReturnModalProps {
   open: boolean;
@@ -17,6 +18,7 @@ interface ReturnModalProps {
 
 export function ReturnModal({ open, onCloseAction, item }: ReturnModalProps) {
   const [reason, setReason] = useState("");
+  const router = useRouter();
 
   const submit = async () => {
     if (!reason.trim()) {
@@ -32,7 +34,7 @@ export function ReturnModal({ open, onCloseAction, item }: ReturnModalProps) {
     if (res.ok) {
       toast({ title: "Return request submitted" });
       onCloseAction();
-      window.location.reload();
+      router.refresh();
     } else {
       toast({ title: "Failed", variant: "destructive" });
     }

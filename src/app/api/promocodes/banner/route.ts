@@ -6,10 +6,7 @@ export async function GET() {
     where: {
       isActive: true,
       showInBanner: true,
-      OR: [
-        { expiresAt: null },
-        { expiresAt: { gte: new Date() } },
-      ],
+      OR: [{ expiresAt: null }, { expiresAt: { gte: new Date() } }],
     },
     orderBy: { createdAt: "desc" },
     select: {
@@ -22,14 +19,19 @@ export async function GET() {
   })
 
   return NextResponse.json(
-    promos.map(p => ({
+    promos.map((p) => ({
       id: p.id,
       code: p.code,
       description:
         p.description ??
         (p.discountType === "PERCENT"
           ? `Flat ${Number(p.discountValue)}% OFF`
-          : `Get ₹${Number(p.discountValue)} OFF`),
-    }))
+          : `Get Rs ${Number(p.discountValue)} OFF`),
+    })),
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+      },
+    }
   )
 }

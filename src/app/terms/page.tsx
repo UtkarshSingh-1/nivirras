@@ -1,3 +1,5 @@
+export const revalidate = 300
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FileText, Scale, AlertTriangle } from "lucide-react"
 

@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { Sparkles, Heart, Leaf } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 
 const features = [
@@ -41,9 +42,12 @@ export function About() {
             className="relative"
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1658511629019-39e55d37515a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwY2FuZGxlJTIwcGFja2FnaW5nJTIwZ29sZHxlbnwxfHx8fDE3NzE1MDgzMDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Nivirras Collections Candles"
+                width={1080}
+                height={1350}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="w-full h-[500px] object-cover"
               />
               {/* Glassmorphism Overlay */}

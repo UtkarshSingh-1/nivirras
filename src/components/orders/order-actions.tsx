@@ -8,11 +8,13 @@ import { Download, RefreshCcw, RotateCcw } from "lucide-react"
 import { ReturnModal } from "./ReturnModal"
 import { ExchangeModal } from "./ExchangeModal"
 import { toast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 export function OrderActions({ order }: { order: any }) {
   const [returnOpen, setReturnOpen] = useState(false)
   const [exchangeOpen, setExchangeOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState<any>(null)
+  const router = useRouter()
 
   const eligible = order.status === "DELIVERED"
   const returnBlocked = order.returnStatus && order.returnStatus !== "NONE"
@@ -37,7 +39,7 @@ export function OrderActions({ order }: { order: any }) {
       })
       if (!res.ok) throw new Error()
       toast({ title: "Order cancelled" })
-      window.location.reload()
+      router.refresh()
     } catch {
       toast({ title: "Cancel failed", variant: "destructive" })
     }

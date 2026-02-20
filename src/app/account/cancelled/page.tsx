@@ -3,13 +3,12 @@
 import useSWR from "swr"
 import { Card } from "@/components/ui/card"
 import { formatDate, formatPrice } from "@/lib/utils"
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+import { clientFetcher } from "@/lib/client-fetch"
 
 export default function UserCancelledOrdersPage() {
-  const { data, error } = useSWR(
+  const { data, error } = useSWR<{ orders: any[] }>(
     "/api/orders?status=CANCELLED&limit=100",
-    fetcher
+    clientFetcher
   )
 
   if (error) return <div>Error loading cancelled orders</div>

@@ -1,6 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 export default function RejectReturnButton({ id }: { id: string }) {
+  const router = useRouter();
+
   const reject = async () => {
     await fetch(`/api/admin/returns/${id}`, {
       method: "PATCH",
@@ -8,7 +12,7 @@ export default function RejectReturnButton({ id }: { id: string }) {
       body: JSON.stringify({ status: "REJECTED" }),
     });
 
-    window.location.reload();
+    router.refresh();
   };
 
   return (

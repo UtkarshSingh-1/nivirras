@@ -1,3 +1,5 @@
+export const revalidate = 300
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Heart, Award, Users, Flame } from "lucide-react"
 
@@ -152,3 +154,4 @@ export default function AboutPage() {
     </div>
   )
 }
+

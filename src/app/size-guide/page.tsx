@@ -1,3 +1,5 @@
+export const revalidate = 300
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { RotateCcw, Clock, CheckCircle, AlertCircle } from "lucide-react"

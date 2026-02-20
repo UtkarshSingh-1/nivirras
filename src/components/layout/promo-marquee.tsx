@@ -20,7 +20,7 @@ export function PromoMarquee() {
       return
     }
 
-    fetch("/api/promocodes/banner", { cache: "no-store" })
+    fetch("/api/promocodes/banner", { cache: "force-cache" })
       .then(res => res.json())
       .then(data => setPromos(Array.isArray(data) ? data : []))
       .catch(() => setPromos([]))

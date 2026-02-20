@@ -59,15 +59,22 @@ export async function GET(request: NextRequest) {
 
     const [products, total] = await Promise.all([productsPromise, countPromise])
 
-    return NextResponse.json({
-      products,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
+    return NextResponse.json(
+      {
+        products,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit),
+        },
       },
-    })
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=120, stale-while-revalidate=300",
+        },
+      }
+    )
   } catch (error) {
     console.error('Error fetching products:', error)
     

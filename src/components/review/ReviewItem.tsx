@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import axios from 'axios'
+import Image from "next/image"
 
 export default function ReviewItem({ review }: any) {
   const [helpful, setHelpful] = useState(review.helpful ?? 0)
@@ -34,8 +35,15 @@ export default function ReviewItem({ review }: any) {
         <div className="flex gap-2 flex-wrap">
           {review.media.map((m: any, i: number) =>
             m.type === "image" ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={i} src={m.url} alt="Review media" className="w-20 h-20 object-cover rounded" />
+              <Image
+                key={i}
+                src={m.url}
+                alt="Review media"
+                width={80}
+                height={80}
+                sizes="80px"
+                className="w-20 h-20 object-cover rounded"
+              />
             ) : (
               <video key={i} src={m.url} width={160} controls className="rounded" />
             )

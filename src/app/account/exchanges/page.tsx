@@ -2,11 +2,10 @@
 
 import useSWR from "swr"
 import { Card } from "@/components/ui/card"
-
-const fetcher = (url: string) => fetch(url).then(res => res.json())
+import { clientFetcher } from "@/lib/client-fetch"
 
 export default function UserExchangesPage() {
-  const { data, error } = useSWR("/api/exchanges/user", fetcher)
+  const { data, error } = useSWR<any[]>("/api/exchanges/user", clientFetcher)
 
   if (error) return <div>Error loading exchanges</div>
   if (!data) return <div>Loading...</div>

@@ -3,6 +3,9 @@ import { ProductGrid } from "@/components/product/product-grid"
 import { ProductFilters } from "@/components/product/product-filters"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MobileFilters } from "@/components/product/mobile-filters"
+import { getPublicCategories } from "@/lib/server-data"
+
+export const revalidate = 300
 
 interface SearchParamsShape {
   search?: string
@@ -30,6 +33,7 @@ export default async function ProductsPage(
     featured: pick('featured'),
     trending: pick('trending'),
   }
+  const categories = await getPublicCategories()
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] pt-24">
@@ -44,13 +48,13 @@ export default async function ProductsPage(
 
         {/* Mobile Filter Toggle */}
         <div className="lg:hidden mb-6">
-          <MobileFilters />
+          <MobileFilters initialCategories={categories} />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Desktop Filters Sidebar */}
           <div className="hidden lg:block lg:w-1/4">
-            <ProductFilters />
+            <ProductFilters initialCategories={categories} />
           </div>
 
           {/* Products Grid */}

@@ -78,7 +78,7 @@ export default function CheckoutPage() {
 
   const fetchPromoDetails = useCallback(async () => {
     try {
-      const res = await fetch("/api/promocodes/available", { cache: "no-store" })
+      const res = await fetch("/api/promocodes/available")
       const data = await res.json()
 
       const promos: PromoDisplay[] = (data.promoCodes || []).map((p: any) => {

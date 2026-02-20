@@ -7,6 +7,7 @@ import { CartProvider } from "@/contexts/cart-context";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/candle-ui/Navbar";
 import { Footer } from "@/components/candle-ui/Footer";
+import { SwrProvider } from "@/components/providers/swr-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,23 +25,25 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <SessionProvider>
-          <CartProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem={false}
-              disableTransitionOnChange
-            >
-              <div className="flex flex-col min-h-screen">
-                <Navbar />
-                <main className="flex-grow pt-20">
-                  {children}
-                </main>
-                <Footer />
-              </div>
-              <Toaster />
-            </ThemeProvider>
-          </CartProvider>
+          <SwrProvider>
+            <CartProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                enableSystem={false}
+                disableTransitionOnChange
+              >
+                <div className="flex flex-col min-h-screen">
+                  <Navbar />
+                  <main className="flex-grow pt-20">
+                    {children}
+                  </main>
+                  <Footer />
+                </div>
+                <Toaster />
+              </ThemeProvider>
+            </CartProvider>
+          </SwrProvider>
         </SessionProvider>
       </body>
     </html>

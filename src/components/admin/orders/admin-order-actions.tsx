@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Edit, Truck, PackageCheck, RotateCcw, RefreshCcw } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface AdminOrderActionsProps {
   order: {
@@ -27,6 +28,7 @@ export function AdminOrderActions({ order }: AdminOrderActionsProps) {
   const [showShipForm, setShowShipForm] = useState(false)
   const [courierName, setCourierName] = useState("")
   const [trackingId, setTrackingId] = useState("")
+  const router = useRouter()
 
   const updateOrderStatus = async (status: string, data: Record<string, any> = {}) => {
     setLoading(true)
@@ -40,7 +42,7 @@ export function AdminOrderActions({ order }: AdminOrderActionsProps) {
       if (!response.ok) throw new Error()
 
       toast({ title: "Success", description: `Status changed to ${status}` })
-      window.location.reload()
+      router.refresh()
     } catch {
       toast({ title: "Error", description: "Unable to update", variant: "destructive" })
     } finally {
@@ -60,7 +62,7 @@ export function AdminOrderActions({ order }: AdminOrderActionsProps) {
       if (!response.ok) throw new Error()
 
       toast({ title: "Success", description: `Return status changed to ${status}` })
-      window.location.reload()
+      router.refresh()
     } catch {
       toast({ title: "Error", description: "Unable to update return status", variant: "destructive" })
     } finally {
@@ -80,7 +82,7 @@ export function AdminOrderActions({ order }: AdminOrderActionsProps) {
       if (!response.ok) throw new Error()
 
       toast({ title: "Success", description: `Exchange status changed to ${status}` })
-      window.location.reload()
+      router.refresh()
     } catch {
       toast({ title: "Error", description: "Unable to update exchange status", variant: "destructive" })
     } finally {

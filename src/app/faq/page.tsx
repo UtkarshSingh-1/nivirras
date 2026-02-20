@@ -1,6 +1,9 @@
+export const revalidate = 300
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { HelpCircle, Search } from "lucide-react"
+import Link from "next/link"
 
 export default function FAQPage() {
   return (
@@ -266,16 +269,16 @@ export default function FAQPage() {
                   Can't find the answer you're looking for? Our customer service team is here to help.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="/contact" className="inline-block">
+                  <Link href="/contact" className="inline-block">
                     <Button className="bg-crimson-600 hover:bg-crimson-700">
                       Contact Support
                     </Button>
-                  </a>
-                  <a href="/size-guide" className="inline-block">
+                  </Link>
+                  <Link href="/size-guide" className="inline-block">
                     <Button variant="outline">
                       Size Guide
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -284,3 +287,4 @@ export default function FAQPage() {
       </main></>
   )
 }
+

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface ExchangeModalProps {
   open: boolean;
@@ -22,6 +23,7 @@ export function ExchangeModal({ open, onCloseAction, item }: ExchangeModalProps)
   const [reason, setReason] = useState("");
   const [newSize, setNewSize] = useState<string | null>(null);
   const [newColor, setNewColor] = useState<string | null>(null);
+  const router = useRouter();
 
   const submit = async () => {
     if (!reason || !newSize || !newColor) {
@@ -42,7 +44,7 @@ export function ExchangeModal({ open, onCloseAction, item }: ExchangeModalProps)
     if (res.ok) {
       toast({ title: "Exchange request submitted" });
       onCloseAction();
-      window.location.reload();
+      router.refresh();
     } else {
       toast({ title: "Failed", variant: "destructive" });
     }

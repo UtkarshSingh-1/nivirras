@@ -4,24 +4,14 @@ import { ProductInfo } from "@/components/product/product-info"
 import { ProductTabs } from "@/components/product/product-tabs"
 import { RelatedProducts } from "@/components/product/related-products"
 import { ReviewSection } from "@/components/product/review-section"
-import { prisma } from "@/lib/db"
 import { jsonToStringArray } from "@/lib/utils"
-import { unstable_cache } from "next/cache"
+import { getCachedProductBySlug, getProductSlugs } from "@/lib/server-data"
 
-export const revalidate = 120
+export const revalidate = 300
 
-async function getProductBySlug(slug: string) {
-  return unstable_cache(
-    async () =>
-      prisma.product.findUnique({
-        where: { slug },
-        include: {
-          category: true,
-        },
-      }),
-    [`product-by-slug-${slug}`],
-    { revalidate: 120 }
-  )()
+export async function generateStaticParams() {
+  const slugs = await getProductSlugs()
+  return slugs.map(({ slug }) => ({ slug }))
 }
 
 export default async function ProductPage({
@@ -31,9 +21,9 @@ export default async function ProductPage({
 }) {
   const { slug } = await params
 
-  let product: Awaited<ReturnType<typeof getProductBySlug>> | null = null
+  let product: Awaited<ReturnType<typeof getCachedProductBySlug>> | null = null
   try {
-    product = await getProductBySlug(slug)
+    product = await getCachedProductBySlug(slug)
   } catch (error) {
     console.error("[ProductPage] Error loading product:", error)
     throw new Error("Failed to load product")

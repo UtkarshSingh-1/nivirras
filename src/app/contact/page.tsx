@@ -1,3 +1,5 @@
+export const revalidate = 300
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Phone, Mail, Clock, Flame } from "lucide-react"
 import { ContactForm } from "@/components/contact/contact-form"
@@ -128,3 +130,4 @@ export default function ContactPage() {
     </div>
   )
 }
+

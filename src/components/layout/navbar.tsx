@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu, ShoppingCart, User, Search, Heart } from "lucide-react";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/contexts/cart-context";
 import {
@@ -18,18 +18,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
   const { data: session } = useSession();
   const { cartCount } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/products");
+    router.prefetch("/cart");
+    router.prefetch("/wishlist");
+    if (session?.user) {
+      router.prefetch("/profile");
+      router.prefetch("/orders");
+      if (session.user.role === "ADMIN") router.prefetch("/admin");
+    }
+  }, [router, session?.user, session?.user?.role]);
 
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (searchQuery.trim()) {
-      window.location.href = `/products?search=${encodeURIComponent(
-        searchQuery.trim()
-      )}`;
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 

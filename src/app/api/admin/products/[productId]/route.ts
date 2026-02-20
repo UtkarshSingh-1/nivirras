@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
+import { revalidateTag } from 'next/cache'
 
 const updateProductSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -112,6 +113,7 @@ export async function PUT(
       },
       include: { category: true }
     })
+    revalidateTag("products")
 
     return NextResponse.json({
       success: true,
@@ -161,6 +163,7 @@ export async function DELETE(
       await tx.orderItem.deleteMany({ where: { productId } })
       await tx.product.delete({ where: { id: productId } })
     })
+    revalidateTag("products")
 
     return NextResponse.json({
       success: true,

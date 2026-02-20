@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { formatPrice } from "@/lib/utils"
 import { CreditCard, Wallet, Shield, AlertCircle } from "lucide-react"
 import { toast } from "@/components/ui/use-toast"
+import Link from "next/link"
 
 interface PaymentFormProps {
   order?: {
@@ -51,7 +52,7 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
             Please create an order first before proceeding to payment.
           </p>
           <Button asChild className="bg-crimson-600 hover:bg-crimson-700 border-0">
-            <a href="/cart">Go to Cart</a>
+            <Link href="/cart">Go to Cart</Link>
           </Button>
         </CardContent>
       </Card>

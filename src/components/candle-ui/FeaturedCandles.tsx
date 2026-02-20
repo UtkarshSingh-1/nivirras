@@ -5,6 +5,7 @@ import { Flame, Heart } from "lucide-react";
 import { useState } from "react";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -117,11 +118,11 @@ function CandleCard({ product, index }: { product: Product; index: number }) {
               transition={{ duration: 0.4 }}
               className="w-full h-full"
             >
-              {/* Use standard img for now to match frontend style broadly, or Next Image if preferred. 
-                  Frontend used standard img. */}
-              <img
-                src={product.images[0] || "/placeholder.jpg"}
+              <Image
+                src={product.images[0] || "/placeholder-product.jpg"}
                 alt={product.name}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 className="w-full h-full object-cover rounded-2xl"
               />
             </motion.div>
