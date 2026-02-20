@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -27,14 +27,20 @@ function getDatabaseUrl() {
   }
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  datasources: {
-    db: {
-      url: getDatabaseUrl(),
-    },
-  },
+const prismaOptions: Prisma.PrismaClientOptions = {
   log: process.env.PRISMA_QUERY_LOG === 'true' ? ['query', 'error'] : ['error'],
-})
+}
+
+const dbUrl = getDatabaseUrl()
+if (dbUrl) {
+  prismaOptions.datasources = {
+    db: {
+      url: dbUrl,
+    },
+  }
+}
+
+export const prisma = globalForPrisma.prisma ?? new PrismaClient(prismaOptions)
 
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
