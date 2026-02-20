@@ -43,6 +43,8 @@ interface ProductFormData {
   storyImages: string[]
 }
 
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024
+
 export function AddProductForm() {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -93,8 +95,22 @@ export function AddProductForm() {
   const handleImageUpload = async (files: FileList) => {
     if (files.length === 0) return
 
+    const allFiles = Array.from(files)
+    const oversizedFiles = allFiles.filter((file) => file.size > MAX_IMAGE_SIZE_BYTES)
+    const validFiles = allFiles.filter((file) => file.size <= MAX_IMAGE_SIZE_BYTES)
+
+    if (oversizedFiles.length > 0) {
+      toast({
+        title: "File too large",
+        description: `Max size is 5MB. Skipped: ${oversizedFiles.map((file) => file.name).join(", ")}`,
+        variant: "destructive",
+      })
+    }
+
+    if (validFiles.length === 0) return
+
     setUploading(true)
-    const uploadPromises = Array.from(files).map(async (file) => {
+    const uploadPromises = validFiles.map(async (file) => {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('purpose', 'product_image')
@@ -191,8 +207,22 @@ export function AddProductForm() {
   const handleStoryImageUpload = async (files: FileList) => {
     if (files.length === 0) return
 
+    const allFiles = Array.from(files)
+    const oversizedFiles = allFiles.filter((file) => file.size > MAX_IMAGE_SIZE_BYTES)
+    const validFiles = allFiles.filter((file) => file.size <= MAX_IMAGE_SIZE_BYTES)
+
+    if (oversizedFiles.length > 0) {
+      toast({
+        title: "File too large",
+        description: `Max size is 5MB. Skipped: ${oversizedFiles.map((file) => file.name).join(", ")}`,
+        variant: "destructive",
+      })
+    }
+
+    if (validFiles.length === 0) return
+
     setUploading(true)
-    const uploadPromises = Array.from(files).map(async (file) => {
+    const uploadPromises = validFiles.map(async (file) => {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('purpose', 'story_image')
@@ -483,7 +513,7 @@ export function AddProductForm() {
             />
 
             <p className="text-xs text-muted-foreground">
-              Upload up to 10 images. First image will be the main product image.
+              Upload up to 10 images, max 5MB each. First image will be the main product image.
             </p>
           </CardContent>
         </Card>
