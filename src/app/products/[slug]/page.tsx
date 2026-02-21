@@ -54,7 +54,7 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="min-h-screen pt-24 bg-[#FAF8F5]">
+    <div className="min-h-screen pt-24 bg-[#F2F4E8]">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Product Images */}
@@ -85,3 +85,4 @@ export default async function ProductPage({
     </div>
   )
 }
+

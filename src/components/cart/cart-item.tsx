@@ -47,7 +47,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
           <div className="flex-1 min-w-0">
             <Link
               href={`/products/${product.slug}`}
-              className="font-medium hover:text-[#8B6F47] transition-colors line-clamp-2"
+              className="font-medium hover:text-[#636B2F] transition-colors line-clamp-2"
             >
               {product.name}
             </Link>
@@ -126,3 +126,4 @@ function getSafeImageSrc(images?: string[]) {
 
   return fallback;
 }
+

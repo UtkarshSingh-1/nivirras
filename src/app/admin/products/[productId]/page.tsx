@@ -108,7 +108,7 @@ export default async function AdminProductDetailsPage({
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
+    <div className="min-h-screen bg-[#F2F4E8]">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <AdminProductHeader product={serializedProduct as any} />
 
@@ -196,3 +196,4 @@ function AdminProductOrders({ product }: { product: any }) {
     </Card>
   )
 }
+

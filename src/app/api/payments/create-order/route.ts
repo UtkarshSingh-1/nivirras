@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
-import { prisma } from '@/lib/db'
-import Razorpay from 'razorpay'
-import { validatePromoCode, isNewUser } from '@/lib/promo-codes'
+import { NextRequest, NextResponse } from "next/server"
+import { auth } from "@/lib/auth"
+import { prisma } from "@/lib/db"
+import Razorpay from "razorpay"
+import { validatePromoCode, isNewUser } from "@/lib/promo-codes"
 
 function getRazorpayClient() {
   const keyId = process.env.RAZORPAY_KEY_ID
@@ -22,23 +22,25 @@ export async function POST(request: NextRequest) {
   try {
     const session = await auth()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const {
-      addressId,
-      idempotencyKey,
-      promoCode,
-      paymentMethod,
-    } = await request.json()
+    const { addressId, idempotencyKey, promoCode, paymentMethod } =
+      await request.json()
 
-    // 🔹 Fetch address for snapshot
+    if (paymentMethod === "COD") {
+      return NextResponse.json(
+        { error: "Cash on Delivery is disabled. Please use online payment." },
+        { status: 400 }
+      )
+    }
+
     const address = await prisma.address.findUnique({
       where: { id: addressId },
     })
 
     if (!address) {
-      return NextResponse.json({ error: 'Invalid address' }, { status: 400 })
+      return NextResponse.json({ error: "Invalid address" }, { status: 400 })
     }
 
     const cartItems = await prisma.cartItem.findMany({
@@ -48,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     if (cartItems.length === 0) {
       return NextResponse.json(
-        { error: 'Your cart is empty. Please add items again.' },
+        { error: "Your cart is empty. Please add items again." },
         { status: 400 }
       )
     }
@@ -57,7 +59,6 @@ export async function POST(request: NextRequest) {
       (sum, item) => sum + Number(item.product.price) * item.quantity,
       0
     )
-
     const shipping = 0
 
     let discount = 0
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
 
         if (existingUsage) {
           return NextResponse.json(
-            { error: 'This promo code has already been used' },
+            { error: "This promo code has already been used" },
             { status: 400 }
           )
         }
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
         const validation = validatePromoCode(promoCode, subtotal, userIsNew)
         if (!validation.valid) {
           return NextResponse.json(
-            { error: validation.error || 'Invalid promo code' },
+            { error: validation.error || "Invalid promo code" },
             { status: 400 }
           )
         }
@@ -102,9 +103,7 @@ export async function POST(request: NextRequest) {
     }
 
     const finalAmount = subtotal + shipping - discount
-    const normalizedPaymentMethod = paymentMethod === 'COD' ? 'COD' : 'ONLINE'
 
-    // 🔹 FIX: Remove undefined fields
     const orderItemsPayload = cartItems.map((ci) => ({
       productId: ci.productId,
       quantity: ci.quantity,
@@ -113,60 +112,17 @@ export async function POST(request: NextRequest) {
       ...(ci.color ? { color: ci.color } : {}),
     }))
 
-    // ---------- COD ORDER ----------
-    if (normalizedPaymentMethod === 'COD') {
-      const order = await prisma.order.create({
-        data: {
-          userId: session.user.id,
-          total: finalAmount,
-          subtotal,
-          tax: 0,
-          shipping,
-          discount: discount > 0 ? discount : null,
-          promoCode: appliedPromoCode,
-          paymentMethod: 'COD',
-          paymentStatus: 'PENDING',
-          status: 'CONFIRMED',
-
-          // ✅ Billing + Shipping
-          addressId,
-          shippingAddressId: addressId,
-
-          // ✅ Snapshot
-          shippingName: address.name,
-          shippingPhone: address.phone,
-          shippingStreet: address.street,
-          shippingCity: address.city,
-          shippingState: address.state,
-          shippingPincode: address.pincode,
-          shippingCountry: address.country,
-
-          items: { create: orderItemsPayload },
-        },
-      })
-
-      await prisma.cartItem.deleteMany({
-        where: { userId: session.user.id },
-      })
-
-      return NextResponse.json({
-        success: true,
-        orderId: order.id,
-      })
-    }
-
-    // ---------- ONLINE PAYMENT ----------
     const razorpay = getRazorpayClient()
     if (!razorpay) {
       return NextResponse.json(
-        { error: 'Payment gateway is not configured' },
+        { error: "Payment gateway is not configured" },
         { status: 500 }
       )
     }
 
     const razorpayOrder = await razorpay.orders.create({
       amount: Math.round(finalAmount * 100),
-      currency: 'INR',
+      currency: "INR",
       receipt: `order_${Date.now()}`,
     })
 
@@ -185,8 +141,8 @@ export async function POST(request: NextRequest) {
           razorpayOrderId: razorpayOrder.id,
           addressId,
           shippingAddressId: addressId,
-          paymentMethod: 'ONLINE',
-          paymentStatus: 'PENDING',
+          paymentMethod: "ONLINE",
+          paymentStatus: "PENDING",
         },
       })
     } else {
@@ -202,10 +158,9 @@ export async function POST(request: NextRequest) {
           razorpayOrderId: razorpayOrder.id,
           addressId,
           shippingAddressId: addressId,
-          paymentMethod: 'ONLINE',
-          paymentStatus: 'PENDING',
-          status: 'PENDING',
-
+          paymentMethod: "ONLINE",
+          paymentStatus: "PENDING",
+          status: "PENDING",
           shippingName: address.name,
           shippingPhone: address.phone,
           shippingStreet: address.street,
@@ -213,7 +168,6 @@ export async function POST(request: NextRequest) {
           shippingState: address.state,
           shippingPincode: address.pincode,
           shippingCountry: address.country,
-
           items: { create: orderItemsPayload },
         },
       })
@@ -227,10 +181,7 @@ export async function POST(request: NextRequest) {
       currency: razorpayOrder.currency,
     })
   } catch (error) {
-    console.error('Error creating order:', error)
-    return NextResponse.json(
-      { error: 'Failed to create order' },
-      { status: 500 }
-    )
+    console.error("Error creating order:", error)
+    return NextResponse.json({ error: "Failed to create order" }, { status: 500 })
   }
 }

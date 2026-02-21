@@ -52,7 +52,7 @@ export function DashboardStats({
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 {stat.title}
               </CardTitle>
-              <Icon className="h-4 w-4 text-[#8B6F47]" />
+              <Icon className="h-4 w-4 text-[#636B2F]" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{stat.value}</div>
@@ -66,3 +66,4 @@ export function DashboardStats({
     </div>
   )
 }
+

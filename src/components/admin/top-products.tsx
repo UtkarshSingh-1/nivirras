@@ -105,7 +105,7 @@ export function TopProducts() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-[#8B6F47]" />
+            <TrendingUp className="h-5 w-5 text-[#636B2F]" />
             Top Products
           </CardTitle>
           <CardDescription>Best performing products by sales</CardDescription>
@@ -131,7 +131,7 @@ export function TopProducts() {
                 className="flex items-center gap-3 p-3 bg-muted/30 hover:bg-muted/50 transition-colors"
               >
                 <div className="relative flex-shrink-0">
-                  <div className="absolute -top-1 -left-1 w-5 h-5 bg-[#8B6F47] text-white text-xs flex items-center justify-center font-bold">
+                  <div className="absolute -top-1 -left-1 w-5 h-5 bg-[#636B2F] text-white text-xs flex items-center justify-center font-bold">
                     {index + 1}
                   </div>
                   <Image
@@ -145,7 +145,7 @@ export function TopProducts() {
                 <div className="flex-1 min-w-0">
                   <Link
                     href={`/products/${product.slug}`}
-                    className="font-medium text-sm hover:text-[#8B6F47] transition-colors line-clamp-1"
+                    className="font-medium text-sm hover:text-[#636B2F] transition-colors line-clamp-1"
                   >
                     {product.name}
                   </Link>
@@ -181,3 +181,4 @@ export function TopProducts() {
     </Card>
   )
 }
+

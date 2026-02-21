@@ -674,7 +674,7 @@ export function AddProductForm() {
                   id="featured"
                   checked={formData.featured}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, featured: checked }))}
-                  className="data-[state=checked]:bg-[#8B6F47] data-[state=unchecked]:bg-[#D9C9B3]"
+                  className="data-[state=checked]:bg-[#636B2F] data-[state=unchecked]:bg-[#DDE4BE]"
                 />
               </div>
 
@@ -689,7 +689,7 @@ export function AddProductForm() {
                   id="trending"
                   checked={formData.trending}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, trending: checked }))}
-                  className="data-[state=checked]:bg-[#8B6F47] data-[state=unchecked]:bg-[#D9C9B3]"
+                  className="data-[state=checked]:bg-[#636B2F] data-[state=unchecked]:bg-[#DDE4BE]"
                 />
               </div>
             </div>
@@ -735,3 +735,4 @@ export function AddProductForm() {
     </div>
   )
 }
+

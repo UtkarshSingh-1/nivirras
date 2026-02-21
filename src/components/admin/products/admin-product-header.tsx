@@ -88,7 +88,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
 
           <div className="flex-1">
             <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Package className="w-6 h-6 text-[#8B6F47]" />
+              <Package className="w-6 h-6 text-[#636B2F]" />
               {product.name}
             </h1>
             <p className="text-muted-foreground">
@@ -159,7 +159,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                   {product.category.name}
                 </Badge>
                 {product.featured && (
-                  <Badge className="bg-[#8B6F47] border-0">
+                  <Badge className="bg-[#636B2F] border-0">
                     <Star className="w-3 h-3 mr-1" />
                     Featured
                   </Badge>
@@ -179,7 +179,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                     <span className="text-lg text-muted-foreground line-through">
                       {formatPrice(Number(product.comparePrice))}
                     </span>
-                    <Button className="w-full bg-[#8B6F47] hover:bg-[#6B5743] border-0">
+                    <Button className="w-full bg-[#636B2F] hover:bg-[#4A5422] border-0">
                       {discountPercentage}% OFF
                     </Button>
                   </>
@@ -211,7 +211,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
           <div className="space-y-4">
             <div className="grid gap-3">
               <div className="bg-muted/30 p-3 text-center">
-                <div className="text-xl font-bold text-[#8B6F47]">156</div>
+                <div className="text-xl font-bold text-[#636B2F]">156</div>
                 <div className="text-xs text-muted-foreground">Total Sales</div>
               </div>
               <div className="bg-muted/30 p-3 text-center">
@@ -229,3 +229,4 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
     </Card>
   )
 }
+

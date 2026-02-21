@@ -88,11 +88,6 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Customer Service</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>
-                <Link href="/returns" className="hover:text-foreground">
-                  Returns & Exchanges
-                </Link>
-              </li>
-              <li>
                 <Link href="/faq" className="hover:text-foreground">
                   FAQ
                 </Link>

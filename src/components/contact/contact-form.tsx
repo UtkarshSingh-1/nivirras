@@ -67,7 +67,7 @@ export function ContactForm() {
             value={form.firstName}
             onChange={(e) => setForm((prev) => ({ ...prev, firstName: e.target.value }))}
             placeholder="Priya"
-            className="border-[#E8DFD4] focus-visible:ring-[#C9A66B]"
+            className="border-[#D3DAAE] focus-visible:ring-[#8A9353]"
             required
           />
         </div>
@@ -81,7 +81,7 @@ export function ContactForm() {
             value={form.lastName}
             onChange={(e) => setForm((prev) => ({ ...prev, lastName: e.target.value }))}
             placeholder="Sharma"
-            className="border-[#E8DFD4] focus-visible:ring-[#C9A66B]"
+            className="border-[#D3DAAE] focus-visible:ring-[#8A9353]"
           />
         </div>
       </div>
@@ -96,7 +96,7 @@ export function ContactForm() {
           value={form.email}
           onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
           placeholder="priya@example.com"
-          className="border-[#E8DFD4] focus-visible:ring-[#C9A66B]"
+          className="border-[#D3DAAE] focus-visible:ring-[#8A9353]"
           required
         />
       </div>
@@ -110,7 +110,7 @@ export function ContactForm() {
           value={form.subject}
           onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
           placeholder="Question about my order"
-          className="border-[#E8DFD4] focus-visible:ring-[#C9A66B]"
+          className="border-[#D3DAAE] focus-visible:ring-[#8A9353]"
           required
         />
       </div>
@@ -124,7 +124,7 @@ export function ContactForm() {
           value={form.message}
           onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
           placeholder="Tell us how we can help..."
-          className="min-h-[130px] border-[#E8DFD4] focus-visible:ring-[#C9A66B]"
+          className="min-h-[130px] border-[#D3DAAE] focus-visible:ring-[#8A9353]"
           required
         />
       </div>
@@ -138,7 +138,7 @@ export function ContactForm() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-xl bg-[#8B6F47] py-5 text-white hover:bg-[#7A6040] disabled:cursor-not-allowed disabled:opacity-70"
+        className="w-full rounded-xl bg-[#636B2F] py-5 text-white hover:bg-[#4A5422] disabled:cursor-not-allowed disabled:opacity-70"
       >
         <Send className="mr-2 h-4 w-4" />
         {isSubmitting ? "Sending..." : "Send Message"}
@@ -146,3 +146,4 @@ export function ContactForm() {
     </form>
   )
 }
+

@@ -164,7 +164,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       <div>
         <div className="flex items-center gap-2 mb-2">
           {product.featured && (
-            <Badge className="bg-[#8B6F47]">Featured</Badge>
+            <Badge className="bg-[#636B2F]">Featured</Badge>
           )}
           {product.trending && <Badge variant="secondary">Trending</Badge>}
           <Badge variant="outline">{product.category.name}</Badge>
@@ -260,7 +260,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <Button
           onClick={addToCart}
           disabled={isLoading || product.stock === 0}
-          className="w-full bg-[#8B6F47] hover:bg-[#6B5743]"
+          className="w-full bg-[#636B2F] hover:bg-[#4A5422]"
           size="lg"
         >
           <ShoppingCart className="mr-2 h-5 w-5" />
@@ -315,3 +315,4 @@ export function ProductInfo({ product }: ProductInfoProps) {
     </div>
   );
 }
+

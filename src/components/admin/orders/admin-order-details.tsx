@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { formatPrice, formatDate } from "@/lib/utils"
-import { Package, MapPin, User, Clock, Truck, RefreshCcw, RotateCcw, XCircle } from "lucide-react"
+import { Package, MapPin, User, Clock, Truck, XCircle } from "lucide-react"
 import Image from "next/image"
 
 interface AdminOrderDetailsProps {
@@ -10,9 +10,6 @@ interface AdminOrderDetailsProps {
     id: string
     status: string
     paymentStatus: string
-    refundMethod?: string | null
-    refundStatus?: string | null
-    refundAmount?: number | null
     total: number
     subtotal: number
     tax: number
@@ -32,9 +29,6 @@ interface AdminOrderDetailsProps {
     trackingId?: string | null
     courierName?: string | null
     trackingUrl?: string | null
-
-    returnStatus?: string
-    exchangeStatus?: string
 
     items: Array<{
       id: string
@@ -164,29 +158,6 @@ export function AdminOrderDetails({ order }: AdminOrderDetailsProps) {
         </Card>
       )}
 
-      {/* RETURN / EXCHANGE */}
-      {(order.returnStatus !== "NONE" || order.exchangeStatus !== "NONE") && (
-        <Card className="border-0 shadow-md">
-          <CardHeader>
-            <CardTitle>Return / Exchange</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-
-            {order.returnStatus !== "NONE" && (
-              <div className="flex items-center gap-2">
-                <RotateCcw className="w-4 h-4" /> <strong>Return:</strong> {order.returnStatus}
-              </div>
-            )}
-
-            {order.exchangeStatus !== "NONE" && (
-              <div className="flex items-center gap-2">
-                <RefreshCcw className="w-4 h-4" /> <strong>Exchange:</strong> {order.exchangeStatus}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
       {/* ORDER ITEMS */}
       <Card className="border-0 shadow-md">
         <CardHeader>
@@ -247,20 +218,6 @@ export function AdminOrderDetails({ order }: AdminOrderDetailsProps) {
             <div><strong>Email:</strong> {order.user.email}</div>
             {order.razorpayPaymentId && (
               <div><strong>Payment ID:</strong> {order.razorpayPaymentId}</div>
-            )}
-            {order.refundMethod && (
-              <div><strong>Refund Method:</strong> {order.refundMethod}</div>
-            )}
-            {order.refundStatus && (
-              <div><strong>Refund Status:</strong> {order.refundStatus}</div>
-            )}
-            {order.refundAmount != null && (
-              <div>
-                <strong>
-                  {order.refundMethod === "WALLET" ? "Wallet Credit" : "Refund Amount"}:
-                </strong>{" "}
-                {formatPrice(order.refundAmount)}
-              </div>
             )}
           </CardContent>
         </Card>

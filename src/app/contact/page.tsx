@@ -6,16 +6,16 @@ import { ContactForm } from "@/components/contact/contact-form"
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-[#FAF8F5] pt-24">
-      <div className="bg-gradient-to-br from-[#FAF8F5] via-[#F5EFE7] to-[#E8DFD4] px-4 py-16 text-center">
-        <Flame className="mx-auto mb-4 h-10 w-10 text-[#C9A66B]" />
+    <div className="min-h-screen bg-[#F2F4E8] pt-24">
+      <div className="bg-gradient-to-br from-[#F2F4E8] via-[#E8ECD6] to-[#D3DAAE] px-4 py-16 text-center">
+        <Flame className="mx-auto mb-4 h-10 w-10 text-[#8A9353]" />
         <h1
           className="mb-4 text-5xl font-bold text-[#3D2B1F]"
           style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
           Get in Touch
         </h1>
-        <p className="mx-auto max-w-xl text-lg text-[#6B5743]">
+        <p className="mx-auto max-w-xl text-lg text-[#4A5422]">
           Have a question about our candles? We typically respond within 24 hours.
         </p>
       </div>
@@ -23,7 +23,7 @@ export default function ContactPage() {
       <div className="mx-auto max-w-6xl px-4 py-16">
         <div className="grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <div className="rounded-2xl border border-[#E8DFD4] bg-white p-8 shadow-sm">
+            <div className="rounded-2xl border border-[#D3DAAE] bg-white p-8 shadow-sm">
               <h2
                 className="mb-6 text-2xl font-bold text-[#3D2B1F]"
                 style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -35,34 +35,34 @@ export default function ContactPage() {
           </div>
 
           <div className="space-y-5 lg:col-span-2">
-            <div className="rounded-2xl border border-[#E8DFD4] bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-[#D3DAAE] bg-white p-6 shadow-sm">
               <div className="mb-3 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F5EFE7]">
-                  <Phone className="h-5 w-5 text-[#C9A66B]" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8ECD6]">
+                  <Phone className="h-5 w-5 text-[#8A9353]" />
                 </div>
                 <h3 className="font-semibold text-[#3D2B1F]">Call Us</h3>
               </div>
-              <p className="text-sm text-[#6B5743]">Customer Support</p>
+              <p className="text-sm text-[#4A5422]">Customer Support</p>
               <p className="mt-1 font-semibold text-[#3D2B1F]">+91 98765 43210</p>
               <p className="mt-1 text-xs text-[#8B7355]">Mon - Sat: 10 AM - 6 PM IST</p>
             </div>
 
-            <div className="rounded-2xl border border-[#E8DFD4] bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-[#D3DAAE] bg-white p-6 shadow-sm">
               <div className="mb-3 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F5EFE7]">
-                  <Mail className="h-5 w-5 text-[#C9A66B]" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8ECD6]">
+                  <Mail className="h-5 w-5 text-[#8A9353]" />
                 </div>
                 <h3 className="font-semibold text-[#3D2B1F]">Email Us</h3>
               </div>
-              <p className="text-sm text-[#6B5743]">General Inquiries</p>
+              <p className="text-sm text-[#4A5422]">General Inquiries</p>
               <p className="mt-1 font-semibold text-[#3D2B1F]">hello@nivirras.com</p>
               <p className="mt-1 text-xs text-[#8B7355]">We reply within 24 hours</p>
             </div>
 
-            <div className="rounded-2xl border border-[#E8DFD4] bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-[#D3DAAE] bg-white p-6 shadow-sm">
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F5EFE7]">
-                  <Clock className="h-5 w-5 text-[#C9A66B]" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8ECD6]">
+                  <Clock className="h-5 w-5 text-[#8A9353]" />
                 </div>
                 <h3 className="font-semibold text-[#3D2B1F]">Business Hours</h3>
               </div>
@@ -72,7 +72,7 @@ export default function ContactPage() {
                   ["Saturday", "10:00 AM - 4:00 PM"],
                   ["Sunday", "Closed"],
                 ].map(([day, hours]) => (
-                  <div key={day} className="flex justify-between text-[#6B5743]">
+                  <div key={day} className="flex justify-between text-[#4A5422]">
                     <span>{day}</span>
                     <span className={hours === "Closed" ? "text-red-400" : "font-medium text-[#3D2B1F]"}>
                       {hours}
@@ -82,9 +82,9 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#E8DFD4] bg-gradient-to-br from-[#F5EFE7] to-[#E8DFD4] p-6 text-center">
-              <Flame className="mx-auto mb-2 h-8 w-8 text-[#C9A66B]" />
-              <p className="text-sm leading-relaxed text-[#6B5743]">
+            <div className="rounded-2xl border border-[#D3DAAE] bg-gradient-to-br from-[#E8ECD6] to-[#D3DAAE] p-6 text-center">
+              <Flame className="mx-auto mb-2 h-8 w-8 text-[#8A9353]" />
+              <p className="text-sm leading-relaxed text-[#4A5422]">
                 Every question matters to us. We hand-pour our candles with the same care we bring to every reply.
               </p>
             </div>
@@ -117,10 +117,10 @@ export default function ContactPage() {
                 a: "Once your order ships, you will receive a tracking number via email. You can also track it in your account dashboard.",
               },
             ].map(({ q, a }) => (
-              <Card key={q} className="border-[#E8DFD4] bg-white shadow-sm">
+              <Card key={q} className="border-[#D3DAAE] bg-white shadow-sm">
                 <CardContent className="pt-6">
                   <h3 className="mb-2 font-semibold text-[#3D2B1F]">{q}</h3>
-                  <p className="text-sm leading-relaxed text-[#6B5743]">{a}</p>
+                  <p className="text-sm leading-relaxed text-[#4A5422]">{a}</p>
                 </CardContent>
               </Card>
             ))}
@@ -130,4 +130,5 @@ export default function ContactPage() {
     </div>
   )
 }
+
 

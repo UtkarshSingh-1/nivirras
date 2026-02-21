@@ -8,8 +8,9 @@
   "scripts": {
     "check:node": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major < 20 || major > 22) { console.warn('Warning: use Node 20/22 for stable Next.js dev. Current: '+process.versions.node); }\"",
     "clean": "node -e \"const fs=require('fs'); for (const p of ['.next','tsconfig.tsbuildinfo']) fs.rmSync(p,{recursive:true,force:true});\"",
-    "dev": "npm run check:node && next dev --turbopack",
+    "dev": "npm run check:node && next dev",
     "dev:webpack": "npm run check:node && next dev",
+    "dev:turbopack": "npm run check:node && next dev --turbopack",
     "dev:clean": "npm run check:node && npm run clean && next dev --turbopack",
     "build": "next build",
     "build:clean": "npm run clean && next build",

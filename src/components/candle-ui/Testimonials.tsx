@@ -33,7 +33,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-[#F5EFE7] to-[#E8DFD4] relative overflow-hidden">
+    <section className="py-24 px-6 bg-gradient-to-b from-[#E8ECD6] to-[#D3DAAE] relative overflow-hidden">
       {/* Background Decoration */}
       <motion.div
         animate={{
@@ -44,7 +44,7 @@ export function Testimonials() {
           duration: 8,
           repeat: Infinity,
         }}
-        className="absolute top-20 right-20 w-64 h-64 bg-[#C9A66B] rounded-full blur-3xl"
+        className="absolute top-20 right-20 w-64 h-64 bg-[#8A9353] rounded-full blur-3xl"
       />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -56,13 +56,13 @@ export function Testimonials() {
           className="text-center mb-16"
         >
           <h2
-            className="text-5xl md:text-6xl mb-4 text-[#4A3F35]"
+            className="text-5xl md:text-6xl mb-4 text-[#313919]"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             What Our Customers Say
           </h2>
           <p
-            className="text-lg text-[#6B5743] max-w-2xl mx-auto"
+            className="text-lg text-[#4A5422] max-w-2xl mx-auto"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Join thousands of satisfied customers who have elevated their spaces with Nivirras Collections
@@ -92,7 +92,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
       <div className="relative rounded-3xl overflow-hidden bg-white/70 backdrop-blur-md p-8 shadow-lg border border-white/50 h-full hover:shadow-2xl transition-all duration-300">
         {/* Quote Icon */}
         <div className="absolute top-6 right-6 opacity-10">
-          <Quote className="w-16 h-16 text-[#8B6F47]" />
+          <Quote className="w-16 h-16 text-[#636B2F]" />
         </div>
 
         {/* Stars */}
@@ -105,14 +105,14 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 + i * 0.05 }}
             >
-              <Star className="w-5 h-5 fill-[#C9A66B] text-[#C9A66B]" />
+              <Star className="w-5 h-5 fill-[#8A9353] text-[#8A9353]" />
             </motion.div>
           ))}
         </div>
 
         {/* Testimonial Text */}
         <p
-          className="text-[#6B5743] mb-6 leading-relaxed relative z-10"
+          className="text-[#4A5422] mb-6 leading-relaxed relative z-10"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           "{testimonial.text}"
@@ -120,7 +120,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
 
         {/* Customer Info */}
         <div className="flex items-center gap-4 relative z-10">
-          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#C9A66B] shadow-md">
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#8A9353] shadow-md">
             <Image
               src={testimonial.image}
               alt={testimonial.name}
@@ -132,13 +132,13 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
           </div>
           <div>
             <h4
-              className="text-lg text-[#4A3F35]"
+              className="text-lg text-[#313919]"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               {testimonial.name}
             </h4>
             <p
-              className="text-sm text-[#8B6F47]"
+              className="text-sm text-[#636B2F]"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {testimonial.role}
@@ -151,9 +151,11 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
           initial={{ opacity: 0 }}
           whileHover={{ opacity: 0.15 }}
           transition={{ duration: 0.3 }}
-          className="absolute inset-0 bg-gradient-radial from-[#C9A66B] to-transparent blur-2xl pointer-events-none"
+          className="absolute inset-0 bg-gradient-radial from-[#8A9353] to-transparent blur-2xl pointer-events-none"
         />
       </div>
     </motion.div>
   );
 }
+
+

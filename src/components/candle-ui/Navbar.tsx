@@ -52,7 +52,7 @@ export function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md shadow-sm transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-50 bg-[#F2F4E8]/90 backdrop-blur-md shadow-sm transition-all duration-500"
     >
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
@@ -63,7 +63,7 @@ export function Navbar() {
               className="text-2xl tracking-wider cursor-pointer"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              <span className="text-[#8B6F47]">NIVIRRAS</span>
+              <span className="text-[#4A5422]">NIVIRRAS</span>
             </motion.div>
           </Link>
 
@@ -86,7 +86,7 @@ export function Navbar() {
                   animate={{ width: 200, opacity: 1 }}
                   exit={{ width: 0, opacity: 0 }}
                   onSubmit={handleSearch}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-white rounded-full border border-[#E8DFD4] overflow-hidden"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-white rounded-full border border-[#D3DAAE] overflow-hidden"
                 >
                   <Input
                     autoFocus
@@ -104,9 +104,9 @@ export function Navbar() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setIsSearchOpen(true)}
-                  className="p-2 hover:bg-[#8B6F47]/10 rounded-full transition-colors"
+                  className="p-2 hover:bg-[#636B2F]/10 rounded-full transition-colors"
                 >
-                  <Search className="w-5 h-5 text-[#6B5743]" />
+                  <Search className="w-5 h-5 text-[#4A5422]" />
                 </motion.button>
               )}
             </div>
@@ -116,11 +116,11 @@ export function Navbar() {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2 hover:bg-[#8B6F47]/10 rounded-full transition-colors relative"
+                className="p-2 hover:bg-[#636B2F]/10 rounded-full transition-colors relative"
               >
-                <ShoppingBag className="w-5 h-5 text-[#6B5743]" />
+                <ShoppingBag className="w-5 h-5 text-[#4A5422]" />
                 {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 w-4 h-4 bg-[#C9A66B] text-white text-xs flex items-center justify-center rounded-full">
+                  <span className="absolute top-0 right-0 w-4 h-4 bg-[#636B2F] text-white text-xs flex items-center justify-center rounded-full">
                     {cartCount}
                   </span>
                 )}
@@ -134,12 +134,12 @@ export function Navbar() {
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 hover:bg-[#8B6F47]/10 rounded-full transition-colors"
+                    className="p-2 hover:bg-[#636B2F]/10 rounded-full transition-colors"
                   >
-                    <User className="w-5 h-5 text-[#6B5743]" />
+                    <User className="w-5 h-5 text-[#4A5422]" />
                   </motion.button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-white/90 backdrop-blur-md border-[#E8DFD4]">
+                <DropdownMenuContent align="end" className="bg-white/90 backdrop-blur-md border-[#D3DAAE]">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -160,7 +160,7 @@ export function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={() => signIn()} variant="ghost" size="sm" className="hidden md:flex text-[#6B5743] hover:text-[#8B6F47] hover:bg-[#8B6F47]/10">
+              <Button onClick={() => signIn()} variant="ghost" size="sm" className="hidden md:flex text-[#4A5422] hover:text-[#636B2F] hover:bg-[#636B2F]/10">
                 Login
               </Button>
             )}
@@ -169,7 +169,7 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2"
             >
-              <Menu className="w-6 h-6 text-[#6B5743]" />
+              <Menu className="w-6 h-6 text-[#4A5422]" />
             </button>
           </div>
         </div>
@@ -181,7 +181,7 @@ export function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 py-4 border-t border-[#E8DFD4] overflow-hidden bg-[#FAF8F5]"
+              className="md:hidden mt-4 py-4 border-t border-[#D3DAAE] overflow-hidden bg-[#F2F4E8]"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               <div className="flex flex-col gap-4">
@@ -192,7 +192,7 @@ export function Navbar() {
                 <NavLink href="/contact" mobile onClick={() => setIsMobileMenuOpen(false)}>Contact</NavLink>
                 {!session?.user && (
                   <div className="px-3 py-2">
-                    <Button onClick={() => signIn()} className="w-full bg-[#8B6F47] hover:bg-[#6B5743] text-white">Login</Button>
+                    <Button onClick={() => signIn()} className="w-full bg-[#636B2F] hover:bg-[#4A5422] text-white">Login</Button>
                   </div>
                 )}
               </div>
@@ -210,7 +210,7 @@ function NavLink({ href, children, mobile, onClick }: { href: string; children: 
       href={href}
       prefetch
       onClick={onClick}
-      className={`block text-[#6B5743] hover:text-[#8B6F47] transition-colors ${mobile ? "text-base px-3 py-2 hover:bg-[#8B6F47]/5 rounded-md" : "text-sm"
+      className={`block text-[#4A5422] hover:text-[#636B2F] transition-colors ${mobile ? "text-base px-3 py-2 hover:bg-[#636B2F]/5 rounded-md" : "text-sm"
         }`}
     >
       {children}

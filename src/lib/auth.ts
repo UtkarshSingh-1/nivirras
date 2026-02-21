@@ -6,61 +6,67 @@ import bcrypt from "bcryptjs"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/db"
 
+const providers: NextAuthConfig["providers"] = [
+  Credentials({
+    name: "Credentials",
+    credentials: {
+      email: { label: "Email", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      try {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email and password required")
+        }
+
+        const email = credentials.email as string
+        const password = credentials.password as string
+
+        const user = await prisma.user.findUnique({
+          where: { email }
+        })
+
+        if (!user || !user.password) {
+          console.error("Auth Fail: User not found or no password")
+          throw new Error("Invalid credentials")
+        }
+
+        const valid = await bcrypt.compare(password, user.password)
+        if (!valid) {
+          console.error("Auth Fail: Invalid password")
+          throw new Error("Invalid credentials")
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      } catch (error) {
+        console.error("Auth Error (authorize):", error)
+        return null
+      }
+    },
+  }),
+]
+
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.unshift(
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    })
+  )
+}
+
 export const config = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
   trustHost: true,
   debug: process.env.AUTH_DEBUG === "true",
 
-  providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-
-    Credentials({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        try {
-          if (!credentials?.email || !credentials?.password) {
-            throw new Error("Email and password required")
-          }
-
-          const email = credentials.email as string
-          const password = credentials.password as string
-
-          const user = await prisma.user.findUnique({
-            where: { email }
-          })
-
-          if (!user || !user.password) {
-            console.error("Auth Fail: User not found or no password")
-            throw new Error("Invalid credentials")
-          }
-
-          const valid = await bcrypt.compare(password, user.password)
-          if (!valid) {
-            console.error("Auth Fail: Invalid password")
-            throw new Error("Invalid credentials")
-          }
-
-          return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role
-          }
-        } catch (error) {
-          console.error("Auth Error (authorize):", error)
-          return null
-        }
-      },
-    }),
-  ],
+  providers,
 
   callbacks: {
     async signIn({ user, account }) {

@@ -12,7 +12,7 @@ export function EmptyCart() {
         <p className="text-muted-foreground mb-6 text-center max-w-sm">
           Looks like you haven&apos;t added any items to your cart yet. Start shopping to fill it up!
         </p>
-        <Button asChild className="bg-[#8B6F47] hover:bg-[#6B5743]">
+        <Button asChild className="bg-[#636B2F] hover:bg-[#4A5422]">
           <Link href="/products">
             Continue Shopping
           </Link>
@@ -21,3 +21,4 @@ export function EmptyCart() {
     </Card>
   )
 }
+

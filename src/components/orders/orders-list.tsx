@@ -179,7 +179,6 @@ export function OrdersList({ userId, searchParams }: OrdersListProps) {
                 <SelectItem value="PROCESSING">Processing</SelectItem>
                 <SelectItem value="SHIPPED">Shipped</SelectItem>
                 <SelectItem value="DELIVERED">Delivered</SelectItem>
-                <SelectItem value="CANCELLED">Cancelled</SelectItem>
                 <SelectItem value="COMPLETED">Completed</SelectItem>
               </SelectContent>
             </Select>

@@ -45,7 +45,7 @@ export default async function AdminEditProductPage({
 
   return (
     <>
-      <main className="min-h-screen bg-[#FAF8F5]">
+      <main className="min-h-screen bg-[#F2F4E8]">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
@@ -58,7 +58,7 @@ export default async function AdminEditProductPage({
 
             <div className="flex-1">
               <h1 className="text-3xl font-bold flex items-center gap-2">
-                <Package className="w-8 h-8 text-[#8B6F47]" />
+                <Package className="w-8 h-8 text-[#636B2F]" />
                 Edit Product
               </h1>
               <p className="text-muted-foreground mt-1">
@@ -81,3 +81,4 @@ export default async function AdminEditProductPage({
     </>
   )
 }
+

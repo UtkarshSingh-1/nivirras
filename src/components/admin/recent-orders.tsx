@@ -136,7 +136,7 @@ export function RecentOrders() {
                     <div className="font-medium text-sm">
                       <Link
                         href={`/admin/orders/${order.id}`}
-                        className="font-medium hover:text-[#8B6F47] transition-colors"
+                        className="font-medium hover:text-[#636B2F] transition-colors"
                       >
                         Order #{order.id.slice(-8).toUpperCase()}
                       </Link>
@@ -177,3 +177,4 @@ export function RecentOrders() {
     </Card>
   );
 }
+

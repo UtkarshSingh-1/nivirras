@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 import { AddressForm } from "@/components/checkout/address-form"
 import { OrderSummary } from "@/components/checkout/order-summary"
@@ -40,7 +39,7 @@ export default function CheckoutPage() {
   const [selectedAddress, setSelectedAddress] = useState<any>(null)
 
   const [processing, setProcessing] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<"online" | "cod">("online")
+  const paymentMethod = "online"
 
   /* Promo state */
   const [promoCode, setPromoCode] = useState("")
@@ -101,7 +100,7 @@ export default function CheckoutPage() {
     } catch {
       setAllPromos([])
     }
-  }, [subtotal, paymentMethod])
+  }, [subtotal])
 
   /* -------------------- PROMO -------------------- */
 
@@ -124,7 +123,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           promoCode: codeToApply,
           subtotal,
-          paymentMethod: paymentMethod === "online" ? "ONLINE" : "COD",
+          paymentMethod: "ONLINE",
         }),
       })
 
@@ -176,18 +175,12 @@ export default function CheckoutPage() {
           amount: total,
           addressId: selectedAddress.id,
           promoCode: appliedPromoCode ?? undefined,
-          paymentMethod: paymentMethod.toUpperCase(),
+          paymentMethod: "ONLINE",
         }),
       })
 
       const order = await res.json()
       if (!res.ok) throw new Error(order.error)
-
-      if (paymentMethod === "cod") {
-        clearCart()
-        router.push(`/orders/${order.orderId}`)
-        return
-      }
 
       const rzp = new Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
@@ -311,30 +304,15 @@ export default function CheckoutPage() {
 
                 <div className="pt-4 border-t space-y-4">
                   <Label>Payment Method</Label>
-                  <RadioGroup
-                    value={paymentMethod}
-                    onValueChange={(v: string) =>
-                      setPaymentMethod(v as "online" | "cod")
-                    }
-                  >
-                    <div className="flex gap-2">
-                      <RadioGroupItem value="online" id="online" />
-                      <Label htmlFor="online">Online</Label>
-                    </div>
-                    <div className="flex gap-2">
-                      <RadioGroupItem value="cod" id="cod" />
-                      <Label htmlFor="cod">Cash on Delivery</Label>
-                    </div>
-                  </RadioGroup>
-
+                  <div className="text-sm text-[#4A5422] bg-[#EDF1DB] border border-[#D3DAAE] rounded-md px-3 py-2">
+                    Online Payment (Razorpay)
+                  </div>
                   <Button
-                    className="w-full bg-[#8B6F47] hover:bg-[#6B5743]"
+                    className="w-full bg-[#636B2F] hover:bg-[#4A5422]"
                     onClick={handlePayment}
                     disabled={processing}
                   >
-                    {paymentMethod === "cod"
-                      ? "Place COD Order"
-                      : `Pay ${formatPrice(total)}`}
+                    {`Pay ${formatPrice(total)}`}
                   </Button>
 
                   {error && (
@@ -351,3 +329,4 @@ export default function CheckoutPage() {
     </>
   )
 }
+

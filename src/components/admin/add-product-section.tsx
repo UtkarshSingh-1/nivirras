@@ -20,20 +20,20 @@ export function AddProductSection() {
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Package className="w-5 h-5 text-[#8B6F47]" />
+            <Package className="w-5 h-5 text-[#636B2F]" />
             Product Management
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center py-8">
-            <div className="w-16 h-16 mx-auto mb-4 bg-[#8B6F47]/10 rounded-full flex items-center justify-center">
-              <Plus className="w-8 h-8 text-[#8B6F47]" />
+            <div className="w-16 h-16 mx-auto mb-4 bg-[#636B2F]/10 rounded-full flex items-center justify-center">
+              <Plus className="w-8 h-8 text-[#636B2F]" />
             </div>
             <h3 className="text-lg font-semibold mb-2">Add New Product</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Create and manage your product catalog
             </p>
-            <Button asChild className="bg-[#8B6F47] hover:bg-[#6B5743]">
+            <Button asChild className="bg-[#636B2F] hover:bg-[#4A5422]">
               <Link href="/admin/products/add">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Product
@@ -73,3 +73,4 @@ export function AddProductSection() {
     </div>
   );
 }
+

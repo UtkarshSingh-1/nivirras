@@ -18,7 +18,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="bg-[#FAF8F5] overflow-x-hidden">
+    <div className="bg-[#F2F4E8] overflow-x-hidden">
       <Hero />
       <FeaturedCandles products={featuredProducts} />
       <Categories />

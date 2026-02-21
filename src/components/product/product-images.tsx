@@ -47,7 +47,7 @@ export function ProductImages({ images: rawImages, name }: ProductImagesProps) {
               className={cn(
                 "flex-shrink-0 aspect-square w-20 overflow-hidden rounded-md border-2 transition-colors",
                 selectedImage === index
-                  ? "border-[#8B6F47]"
+                  ? "border-[#636B2F]"
                   : "border-transparent hover:border-muted-foreground/25"
               )}
             >
@@ -65,3 +65,4 @@ export function ProductImages({ images: rawImages, name }: ProductImagesProps) {
     </div>
   );
 }
+

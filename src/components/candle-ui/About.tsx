@@ -26,10 +26,10 @@ const features = [
 
 export function About() {
   return (
-    <section id="about" className="py-24 px-6 bg-gradient-to-b from-[#FAF8F5] to-[#F5EFE7] relative overflow-hidden">
+    <section id="about" className="py-24 px-6 bg-gradient-to-b from-[#F2F4E8] to-[#E8ECD6] relative overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-[#C9A66B]/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#8B6F47]/10 rounded-full blur-3xl" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-[#8A9353]/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#636B2F]/10 rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -51,24 +51,24 @@ export function About() {
                 className="w-full h-[500px] object-cover"
               />
               {/* Glassmorphism Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#4A3F35]/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#313919]/30 to-transparent" />
             </div>
 
             {/* Floating Badge */}
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-6 -right-6 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-[#E8DFD4]"
+              className="absolute -bottom-6 -right-6 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-[#D3DAAE]"
             >
               <div className="text-center">
                 <div
-                  className="text-4xl text-[#8B6F47] mb-1"
+                  className="text-4xl text-[#636B2F] mb-1"
                   style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   5000+
                 </div>
                 <div
-                  className="text-sm text-[#6B5743]"
+                  className="text-sm text-[#4A5422]"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   Happy Customers
@@ -85,13 +85,13 @@ export function About() {
             transition={{ duration: 0.8 }}
           >
             <h2
-              className="text-5xl md:text-6xl mb-6 text-[#4A3F35]"
+              className="text-5xl md:text-6xl mb-6 text-[#313919]"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               Crafted for Serene Living
             </h2>
             <p
-              className="text-lg text-[#6B5743] mb-8 leading-relaxed"
+              className="text-lg text-[#4A5422] mb-8 leading-relaxed"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               At Nivirras Collections, we believe in the transformative power of scent. Each candle is thoughtfully crafted using premium natural ingredients, combining timeless elegance with modern artistry. Our mission is to bring warmth, calm, and beauty into your everyday moments.
@@ -109,18 +109,18 @@ export function About() {
                   whileHover={{ x: 5 }}
                   className="flex items-start gap-4 group cursor-pointer"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#8B6F47] to-[#C9A66B] rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#636B2F] to-[#8A9353] rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
                     <feature.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h4
-                      className="text-xl text-[#4A3F35] mb-1"
+                      className="text-xl text-[#313919] mb-1"
                       style={{ fontFamily: "'Cormorant Garamond', serif" }}
                     >
                       {feature.title}
                     </h4>
                     <p
-                      className="text-[#6B5743]"
+                      className="text-[#4A5422]"
                       style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       {feature.description}
@@ -132,9 +132,9 @@ export function About() {
 
             <Link href="/about">
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(139, 111, 71, 0.3)" }}
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(99, 107, 47, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg"
+                className="px-8 py-4 bg-gradient-to-r from-[#636B2F] to-[#8A9353] text-white rounded-full shadow-lg"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Learn More About Us
@@ -146,3 +146,5 @@ export function About() {
     </section>
   );
 }
+
+

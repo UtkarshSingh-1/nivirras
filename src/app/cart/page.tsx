@@ -40,7 +40,7 @@ export default function CartPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#FAF8F5] pt-24">
+      <main className="min-h-screen bg-[#F2F4E8] pt-24">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <CartSkeleton />
         </div>
@@ -50,7 +50,7 @@ export default function CartPage() {
 
   if (cartItems.length === 0) {
     return (
-      <main className="min-h-screen bg-[#FAF8F5] pt-24">
+      <main className="min-h-screen bg-[#F2F4E8] pt-24">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <EmptyCart />
         </div>
@@ -59,7 +59,7 @@ export default function CartPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FAF8F5] pt-24">
+    <main className="min-h-screen bg-[#F2F4E8] pt-24">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8 text-[#3D2B1F]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
           Shopping Cart
@@ -80,21 +80,21 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div>
-            <Card className="border-[#E8DFD4] bg-white/70">
+            <Card className="border-[#D3DAAE] bg-white/70">
               <CardHeader>
                 <CardTitle className="text-[#3D2B1F]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
                   Order Summary
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Separator className="bg-[#E8DFD4]" />
+                <Separator className="bg-[#D3DAAE]" />
 
-                <div className="flex justify-between text-[#6B5743]">
+                <div className="flex justify-between text-[#4A5422]">
                   <span>Subtotal</span>
                   <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
 
-                <div className="flex justify-between text-[#6B5743]">
+                <div className="flex justify-between text-[#4A5422]">
                   <span>Shipping</span>
                   <span>
                     {shipping === 0 ? (
@@ -105,17 +105,17 @@ export default function CartPage() {
                   </span>
                 </div>
 
-                <Separator className="bg-[#E8DFD4]" />
+                <Separator className="bg-[#D3DAAE]" />
 
                 <div className="flex justify-between font-semibold text-lg text-[#3D2B1F]">
                   <span>Total</span>
-                  <span className="text-[#8B6F47]">
+                  <span className="text-[#636B2F]">
                     {formatPrice(total)}
                   </span>
                 </div>
 
                 <Button
-                  className="w-full bg-[#8B6F47] hover:bg-[#6B5743] hover:shadow-lg transition-all"
+                  className="w-full bg-[#636B2F] hover:bg-[#4A5422] hover:shadow-lg transition-all"
                   onClick={handleCheckout}
                 >
                   {session ? 'Proceed to Checkout' : 'Login to Checkout'}
@@ -166,3 +166,4 @@ function CartSkeleton() {
     </div>
   )
 }
+

@@ -108,7 +108,6 @@ export default function SupportPage() {
                         <SelectContent>
                           <SelectItem value="order">Order Issues</SelectItem>
                           <SelectItem value="shipping">Shipping & Delivery</SelectItem>
-                          <SelectItem value="returns">Returns & Exchanges</SelectItem>
                           <SelectItem value="product">Product Questions</SelectItem>
                           <SelectItem value="account">Account Issues</SelectItem>
                           <SelectItem value="payment">Payment Issues</SelectItem>
@@ -193,10 +192,6 @@ export default function SupportPage() {
                     <Link href="/shipping" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
                       <div className="font-medium">Shipping Information</div>
                       <div className="text-sm text-muted-foreground">Delivery times and options</div>
-                    </Link>
-                    <Link href="/returns" className="block p-3 border border-border rounded-md hover:bg-muted transition-colors">
-                      <div className="font-medium">Returns & Exchanges</div>
-                      <div className="text-sm text-muted-foreground">Return policy and process</div>
                     </Link>
                   </div>
                 </CardContent>

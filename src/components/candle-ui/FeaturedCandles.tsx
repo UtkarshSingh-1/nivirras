@@ -23,7 +23,7 @@ export function FeaturedCandles({ products }: { products: Product[] }) {
   if (!products || products.length === 0) return null;
 
   return (
-    <section id="shop" className="py-24 px-6 bg-gradient-to-b from-[#FAF8F5] to-[#F5EFE7]">
+    <section id="shop" className="py-24 px-6 bg-gradient-to-b from-[#F2F4E8] to-[#E8ECD6]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -33,13 +33,13 @@ export function FeaturedCandles({ products }: { products: Product[] }) {
           className="text-center mb-16"
         >
           <h2
-            className="text-5xl md:text-6xl mb-4 text-[#4A3F35]"
+            className="text-5xl md:text-6xl mb-4 text-[#313919]"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             Featured Collection
           </h2>
           <p
-            className="text-lg text-[#6B5743] max-w-2xl mx-auto"
+            className="text-lg text-[#4A5422] max-w-2xl mx-auto"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Discover our handpicked selection of premium artisan candles, each crafted with care and infused with luxurious fragrances
@@ -62,10 +62,10 @@ function CandleCard({ product, index }: { product: Product; index: number }) {
 
   // Dynamic gradient based on index or random for now, since DB doesn't have it
   const colors = [
-    "from-[#F5E6D3] to-[#E8DFD4]",
-    "from-[#E8DFD4] to-[#D4C4B0]",
-    "from-[#FAF8F5] to-[#F5EFE7]",
-    "from-[#FFF8E7] to-[#F5EFE7]"
+    "from-[#F5E6D3] to-[#D3DAAE]",
+    "from-[#D3DAAE] to-[#D4C4B0]",
+    "from-[#F2F4E8] to-[#E8ECD6]",
+    "from-[#FFF8E7] to-[#E8ECD6]"
   ];
   const color = colors[index % colors.length];
 
@@ -106,7 +106,7 @@ function CandleCard({ product, index }: { product: Product; index: number }) {
             className="absolute top-8 right-8 z-20 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-md"
           >
             <Heart
-              className={`w-5 h-5 transition-colors ${isFavorited ? "fill-red-500 text-red-500" : "text-[#8B6F47]"
+              className={`w-5 h-5 transition-colors ${isFavorited ? "fill-red-500 text-red-500" : "text-[#636B2F]"
                 }`}
             />
           </motion.button>
@@ -143,12 +143,12 @@ function CandleCard({ product, index }: { product: Product; index: number }) {
             <div className="flex items-start justify-between mb-2">
               <div>
                 <h3
-                  className="text-2xl text-[#4A3F35] mb-1 line-clamp-1"
+                  className="text-2xl text-[#313919] mb-1 line-clamp-1"
                   style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   {product.name}
                 </h3>
-                <div className="flex items-center gap-2 text-sm text-[#8B6F47]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <div className="flex items-center gap-2 text-sm text-[#636B2F]" style={{ fontFamily: "'Inter', sans-serif" }}>
                   <Flame className="w-4 h-4" />
                   <span>{product.category.name}</span>
                 </div>
@@ -157,7 +157,7 @@ function CandleCard({ product, index }: { product: Product; index: number }) {
 
             <div className="flex items-center justify-between mt-4">
               <span
-                className="text-2xl text-[#8B6F47]"
+                className="text-2xl text-[#636B2F]"
                 style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 {formatPrice(product.price)}
@@ -165,7 +165,7 @@ function CandleCard({ product, index }: { product: Product; index: number }) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-2 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full text-sm shadow-md"
+                className="px-6 py-2 bg-gradient-to-r from-[#636B2F] to-[#8A9353] text-white rounded-full text-sm shadow-md"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 View
@@ -185,3 +185,5 @@ function CandleCard({ product, index }: { product: Product; index: number }) {
     </motion.div>
   );
 }
+
+

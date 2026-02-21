@@ -14,11 +14,11 @@ export default async function AdminProductsPage() {
 
   return (
     <>
-      <main className="min-h-screen bg-[#FAF8F5]">
+      <main className="min-h-screen bg-[#F2F4E8]">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold text-[#3D2B1F]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Products</h1>
-            <Button asChild className="bg-[#8B6F47] hover:bg-[#6B5743]">
+            <Button asChild className="bg-[#636B2F] hover:bg-[#4A5422]">
               <Link href="/admin/products/add">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Product
@@ -32,4 +32,5 @@ export default async function AdminProductsPage() {
     </>
   )
 }
+
 

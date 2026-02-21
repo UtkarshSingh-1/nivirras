@@ -36,14 +36,14 @@ export default async function ProductsPage(
   const categories = await getPublicCategories()
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] pt-24">
+    <div className="min-h-screen bg-[#F2F4E8] pt-24">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Page Heading */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-[#3D2B1F]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
             Our Collection
           </h1>
-          <p className="text-[#6B5743] mt-2">Handcrafted candles for every mood and moment.</p>
+          <p className="text-[#4A5422] mt-2">Handcrafted candles for every mood and moment.</p>
         </div>
 
         {/* Mobile Filter Toggle */}
@@ -88,3 +88,4 @@ function ProductGridSkeleton() {
     </div>
   )
 }
+

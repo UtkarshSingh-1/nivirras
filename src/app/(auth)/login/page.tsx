@@ -58,10 +58,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-[#FAF8F5] to-[#F0E8DC]">
-      <Card className="w-full max-w-md border-[#E8DFD4]">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-[#F2F4E8] to-[#F0E8DC]">
+      <Card className="w-full max-w-md border-[#D3DAAE]">
         <CardHeader className="text-center">
-          <div className="text-3xl font-bold text-[#8B6F47] mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Nivirras Collections</div>
+          <div className="text-3xl font-bold text-[#636B2F] mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Nivirras Collections</div>
           <CardTitle className="text-[#3D2B1F]">Welcome Back</CardTitle>
           <CardDescription>
             Sign in to your account to continue shopping
@@ -126,7 +126,7 @@ export default function LoginPage() {
                 </Button>
               </div>
             </div>
-            <Button type="submit" className="w-full bg-[#8B6F47] hover:bg-[#7A6040] text-white" disabled={loading}>
+            <Button type="submit" className="w-full bg-[#636B2F] hover:bg-[#4A5422] text-white" disabled={loading}>
               {loading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
@@ -154,7 +154,7 @@ export default function LoginPage() {
 
           <div className="text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-[#8B6F47] hover:underline font-medium">
+            <Link href="/signup" className="text-[#636B2F] hover:underline font-medium">
               Sign up
             </Link>
           </div>

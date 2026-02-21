@@ -115,7 +115,7 @@ export function OrderSummary({
 
           <div className="flex justify-between font-semibold text-lg text-[#3D2B1F]">
             <span>Total</span>
-            <span className="text-[#8B6F47]">
+            <span className="text-[#636B2F]">
               {formatPrice(total)}
             </span>
           </div>
@@ -145,3 +145,4 @@ function getSafeImageSrc(images?: string[]) {
 
   return fallback
 }
+

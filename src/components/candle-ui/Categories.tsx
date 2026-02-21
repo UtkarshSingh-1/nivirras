@@ -41,7 +41,7 @@ const categories = [
 
 export function Categories() {
   return (
-    <section id="scents" className="py-24 px-6 bg-gradient-to-b from-[#F5EFE7] to-[#FAF8F5]">
+    <section id="scents" className="py-24 px-6 bg-gradient-to-b from-[#E8ECD6] to-[#F2F4E8]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -51,13 +51,13 @@ export function Categories() {
           className="text-center mb-16"
         >
           <h2
-            className="text-5xl md:text-6xl mb-4 text-[#4A3F35]"
+            className="text-5xl md:text-6xl mb-4 text-[#313919]"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             Scent Categories
           </h2>
           <p
-            className="text-lg text-[#6B5743] max-w-2xl mx-auto"
+            className="text-lg text-[#4A5422] max-w-2xl mx-auto"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Explore our curated fragrance families, each designed to evoke a unique mood and atmosphere
@@ -97,32 +97,32 @@ function CategoryCard({ category, index }: { category: typeof categories[0]; ind
             transition={{ duration: 0.6 }}
             className="w-16 h-16 bg-white/70 rounded-full flex items-center justify-center mb-6 shadow-md backdrop-blur-sm"
           >
-            <Icon className="w-8 h-8 text-[#8B6F47]" />
+            <Icon className="w-8 h-8 text-[#636B2F]" />
           </motion.div>
 
           {/* Category Info */}
           <h3
-            className="text-3xl text-[#4A3F35] mb-2"
+            className="text-3xl text-[#313919] mb-2"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             {category.name}
           </h3>
           <p
-            className="text-[#6B5743] mb-4"
+            className="text-[#4A5422] mb-4"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {category.description}
           </p>
           <div className="flex items-center justify-between">
             <span
-              className="text-sm text-[#8B6F47]"
+              className="text-sm text-[#636B2F]"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {category.count}
             </span>
             <motion.div
               whileHover={{ x: 5 }}
-              className="text-[#8B6F47]"
+              className="text-[#636B2F]"
             >
               →
             </motion.div>
@@ -133,10 +133,12 @@ function CategoryCard({ category, index }: { category: typeof categories[0]; ind
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 0.3 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-gradient-radial from-[#C9A66B]/40 to-transparent blur-xl"
+            className="absolute inset-0 bg-gradient-radial from-[#8A9353]/40 to-transparent blur-xl"
           />
         </div>
       </Link>
     </motion.div>
   );
 }
+
+

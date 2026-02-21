@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { formatPrice, formatDate } from "@/lib/utils"
-import { Package, MapPin, User, Truck, RotateCcw, Repeat2, XCircle } from "lucide-react"
+import { Package, MapPin, User, XCircle } from "lucide-react"
 import Image from "next/image"
 import { Decimal } from "@prisma/client/runtime/library"
 
@@ -37,10 +37,6 @@ interface OrderDetailsProps {
     shippedAt?: string | null;
     deliveredAt?: string | null;
     cancelledAt?: string | null;
-
-    // Return / Exchange
-    returnStatus?: string | null;
-    exchangeStatus?: string | null;
 
     items: Array<{
       id: string;
@@ -140,29 +136,6 @@ export function OrderDetails({ order }: OrderDetailsProps) {
             {order.cancelledAt && (
               <div className="text-red-600 flex items-center gap-1">
                 <XCircle className="w-4 h-4" /> Cancelled at {formatDate(new Date(order.cancelledAt))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* RETURN / EXCHANGE */}
-      {(order.returnStatus || order.exchangeStatus) && (
-        <Card className="border-0 shadow-md">
-          <CardHeader>
-            <CardTitle>Return / Exchange</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm space-y-2">
-
-            {order.returnStatus && (
-              <div className="flex items-center gap-2 text-orange-600">
-                <RotateCcw className="w-4 h-4" /> Return: {order.returnStatus}
-              </div>
-            )}
-
-            {order.exchangeStatus && (
-              <div className="flex items-center gap-2 text-blue-600">
-                <Repeat2 className="w-4 h-4" /> Exchange: {order.exchangeStatus}
               </div>
             )}
           </CardContent>

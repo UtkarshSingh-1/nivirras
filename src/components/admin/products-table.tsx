@@ -166,7 +166,7 @@ export function ProductsTable() {
           <Package className="h-5 w-5" />
           Products Management
         </CardTitle>
-        <Button asChild className="bg-[#8B6F47] hover:bg-[#6B5743] border-0">
+        <Button asChild className="bg-[#636B2F] hover:bg-[#4A5422] border-0">
           <Link href="/admin/products/add">
             <Plus className="mr-2 h-4 w-4" />
             Add Product
@@ -224,7 +224,7 @@ export function ProductsTable() {
                         <div>
                           <Link
                             href={`/products/${product.slug}`}
-                            className="font-medium hover:text-[#8B6F47] transition-colors line-clamp-1"
+                            className="font-medium hover:text-[#636B2F] transition-colors line-clamp-1"
                           >
                             {product.name}
                           </Link>
@@ -257,7 +257,7 @@ export function ProductsTable() {
                       <TableCell>
                         <div className="flex flex-col gap-1">
                           {product.featured && (
-                            <Badge className="bg-[#8B6F47] text-xs border-0">Featured</Badge>
+                            <Badge className="bg-[#636B2F] text-xs border-0">Featured</Badge>
                           )}
                           {product.trending && (
                             <Badge variant="secondary" className="text-xs border-0">Trending</Badge>
@@ -320,3 +320,4 @@ export function ProductsTable() {
     </Card>
   )
 }
+

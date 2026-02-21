@@ -17,7 +17,7 @@ const floatingParticles = [
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-start justify-center overflow-hidden bg-gradient-to-br from-[#FAF8F5] via-[#F5EFE7] to-[#E8DFD4] -mt-20">
+    <section className="relative min-h-screen flex items-start justify-center overflow-hidden bg-gradient-to-br from-[#F2F4E8] via-[#E6EBCF] to-[#D3DAAE] -mt-20">
       {/* Ambient Glow Background */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -30,7 +30,7 @@ export function Hero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#C9A66B]/20 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#8A9353]/25 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -43,7 +43,7 @@ export function Hero() {
             ease: "easeInOut",
             delay: 1,
           }}
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#8B6F47]/20 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#636B2F]/25 rounded-full blur-3xl"
         />
       </div>
 
@@ -60,16 +60,16 @@ export function Hero() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full mb-6 border border-[#E8DFD4]"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/55 backdrop-blur-sm rounded-full mb-6 border border-[#D3DAAE]"
             >
-              <Sparkles className="w-4 h-4 text-[#C9A66B]" />
-              <span className="text-sm text-[#6B5743]" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <Sparkles className="w-4 h-4 text-[#636B2F]" />
+              <span className="text-sm text-[#4A5422]" style={{ fontFamily: "'Inter', sans-serif" }}>
                 Premium Artisan Candles
               </span>
             </motion.div>
 
             <h1
-              className="text-6xl md:text-7xl mb-6 text-[#4A3F35] leading-tight"
+              className="text-6xl md:text-7xl mb-6 text-[#313919] leading-tight"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               Nivirras
@@ -78,7 +78,7 @@ export function Hero() {
             </h1>
 
             <p
-              className="text-xl text-[#6B5743] mb-8 max-w-md"
+              className="text-xl text-[#4A5422] mb-8 max-w-md"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Handcrafted candles for serene living
@@ -88,9 +88,9 @@ export function Hero() {
               <MotionLink
                 href="/products"
                 prefetch
-                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(139, 111, 71, 0.3)" }}
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(74, 84, 34, 0.28)" }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex px-8 py-4 bg-gradient-to-r from-[#8B6F47] to-[#C9A66B] text-white rounded-full shadow-lg transition-all"
+                className="inline-flex px-8 py-4 bg-gradient-to-r from-[#4A5422] to-[#636B2F] text-white rounded-full shadow-lg transition-all"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Shop Collection
@@ -100,7 +100,7 @@ export function Hero() {
                 prefetch
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex px-8 py-4 bg-white/70 backdrop-blur-sm text-[#6B5743] rounded-full border border-[#E8DFD4] hover:border-[#C9A66B] transition-all"
+                className="inline-flex px-8 py-4 bg-white/70 backdrop-blur-sm text-[#4A5422] rounded-full border border-[#D3DAAE] hover:border-[#636B2F] transition-all"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Explore Scents
@@ -127,11 +127,11 @@ export function Hero() {
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
-        <div className="w-6 h-10 border-2 border-[#C9A66B] rounded-full flex justify-center pt-2">
+        <div className="w-6 h-10 border-2 border-[#636B2F] rounded-full flex justify-center pt-2">
           <motion.div
             animate={{ y: [0, 12, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1.5 h-1.5 bg-[#C9A66B] rounded-full"
+            className="w-1.5 h-1.5 bg-[#636B2F] rounded-full"
           />
         </div>
       </motion.div>
@@ -141,7 +141,7 @@ export function Hero() {
 
 function CandleDisplay() {
   return (
-    <div className="relative w-full max-w-md mx-auto">
+    <div className="relative w-full max-w-sm mx-auto">
       {/* Glow Effect */}
       <motion.div
         animate={{
@@ -153,7 +153,7 @@ function CandleDisplay() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute inset-0 bg-gradient-radial from-[#FFD700]/30 via-[#FFA500]/20 to-transparent rounded-full blur-3xl"
+        className="absolute inset-0 bg-gradient-radial from-[#B6C37A]/35 via-[#8A9353]/25 to-transparent rounded-full blur-3xl"
       />
 
       {/* Candle Image with 3D Effect */}
@@ -168,14 +168,14 @@ function CandleDisplay() {
         }}
         className="relative z-10"
       >
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm bg-white/30 border border-white/50 p-8">
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm bg-white/35 border border-white/60 p-5 md:p-6">
           <Image
             src="https://images.unsplash.com/photo-1641837225643-f999493f6375?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBjYW5kbGUlMjBnbGFzcyUyMGphciUyMHdhcm0lMjBnbG93fGVufDF8fHx8MTc3MTUwODI5OXww&ixlib=rb-4.1.0&q=80&w=1080"
             alt="Luxury Candle"
             width={1080}
             height={1350}
             priority
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 768px) 75vw, 34vw"
             className="w-full h-auto object-cover rounded-2xl"
           />
 
@@ -190,12 +190,12 @@ function CandleDisplay() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute top-12 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-gradient-radial from-[#FFD700] via-[#FFA500] to-transparent rounded-full blur-2xl opacity-70"
+            className="absolute top-10 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-gradient-radial from-[#B6C37A] via-[#8A9353] to-transparent rounded-full blur-2xl opacity-70"
           />
         </div>
 
         {/* Reflection Effect */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#FAF8F5] to-transparent blur-sm" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F2F4E8] to-transparent blur-sm" />
       </motion.div>
 
       {/* Floating Particles */}
@@ -212,7 +212,7 @@ function CandleDisplay() {
             repeat: Infinity,
             delay: particle.delay,
           }}
-          className="absolute bottom-20 left-1/2 w-1 h-1 bg-[#FFD700] rounded-full"
+          className="absolute bottom-20 left-1/2 w-1 h-1 bg-[#8A9353] rounded-full"
         />
       ))}
     </div>

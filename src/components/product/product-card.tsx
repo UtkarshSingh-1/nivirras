@@ -185,7 +185,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {product.featured && (
-            <Badge className="bg-[#8B6F47]">Featured</Badge>
+            <Badge className="bg-[#636B2F]">Featured</Badge>
           )}
           {product.trending && (
             <Badge variant="secondary">Trending</Badge>
@@ -214,7 +214,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.category.name}
         </div>
         <Link href={`/products/${product.slug}`}>
-          <h3 className="font-medium text-sm mb-2 line-clamp-2 hover:text-[#8B6F47] transition-colors">
+          <h3 className="font-medium text-sm mb-2 line-clamp-2 hover:text-[#636B2F] transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -229,7 +229,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full bg-[#8B6F47] hover:bg-[#6B5743]" onClick={addToCart} disabled={adding || isPending || addingToWishlist}>
+        <Button className="w-full bg-[#636B2F] hover:bg-[#4A5422]" onClick={addToCart} disabled={adding || isPending || addingToWishlist}>
           <ShoppingCart className="mr-2 h-4 w-4" />
           {adding ? 'Adding...' : 'Add to Cart'}
         </Button>
