@@ -179,7 +179,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                     <span className="text-lg text-muted-foreground line-through">
                       {formatPrice(Number(product.comparePrice))}
                     </span>
-                    <Button asChild className="w-full bg-[#8B6F47] hover:bg-[#6B5743] border-0">
+                    <Button className="w-full bg-[#8B6F47] hover:bg-[#6B5743] border-0">
                       {discountPercentage}% OFF
                     </Button>
                   </>
