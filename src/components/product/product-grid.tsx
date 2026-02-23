@@ -4,6 +4,19 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ProductSort } from "./product-sort"
 
+function isPrismaConnectionError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false
+  const maybeCode = (error as { code?: string }).code
+  const maybeMessage = (error as { message?: string }).message
+  return (
+    maybeCode === "P1001" ||
+    maybeCode === "P2024" ||
+    (typeof maybeMessage === "string" &&
+      (maybeMessage.includes("Can't reach database server") ||
+        maybeMessage.includes("Timed out fetching a new connection from the connection pool")))
+  )
+}
+
 interface ProductGridProps {
   searchParams: {
     search?: string
@@ -120,8 +133,12 @@ export async function ProductGrid({ searchParams, showHeader = true }: ProductGr
     })
     total = totalResult
   } catch (error) {
-    // If database is unreachable, render empty state
-    console.error('[ProductGrid] Database error:', error)
+    // Render a safe empty state if the DB is temporarily unreachable.
+    if (isPrismaConnectionError(error)) {
+      console.warn("[ProductGrid] Database temporarily unreachable")
+    } else {
+      console.error("[ProductGrid] Unexpected database error")
+    }
     products = []
     total = 0
   }
