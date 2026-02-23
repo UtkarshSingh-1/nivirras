@@ -12,6 +12,8 @@ type ProductSelect = {
   images: string[]
   featured: boolean
   trending: boolean
+  averageRating?: number
+  reviewCount?: number
   category: { name: string }
 }
 
@@ -24,6 +26,34 @@ function normalizeProduct(product: any): ProductSelect {
       ? product.images.filter((item: unknown): item is string => typeof item === "string")
       : [],
   }
+}
+
+async function attachRatings(products: ProductSelect[]): Promise<ProductSelect[]> {
+  if (products.length === 0) return products
+  const productIds = products.map((product) => product.id)
+  const ratingGroups = await prisma.review.groupBy({
+    by: ["productId"],
+    where: { productId: { in: productIds } },
+    _avg: { rating: true },
+    _count: { _all: true },
+  })
+  const ratingMap = new Map(
+    ratingGroups.map((group) => [
+      group.productId,
+      {
+        averageRating: group._avg.rating ?? 0,
+        reviewCount: group._count._all ?? 0,
+      },
+    ])
+  )
+  return products.map((product) => {
+    const ratings = ratingMap.get(product.id) ?? { averageRating: 0, reviewCount: 0 }
+    return {
+      ...product,
+      averageRating: ratings.averageRating,
+      reviewCount: ratings.reviewCount,
+    }
+  })
 }
 
 function isPrismaConnectionError(error: unknown): boolean {
@@ -61,7 +91,8 @@ export const getFeaturedProducts = unstable_cache(
       })
 
       if (featuredRaw.length > 0) {
-        return featuredRaw.map(normalizeProduct)
+        const normalized = featuredRaw.map(normalizeProduct)
+        return await attachRatings(normalized)
       }
 
       const fallbackRaw = await prisma.product.findMany({
@@ -82,7 +113,8 @@ export const getFeaturedProducts = unstable_cache(
         },
       })
 
-      return fallbackRaw.map(normalizeProduct)
+      const normalized = fallbackRaw.map(normalizeProduct)
+      return await attachRatings(normalized)
     } catch (error) {
       if (isPrismaConnectionError(error)) {
         console.error("Database temporarily unreachable in getFeaturedProducts")
@@ -92,6 +124,64 @@ export const getFeaturedProducts = unstable_cache(
     }
   },
   ["featured-products"],
+  { revalidate: CACHE_REVALIDATE_SECONDS, tags: ["products"] }
+)
+
+export const getTrendingProducts = unstable_cache(
+  async () => {
+    try {
+      const trendingRaw = await prisma.product.findMany({
+        where: { trending: true },
+        take: 4,
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          price: true,
+          comparePrice: true,
+          images: true,
+          featured: true,
+          trending: true,
+          category: {
+            select: { name: true },
+          },
+        },
+      })
+
+      if (trendingRaw.length > 0) {
+        const normalized = trendingRaw.map(normalizeProduct)
+        return await attachRatings(normalized)
+      }
+
+      const fallbackRaw = await prisma.product.findMany({
+        take: 4,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          price: true,
+          comparePrice: true,
+          images: true,
+          featured: true,
+          trending: true,
+          category: {
+            select: { name: true },
+          },
+        },
+      })
+
+      const normalized = fallbackRaw.map(normalizeProduct)
+      return await attachRatings(normalized)
+    } catch (error) {
+      if (isPrismaConnectionError(error)) {
+        console.error("Database temporarily unreachable in getTrendingProducts")
+        return []
+      }
+      throw error
+    }
+  },
+  ["trending-products"],
   { revalidate: CACHE_REVALIDATE_SECONDS, tags: ["products"] }
 )
 

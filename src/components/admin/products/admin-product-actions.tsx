@@ -262,7 +262,7 @@ export function AdminProductActions({ product }: AdminProductActionsProps) {
       {/* Danger Zone */}
       <Card className="border-0 shadow-md border-l-4 border-l-red-500">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-600">
+          <CardTitle className="flex items-center gap-2 text-[#4A5422]">
             <AlertTriangle className="w-5 h-5" />
             Danger Zone
           </CardTitle>
@@ -286,10 +286,10 @@ export function AdminProductActions({ product }: AdminProductActionsProps) {
         <Card className="border-0 shadow-md border-l-4 border-l-yellow-500">
           <CardContent className="p-4">
             <div className="flex items-start gap-2">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <AlertTriangle className="w-5 h-5 text-[#8A9353] mt-0.5" />
               <div>
-                <h4 className="font-medium text-yellow-600">Low Stock Warning</h4>
-                <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                <h4 className="font-medium text-[#8A9353]">Low Stock Warning</h4>
+                <p className="text-sm text-[#6A733B] dark:text-[#D3DAAE] mt-1">
                   Only {product.stock} units remaining. Consider restocking soon.
                 </p>
               </div>

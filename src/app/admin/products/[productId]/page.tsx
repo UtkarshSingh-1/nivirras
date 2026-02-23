@@ -66,7 +66,7 @@ export default async function AdminProductDetailsPage({
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Database Connection Error</h1>
+          <h1 className="text-2xl font-bold text-[#4A5422] mb-4">Database Connection Error</h1>
           <p className="text-muted-foreground">
             Unable to connect to the database. Please check your connection and try again.
           </p>
@@ -147,14 +147,14 @@ export default async function AdminProductDetailsPage({
 function AdminProductOrders({ product }: { product: any }) {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PENDING': return 'bg-yellow-600'
-      case 'CONFIRMED': return 'bg-blue-600'
-      case 'PROCESSING': return 'bg-indigo-600'
-      case 'SHIPPED': return 'bg-purple-600'
-      case 'DELIVERED': return 'bg-green-600'
-      case 'CANCELLED': return 'bg-red-600'
-      case 'COMPLETED': return 'bg-orange-600'
-      default: return 'bg-gray-600'
+      case 'PENDING': return 'bg-[#8A9353]'
+      case 'CONFIRMED': return 'bg-[#636B2F]'
+      case 'PROCESSING': return 'bg-[#5E6830]'
+      case 'SHIPPED': return 'bg-[#596229]'
+      case 'DELIVERED': return 'bg-[#636B2F]'
+      case 'CANCELLED': return 'bg-[#4A5422]'
+      case 'COMPLETED': return 'bg-[#7A8440]'
+      default: return 'bg-[#4A5422]'
     }
   }
   return (

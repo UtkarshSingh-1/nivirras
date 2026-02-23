@@ -63,28 +63,28 @@ export function AdminOrdersStats() {
       value: stats?.totalOrders?.toLocaleString() || "0",
       description: "All time orders",
       icon: ShoppingBag,
-      color: "text-blue-600",
+      color: "text-[#636B2F]",
     },
     {
       title: "Pending Orders",
       value: stats?.pendingOrders?.toLocaleString() || "0",
       description: "Awaiting processing",
       icon: Clock,
-      color: "text-yellow-600",
+      color: "text-[#8A9353]",
     },
     {
       title: "Completed Orders",
       value: stats?.completedOrders?.toLocaleString() || "0",
       description: "Successfully delivered",
       icon: Package,
-      color: "text-green-600",
+      color: "text-[#636B2F]",
     },
     {
       title: "Cancelled Orders",
       value: stats?.cancelledOrders?.toLocaleString() || "0",
       description: "Cancelled by customers",
       icon: Users,
-      color: "text-red-600",
+      color: "text-[#4A5422]",
     },
   ]
 

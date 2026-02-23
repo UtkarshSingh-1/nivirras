@@ -343,7 +343,7 @@ export function AddressForm({
                     <Edit className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => handleDelete(addr.id)}>
-                    <Trash2 className="h-4 w-4 text-red-500" />
+                    <Trash2 className="h-4 w-4 text-[#636B2F]" />
                   </Button>
                 </div>
               ))}

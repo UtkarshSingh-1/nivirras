@@ -50,7 +50,7 @@ export function OrderTracking({ order }: OrderTrackingProps) {
 
             return (
               <div key={step.key} className="flex gap-3 items-start">
-                <Icon className={`w-5 h-5 ${isCompleted ? "text-green-600" : "text-gray-400"}`} />
+                <Icon className={`w-5 h-5 ${isCompleted ? "text-[#636B2F]" : "text-[#8A9353]"}`} />
                 <div>
                   <p className="font-medium flex items-center gap-2">
                     {step.title}
@@ -64,7 +64,7 @@ export function OrderTracking({ order }: OrderTrackingProps) {
         </div>
 
         {order.status === "SHIPPED" && (
-          <div className="p-3 bg-blue-50 text-sm rounded border">
+          <div className="p-3 bg-[#EDF1DB] text-sm rounded border">
             Tracking ID: <b>{order.trackingId || "Updating"}</b>
           </div>
         )}

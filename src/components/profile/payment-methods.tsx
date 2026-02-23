@@ -42,13 +42,13 @@ export function PaymentMethods({ userId }: PaymentMethodsProps) {
   const getCardBrandColor = (brand: string) => {
     switch (brand.toLowerCase()) {
       case "visa":
-        return "bg-blue-600";
+        return "bg-[#636B2F]";
       case "mastercard":
-        return "bg-red-600";
+        return "bg-[#4A5422]";
       case "amex":
-        return "bg-green-600";
+        return "bg-[#636B2F]";
       default:
-        return "bg-gray-600";
+        return "bg-[#4A5422]";
     }
   };
 
@@ -128,7 +128,7 @@ export function PaymentMethods({ userId }: PaymentMethodsProps) {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 border-0 text-red-600 hover:text-red-700"
+                        className="h-8 w-8 p-0 border-0 text-[#4A5422] hover:text-[#4A5422]"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -203,9 +203,9 @@ export function PaymentMethods({ userId }: PaymentMethodsProps) {
       <Card className="border-0 shadow-md">
         <CardContent className="p-6">
           <div className="flex items-start gap-3">
-            <Shield className="w-5 h-5 text-green-600 mt-0.5" />
+            <Shield className="w-5 h-5 text-[#636B2F] mt-0.5" />
             <div>
-              <h4 className="font-semibold text-green-600 mb-1">
+              <h4 className="font-semibold text-[#636B2F] mb-1">
                 Your payments are secure
               </h4>
               <p className="text-sm text-muted-foreground">

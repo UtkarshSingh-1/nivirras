@@ -18,7 +18,7 @@ export default function ApproveReturnButton({ id }: { id: string }) {
   return (
     <button
       onClick={approve}
-      className="px-3 py-1 bg-green-600 text-white rounded"
+      className="px-3 py-1 bg-[#636B2F] text-white rounded"
     >
       Approve
     </button>

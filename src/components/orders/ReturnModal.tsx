@@ -44,7 +44,7 @@ export function ReturnModal({ open, onCloseAction, item }: ReturnModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-white dark:bg-neutral-900 p-6 rounded w-full max-w-md space-y-4">
+      <div className="bg-white dark:bg-[#313919] p-6 rounded w-full max-w-md space-y-4">
         <h2 className="text-lg font-semibold">Return {item.productName}</h2>
 
         <Textarea

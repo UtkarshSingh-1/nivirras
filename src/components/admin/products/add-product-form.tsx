@@ -480,8 +480,8 @@ export function AddProductForm() {
             </div>
 
             {formData.comparePrice && formData.comparePrice > formData.price && (
-              <div className="p-3 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-400">
-                <p className="text-sm text-green-700 dark:text-green-300">
+              <div className="p-3 bg-[#EDF1DB] dark:bg-[#4A5422]/20 border-l-4 border-[#8A9353]">
+                <p className="text-sm text-[#4A5422] dark:text-[#D3DAAE]">
                   Discount: {Math.round(((formData.comparePrice - formData.price) / formData.comparePrice) * 100)}% off
                 </p>
               </div>

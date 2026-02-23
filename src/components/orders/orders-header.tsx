@@ -49,25 +49,25 @@ export async function OrdersHeader() {
       icon: ShoppingBag, 
       label: "Total Orders", 
       count: totalOrders, 
-      color: "text-blue-600" 
+      color: "text-[#636B2F]" 
     },
     { 
       icon: Package, 
       label: "Processing", 
       count: processingOrders, 
-      color: "text-yellow-600" 
+      color: "text-[#8A9353]" 
     },
     { 
       icon: Truck, 
       label: "Shipped", 
       count: shippedOrders, 
-      color: "text-orange-600" 
+      color: "text-[#7A8440]" 
     },
     { 
       icon: CheckCircle, 
       label: "Delivered", 
       count: deliveredOrders, 
-      color: "text-green-600" 
+      color: "text-[#636B2F]" 
     },
   ]
 

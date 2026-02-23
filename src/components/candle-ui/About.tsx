@@ -134,7 +134,7 @@ export function About() {
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(99, 107, 47, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-[#636B2F] to-[#8A9353] text-white rounded-full shadow-lg"
+                className="px-8 py-4 bg-[#636B2F] hover:bg-[#4A5422] text-white rounded-full shadow-lg transition-colors"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Learn More About Us

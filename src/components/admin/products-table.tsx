@@ -250,7 +250,7 @@ export function ProductsTable() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
-                          <div className={`w-2 h-2 ${product.stock > 10 ? 'bg-green-500' : product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
+                          <div className={`w-2 h-2 ${product.stock > 10 ? 'bg-[#EDF1DB]0' : product.stock > 0 ? 'bg-[#EDF1DB]0' : 'bg-[#EDF1DB]0'}`}></div>
                           {product.stock}
                         </div>
                       </TableCell>
@@ -301,7 +301,7 @@ export function ProductsTable() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               onClick={() => deleteProduct(product.id)}
-                              className="text-red-600 focus:text-red-600"
+                              className="text-[#4A5422] focus:text-[#4A5422]"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete

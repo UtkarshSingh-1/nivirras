@@ -189,7 +189,7 @@ export function WishlistView({ userId }: WishlistViewProps) {
                         {product.category.name}
                       </Badge>
                       {discountPercentage > 0 && (
-                        <Badge className="bg-green-600 text-xs border-0">
+                        <Badge className="bg-[#636B2F] text-xs border-0">
                           {discountPercentage}% OFF
                         </Badge>
                       )}
@@ -197,7 +197,7 @@ export function WishlistView({ userId }: WishlistViewProps) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 hover:bg-background text-red-600 border-0"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 hover:bg-background text-[#4A5422] border-0"
                       onClick={() => removeFromWishlist(item.id)}
                     >
                       <Trash2 className="h-4 w-4" />
@@ -222,7 +222,7 @@ export function WishlistView({ userId }: WishlistViewProps) {
                     </div>
 
                     <div className="flex items-center gap-2 text-xs">
-                      <div className={`w-2 h-2 ${product.stock > 10 ? 'bg-green-500' : product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
+                      <div className={`w-2 h-2 ${product.stock > 10 ? 'bg-[#EDF1DB]0' : product.stock > 0 ? 'bg-[#EDF1DB]0' : 'bg-[#EDF1DB]0'}`}></div>
                       <span className="text-muted-foreground">
                         {product.stock > 10 ? 'In Stock' : product.stock > 0 ? `${product.stock} left` : 'Out of Stock'}
                       </span>

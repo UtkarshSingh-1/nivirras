@@ -49,9 +49,9 @@ export function AdminOrdersHeader() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Pending Orders</p>
-                <p className="text-2xl font-bold text-yellow-600">{stats?.pending ?? 0}</p>
+                <p className="text-2xl font-bold text-[#8A9353]">{stats?.pending ?? 0}</p>
               </div>
-              <Clock className="h-8 w-8 text-yellow-600" />
+              <Clock className="h-8 w-8 text-[#8A9353]" />
             </div>
           </CardContent>
         </Card>
@@ -61,9 +61,9 @@ export function AdminOrdersHeader() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Processing</p>
-                <p className="text-2xl font-bold text-blue-600">{stats?.processing ?? 0}</p>
+                <p className="text-2xl font-bold text-[#636B2F]">{stats?.processing ?? 0}</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-blue-600" />
+              <TrendingUp className="h-8 w-8 text-[#636B2F]" />
             </div>
           </CardContent>
         </Card>
@@ -73,9 +73,9 @@ export function AdminOrdersHeader() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Issues</p>
-                <p className="text-2xl font-bold text-red-600">{stats?.issues ?? 0}</p>
+                <p className="text-2xl font-bold text-[#4A5422]">{stats?.issues ?? 0}</p>
               </div>
-              <AlertCircle className="h-8 w-8 text-red-600" />
+              <AlertCircle className="h-8 w-8 text-[#4A5422]" />
             </div>
           </CardContent>
         </Card>
@@ -85,9 +85,9 @@ export function AdminOrdersHeader() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Today&apos;s Revenue</p>
-                <p className="text-2xl font-bold text-green-600">{formatPrice(stats?.todaysRevenue || 0)}</p>
+                <p className="text-2xl font-bold text-[#636B2F]">{formatPrice(stats?.todaysRevenue || 0)}</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-green-600" />
+              <TrendingUp className="h-8 w-8 text-[#636B2F]" />
             </div>
           </CardContent>
         </Card>

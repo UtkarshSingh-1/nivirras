@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "motion/react";
 import { Star, Quote } from "lucide-react";
@@ -9,7 +9,7 @@ const testimonials = [
     id: 1,
     name: "Sarah Mitchell",
     role: "Home Designer",
-    text: "These candles have completely transformed the ambiance of my home. The quality is exceptional, and the scents are perfectly balanced—not overpowering, just elegantly present.",
+    text: "These candles have completely transformed the ambiance of my home. The quality is exceptional, and the scents are perfectly balanced - not overpowering, just elegantly present.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
   },
@@ -34,16 +34,9 @@ const testimonials = [
 export function Testimonials() {
   return (
     <section className="py-24 px-6 bg-gradient-to-b from-[#E8ECD6] to-[#D3DAAE] relative overflow-hidden">
-      {/* Background Decoration */}
       <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.1, 0.2, 0.1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-        }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 8, repeat: Infinity }}
         className="absolute top-20 right-20 w-64 h-64 bg-[#8A9353] rounded-full blur-3xl"
       />
 
@@ -55,16 +48,10 @@ export function Testimonials() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2
-            className="text-5xl md:text-6xl mb-4 text-[#313919]"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
+          <h2 className="text-5xl md:text-6xl mb-4 text-[#313919]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
             What Our Customers Say
           </h2>
-          <p
-            className="text-lg text-[#4A5422] max-w-2xl mx-auto"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
+          <p className="text-lg text-[#4A5422] max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
             Join thousands of satisfied customers who have elevated their spaces with Nivirras Collections
           </p>
         </motion.div>
@@ -90,12 +77,10 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
       className="group"
     >
       <div className="relative rounded-3xl overflow-hidden bg-white/70 backdrop-blur-md p-8 shadow-lg border border-white/50 h-full hover:shadow-2xl transition-all duration-300">
-        {/* Quote Icon */}
         <div className="absolute top-6 right-6 opacity-10">
           <Quote className="w-16 h-16 text-[#636B2F]" />
         </div>
 
-        {/* Stars */}
         <div className="flex gap-1 mb-4">
           {[...Array(testimonial.rating)].map((_, i) => (
             <motion.div
@@ -110,15 +95,10 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
           ))}
         </div>
 
-        {/* Testimonial Text */}
-        <p
-          className="text-[#4A5422] mb-6 leading-relaxed relative z-10"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
+        <p className="text-[#4A5422] mb-6 leading-relaxed relative z-10" style={{ fontFamily: "'Inter', sans-serif" }}>
           "{testimonial.text}"
         </p>
 
-        {/* Customer Info */}
         <div className="flex items-center gap-4 relative z-10">
           <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#8A9353] shadow-md">
             <Image
@@ -131,22 +111,15 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
             />
           </div>
           <div>
-            <h4
-              className="text-lg text-[#313919]"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            >
+            <h4 className="text-lg text-[#313919]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
               {testimonial.name}
             </h4>
-            <p
-              className="text-sm text-[#636B2F]"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
+            <p className="text-sm text-[#636B2F]" style={{ fontFamily: "'Inter', sans-serif" }}>
               {testimonial.role}
             </p>
           </div>
         </div>
 
-        {/* Hover Glow */}
         <motion.div
           initial={{ opacity: 0 }}
           whileHover={{ opacity: 0.15 }}
@@ -157,5 +130,3 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
     </motion.div>
   );
 }
-
-

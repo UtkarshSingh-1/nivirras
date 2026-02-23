@@ -62,20 +62,20 @@ export function RecentOrders() {
 
   const getStatusIcon = (status: string, paymentStatus: string) => {
     if (paymentStatus === "FAILED")
-      return <XCircle className="h-4 w-4 text-red-500" />;
+      return <XCircle className="h-4 w-4 text-[#636B2F]" />;
     if (status === "DELIVERED")
-      return <CheckCircle className="h-4 w-4 text-green-500" />;
+      return <CheckCircle className="h-4 w-4 text-[#636B2F]" />;
     if (status === "SHIPPED")
-      return <Package className="h-4 w-4 text-blue-500" />;
-    return <Clock className="h-4 w-4 text-yellow-500" />;
+      return <Package className="h-4 w-4 text-[#636B2F]" />;
+    return <Clock className="h-4 w-4 text-[#8A9353]" />;
   };
 
   const getStatusColor = (status: string, paymentStatus: string) => {
-    if (paymentStatus === "FAILED") return "bg-red-600";
-    if (status === "DELIVERED") return "bg-green-600";
-    if (status === "SHIPPED") return "bg-blue-600";
-    if (status === "PROCESSING") return "bg-yellow-600";
-    return "bg-gray-600";
+    if (paymentStatus === "FAILED") return "bg-[#4A5422]";
+    if (status === "DELIVERED") return "bg-[#636B2F]";
+    if (status === "SHIPPED") return "bg-[#636B2F]";
+    if (status === "PROCESSING") return "bg-[#8A9353]";
+    return "bg-[#4A5422]";
   };
 
   if (loading) {

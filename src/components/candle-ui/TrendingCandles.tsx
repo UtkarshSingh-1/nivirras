@@ -16,89 +16,42 @@ interface Product {
   category: { name: string };
 }
 
-export function FeaturedCandles({ products }: { products: Product[] }) {
-  const fallbackProducts: Product[] = [
-    {
-      id: "placeholder-1",
-      name: "Amber Glow",
-      price: 899,
-      comparePrice: 1199,
-      images: ["/placeholder-product.jpg"],
-      slug: "amber-glow",
-      featured: true,
-      trending: false,
-      category: { name: "Warm & Cozy" },
-    },
-    {
-      id: "placeholder-2",
-      name: "Vanilla Cloud",
-      price: 749,
-      comparePrice: null,
-      images: ["/placeholder-product.jpg"],
-      slug: "vanilla-cloud",
-      featured: true,
-      trending: false,
-      category: { name: "Sweet" },
-    },
-    {
-      id: "placeholder-3",
-      name: "Citrus Dawn",
-      price: 699,
-      comparePrice: 999,
-      images: ["/placeholder-product.jpg"],
-      slug: "citrus-dawn",
-      featured: true,
-      trending: false,
-      category: { name: "Fresh" },
-    },
-    {
-      id: "placeholder-4",
-      name: "Rosewood Muse",
-      price: 999,
-      comparePrice: null,
-      images: ["/placeholder-product.jpg"],
-      slug: "rosewood-muse",
-      featured: true,
-      trending: false,
-      category: { name: "Floral" },
-    },
-  ];
-
-  const displayProducts = products && products.length > 0 ? products : fallbackProducts;
+export function TrendingCandles({ products }: { products: Product[] }) {
+  if (!products || products.length === 0) return null;
 
   return (
-    <section id="shop" className="py-20 px-4 sm:px-6 bg-gradient-to-b from-[#F2F4E8] to-[#E8ECD6]">
+    <section id="trending" className="py-20 px-4 sm:px-6 bg-gradient-to-b from-[#F2F4E8] to-[#E8ECD6]">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 text-center">
           <h2
             className="text-3xl sm:text-4xl font-bold text-[#636B2F]"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
-            Featured Collection
+            Customer Favourites
           </h2>
           <p className="text-[#4A5422] mt-2">
-            Discover our handpicked selection of premium artisan candles.
+            Most-loved picks from our customers.
           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {displayProducts.map((product) => (
+          {products.map((product) => (
             <LandingCard key={product.id} product={product} />
           ))}
         </div>
 
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
-            href="/products?featured=true"
-            className="inline-flex w-full max-w-xs items-center justify-center rounded-full border border-[#D3DAAE] bg-white px-6 py-3 text-sm font-medium text-[#4A5422] transition-colors hover:border-[#636B2F] hover:bg-[#EDF1DB] sm:w-auto"
-          >
-            View More Featured
-          </Link>
-          <Link
             href="/products?trending=true"
             className="inline-flex w-full max-w-xs items-center justify-center rounded-full bg-[#636B2F] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#4A5422] sm:w-auto"
           >
             View Trending
+          </Link>
+          <Link
+            href="/products"
+            className="inline-flex w-full max-w-xs items-center justify-center rounded-full border border-[#D3DAAE] bg-white px-6 py-3 text-sm font-medium text-[#4A5422] transition-colors hover:border-[#636B2F] hover:bg-[#EDF1DB] sm:w-auto"
+          >
+            View All Products
           </Link>
         </div>
       </div>
@@ -147,5 +100,3 @@ function LandingCard({ product }: { product: Product }) {
     </Link>
   );
 }
-
-

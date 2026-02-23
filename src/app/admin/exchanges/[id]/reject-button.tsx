@@ -18,7 +18,7 @@ export default function RejectExchangeButton({ id }: { id: string }) {
   return (
     <button
       onClick={reject}
-      className="px-3 py-1 bg-red-600 text-white rounded"
+      className="px-3 py-1 bg-[#4A5422] text-white rounded"
     >
       Reject
     </button>

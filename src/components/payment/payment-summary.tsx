@@ -87,7 +87,7 @@ export function PaymentSummary({ order }: PaymentSummaryProps) {
                 <span>Shipping</span>
                 <span>
                   {Number(order.shipping) === 0 ? (
-                    <span className="text-green-600">FREE</span>
+                    <span className="text-[#636B2F]">FREE</span>
                   ) : (
                     formatPrice(Number(order.shipping))
                   )}
@@ -108,7 +108,7 @@ export function PaymentSummary({ order }: PaymentSummaryProps) {
         <CardContent className="p-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <Truck className="w-5 h-5 text-blue-600" />
+              <Truck className="w-5 h-5 text-[#636B2F]" />
               <div>
                 <div className="font-medium text-sm">Free Shipping</div>
                 <div className="text-xs text-muted-foreground">
@@ -117,7 +117,7 @@ export function PaymentSummary({ order }: PaymentSummaryProps) {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Shield className="w-5 h-5 text-green-600" />
+              <Shield className="w-5 h-5 text-[#636B2F]" />
               <div>
                 <div className="font-medium text-sm">Secure Payment</div>
                 <div className="text-xs text-muted-foreground">
@@ -126,7 +126,7 @@ export function PaymentSummary({ order }: PaymentSummaryProps) {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Package className="w-5 h-5 text-purple-600" />
+              <Package className="w-5 h-5 text-[#596229]" />
               <div>
                 <div className="font-medium text-sm">Easy Returns</div>
                 <div className="text-xs text-muted-foreground">

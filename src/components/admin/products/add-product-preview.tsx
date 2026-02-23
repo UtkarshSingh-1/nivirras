@@ -68,7 +68,7 @@ export function AddProductPreview() {
                   <Badge variant="secondary" className="text-xs border-0">Trending</Badge>
                 )}
                 {discountPercentage > 0 && (
-                  <Badge className="bg-green-600 text-xs border-0">{discountPercentage}% OFF</Badge>
+                  <Badge className="bg-[#636B2F] text-xs border-0">{discountPercentage}% OFF</Badge>
                 )}
               </div>
 
@@ -88,7 +88,7 @@ export function AddProductPreview() {
                   <Star
                     key={i}
                     className={`h-4 w-4 ${
-                      i < 4 ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
+                      i < 4 ? "fill-[#B6C37A] text-[#B6C37A]" : "text-muted-foreground"
                     }`}
                   />
                 ))}
@@ -124,7 +124,7 @@ export function AddProductPreview() {
 
               {/* Stock */}
               <div className="flex items-center gap-2 text-sm">
-                <div className={`w-2 h-2 ${previewData.stock > 10 ? 'bg-green-500' : previewData.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
+                <div className={`w-2 h-2 ${previewData.stock > 10 ? 'bg-[#EDF1DB]0' : previewData.stock > 0 ? 'bg-[#EDF1DB]0' : 'bg-[#EDF1DB]0'}`}></div>
                 <span className="text-muted-foreground">
                   {previewData.stock > 10 ? 'In Stock' : previewData.stock > 0 ? `${previewData.stock} left` : 'Out of Stock'}
                 </span>

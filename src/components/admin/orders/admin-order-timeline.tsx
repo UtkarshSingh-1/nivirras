@@ -76,14 +76,14 @@ export function AdminOrderTimeline({ order }: AdminOrderTimelineProps) {
                 <div className="flex flex-col items-center">
                   <div
                     className={`p-3 rounded-full text-white ${
-                      isCompleted ? "bg-[#636B2F]" : isCurrent ? "bg-[#8A9353]" : "bg-gray-400"
+                      isCompleted ? "bg-[#636B2F]" : isCurrent ? "bg-[#8A9353]" : "bg-[#B6C37A]"
                     }`}
                   >
                     <Icon className="w-5 h-5" />
                   </div>
 
                   {index < timeline.length - 1 && (
-                    <div className={`w-0.5 h-12 ${isCompleted ? "bg-[#636B2F]" : "bg-gray-300"}`} />
+                    <div className={`w-0.5 h-12 ${isCompleted ? "bg-[#636B2F]" : "bg-[#D3DAAE]"}`} />
                   )}
                 </div>
 

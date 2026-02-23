@@ -154,7 +154,7 @@ export function Navbar() {
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()} className="text-red-600 focus:text-red-700">
+                  <DropdownMenuItem onClick={() => signOut()} className="text-[#4A5422] focus:text-[#4A5422]">
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>

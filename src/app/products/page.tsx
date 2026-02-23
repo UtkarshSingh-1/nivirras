@@ -23,6 +23,7 @@ export default async function ProductsPage(
 ) {
   const raw = await props.searchParams
   const pick = (k: string) => Array.isArray(raw[k]) ? (raw[k] as string[])[0] : (raw[k] as string | undefined)
+  const isTrending = pick('trending') === "true"
   const params: SearchParamsShape = {
     search: pick('search'),
     category: pick('category'),
@@ -39,11 +40,16 @@ export default async function ProductsPage(
     <div className="min-h-screen bg-[#F2F4E8] pt-24">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Page Heading */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-[#3D2B1F]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-            Our Collection
+        <div className={isTrending ? "mb-6" : "mb-8"}>
+          <h1
+            className={isTrending ? "text-3xl font-bold text-[#7A5A45]" : "text-4xl font-bold text-[#3D2B1F]"}
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            {isTrending ? "Customer Favourites" : "Our Collection"}
           </h1>
-          <p className="text-[#4A5422] mt-2">Handcrafted candles for every mood and moment.</p>
+          <p className="text-[#4A5422] mt-2">
+            {isTrending ? "Most-loved picks from our customers." : "Handcrafted candles for every mood and moment."}
+          </p>
         </div>
 
         {/* Mobile Filter Toggle */}
@@ -60,7 +66,7 @@ export default async function ProductsPage(
           {/* Products Grid */}
           <div className="lg:w-3/4">
             <Suspense fallback={<ProductGridSkeleton />}>
-              <ProductGrid searchParams={params} />
+              <ProductGrid searchParams={params} showHeader={!isTrending} />
             </Suspense>
           </div>
         </div>
@@ -76,7 +82,7 @@ function ProductGridSkeleton() {
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-10 w-32" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {Array.from({ length: 9 }).map((_, i) => (
           <div key={i} className="space-y-3">
             <Skeleton className="aspect-square w-full" />

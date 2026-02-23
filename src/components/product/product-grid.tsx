@@ -15,9 +15,10 @@ interface ProductGridProps {
     featured?: string
     trending?: string
   }
+  showHeader?: boolean
 }
 
-export async function ProductGrid({ searchParams }: ProductGridProps) {
+export async function ProductGrid({ searchParams, showHeader = true }: ProductGridProps) {
   const sp = searchParams
   const page = parseInt(sp.page || '1')
   const limit = 12
@@ -29,6 +30,7 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
   const trending = sp.trending
   const sort = sp.sort || 'createdAt'
   const order = 'desc'
+  const isTrending = sp.trending === "true"
 
   const skip = (page - 1) * limit
 
@@ -89,7 +91,33 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
       prisma.product.count({ where }),
     ])
 
-    products = productsResult
+    const productIds = productsResult.map((product) => product.id)
+    const ratingGroups = productIds.length
+      ? await prisma.review.groupBy({
+          by: ["productId"],
+          where: { productId: { in: productIds } },
+          _avg: { rating: true },
+          _count: { _all: true },
+        })
+      : []
+    const ratingMap = new Map(
+      ratingGroups.map((group) => [
+        group.productId,
+        {
+          averageRating: group._avg.rating ?? 0,
+          reviewCount: group._count._all ?? 0,
+        },
+      ])
+    )
+
+    products = productsResult.map((product) => {
+      const ratings = ratingMap.get(product.id) ?? { averageRating: 0, reviewCount: 0 }
+      return {
+        ...product,
+        averageRating: ratings.averageRating,
+        reviewCount: ratings.reviewCount,
+      }
+    })
     total = totalResult
   } catch (error) {
     // If database is unreachable, render empty state
@@ -102,20 +130,27 @@ export async function ProductGrid({ searchParams }: ProductGridProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold">
-            {search ? `Search Results for "${search}"` : 'All Products'}
-          </h1>
-          <p className="text-muted-foreground">
-            Showing {products.length} of {total} products
-          </p>
+      {showHeader && (
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1
+              className={isTrending ? "text-3xl font-bold text-[#7A5A45]" : "text-2xl font-bold"}
+              style={isTrending ? { fontFamily: "'Cormorant Garamond', serif" } : undefined}
+            >
+              {search ? `Search Results for "${search}"` : isTrending ? "Customer Favourites" : "All Products"}
+            </h1>
+            <p className="text-muted-foreground">
+              {isTrending ? "Most-loved picks from our customers." : `Showing ${products.length} of ${total} products`}
+            </p>
+          </div>
+
+          <div className={isTrending ? "hidden sm:block" : ""}>
+            <ProductSort value={sort} />
+          </div>
         </div>
+      )}
 
-        <ProductSort value={sort} />
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {products.map((product) => (
           <ProductCard
             key={product.id}

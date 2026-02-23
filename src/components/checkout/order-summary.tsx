@@ -103,7 +103,7 @@ export function OrderSummary({
           </div>
 
           {discount > 0 && (
-            <div className="flex justify-between text-green-600 font-medium">
+            <div className="flex justify-between text-[#636B2F] font-medium">
               <span>
                 Discount {promoCode ? `(${promoCode})` : ""}
               </span>

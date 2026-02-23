@@ -182,7 +182,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             <span className="text-xl text-muted-foreground line-through">
               {formatPrice(Number(product.comparePrice))}
             </span>
-            <Badge className="bg-green-600">{discountPercentage}% OFF</Badge>
+            <Badge className="bg-[#636B2F]">{discountPercentage}% OFF</Badge>
           </>
         )}
       </div>

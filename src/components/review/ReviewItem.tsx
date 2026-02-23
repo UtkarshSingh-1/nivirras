@@ -29,7 +29,7 @@ export default function ReviewItem({ review }: any) {
     <div className="border p-4 rounded space-y-2">
       <div className="font-semibold">{review.rating} ★</div>
       <div className="font-medium">{review.title}</div>
-      <div className="text-sm text-gray-600">{review.comment}</div>
+      <div className="text-sm text-[#4A5422]">{review.comment}</div>
 
       {review.media?.length > 0 && (
         <div className="flex gap-2 flex-wrap">
@@ -55,14 +55,14 @@ export default function ReviewItem({ review }: any) {
         <button
           onClick={() => vote("helpful")}
           disabled={voted || loading}
-          className="text-blue-600 disabled:opacity-50"
+          className="text-[#636B2F] disabled:opacity-50"
         >
           Helpful ({helpful})
         </button>
         <button
           onClick={() => vote("notHelpful")}
           disabled={voted || loading}
-          className="text-red-600 disabled:opacity-50"
+          className="text-[#4A5422] disabled:opacity-50"
         >
           Not Helpful ({notHelpful})
         </button>

@@ -9,6 +9,7 @@ import { useState } from "react"
 import { toast } from "@/components/ui/use-toast"
 import { Eye, EyeOff } from "lucide-react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -90,7 +91,7 @@ export default function SignUpPage() {
       toast({ title: "Account created successfully" })
 
       // auto login
-      const login = await signIn("credentials", {
+      await signIn("credentials", {
         email,
         password,
         redirect: false
@@ -105,18 +106,26 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-background to-muted">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="text-3xl font-bold text-crimson-600 mb-2">ASHMARK</div>
-          <CardTitle>Create Account</CardTitle>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-[#F2F4E8] via-[#EDF1DB] to-[#E8ECD6]">
+      <Card className="w-full max-w-md border-[#D3DAAE] shadow-lg">
+        <CardHeader className="text-center space-y-2">
+          <div
+            className="text-3xl font-bold text-[#4A5422]"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            NIVIRRAS
+          </div>
+          <CardTitle>Create Your Account</CardTitle>
+          <p className="text-sm text-[#4A5422]">
+            Join Nivirras Collections and start shopping.
+          </p>
         </CardHeader>
         <CardContent className="space-y-4">
 
           {step === "signup" && (
             <>
               <div>
-                <Label>Name</Label>
+                <Label className="mb-2 block">Name</Label>
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -125,7 +134,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <Label>Email</Label>
+                <Label className="mb-2 block">Email</Label>
                 <Input
                   type="email"
                   value={email}
@@ -135,7 +144,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <Label>Password</Label>
+                <Label className="mb-2 block">Password</Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -160,17 +169,27 @@ export default function SignUpPage() {
               <Button className="w-full" onClick={sendOtp} disabled={loading}>
                 {loading ? "Sending OTP..." : "Verify Email"}
               </Button>
+
+              <p className="text-center text-sm text-muted-foreground">
+                Already have an account?{" "}
+                <Link href="/login" className="text-[#636B2F] hover:text-[#4A5422]">
+                  Sign in
+                </Link>
+              </p>
             </>
           )}
 
           {step === "verify" && (
             <>
-              <Label>Enter OTP</Label>
+              <Label className="mb-2 block">Enter OTP</Label>
               <Input
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
                 placeholder="Enter the 6 digit OTP"
               />
+              <p className="text-xs text-muted-foreground">
+                We sent a verification code to <span className="font-medium">{email}</span>.
+              </p>
 
               <Button className="w-full" onClick={verifyOtp} disabled={loading}>
                 {loading ? "Verifying..." : "Create Account"}

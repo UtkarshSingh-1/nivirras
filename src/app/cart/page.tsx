@@ -98,7 +98,7 @@ export default function CartPage() {
                   <span>Shipping</span>
                   <span>
                     {shipping === 0 ? (
-                      <span className="text-green-700 font-semibold">Free</span>
+                      <span className="text-[#4A5422] font-semibold">Free</span>
                     ) : (
                       <span className="font-medium">{formatPrice(shipping)}</span>
                     )}

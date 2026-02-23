@@ -49,7 +49,7 @@ export default function CouponBanner() {
   };
 
   return (
-    <div className="relative w-full overflow-hidden bg-red-700 text-white">
+    <div className="relative w-full overflow-hidden bg-[#4A5422] text-white">
       {/* Close button */}
       <button
         onClick={handleClose}

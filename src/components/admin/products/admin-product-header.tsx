@@ -130,7 +130,7 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                   Duplicate Product
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
+                <DropdownMenuItem className="text-[#4A5422]">
                   <Package className="mr-2 h-4 w-4" />
                   Archive Product
                 </DropdownMenuItem>
@@ -191,8 +191,8 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
               <div>
                 <span className="text-muted-foreground">Stock:</span>
                 <div className="font-semibold flex items-center gap-2">
-                  <div className={`w-2 h-2 ${product.stock > 10 ? 'bg-green-500' :
-                      product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'
+                  <div className={`w-2 h-2 ${product.stock > 10 ? 'bg-[#EDF1DB]0' :
+                      product.stock > 0 ? 'bg-[#EDF1DB]0' : 'bg-[#EDF1DB]0'
                     }`}></div>
                   {product.stock > 10 ? 'In Stock' :
                     product.stock > 0 ? `${product.stock} left` : 'Out of Stock'
@@ -215,11 +215,11 @@ export function AdminProductHeader({ product }: AdminProductHeaderProps) {
                 <div className="text-xs text-muted-foreground">Total Sales</div>
               </div>
               <div className="bg-muted/30 p-3 text-center">
-                <div className="text-xl font-bold text-blue-600">4.8</div>
+                <div className="text-xl font-bold text-[#636B2F]">4.8</div>
                 <div className="text-xs text-muted-foreground">Avg Rating</div>
               </div>
               <div className="bg-muted/30 p-3 text-center">
-                <div className="text-xl font-bold text-green-600">89</div>
+                <div className="text-xl font-bold text-[#636B2F]">89</div>
                 <div className="text-xs text-muted-foreground">Reviews</div>
               </div>
             </div>

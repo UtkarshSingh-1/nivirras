@@ -5,8 +5,6 @@ import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const MotionLink = motion(Link);
-
 const floatingParticles = [
   { x: -18, duration: 3.2, delay: 0.1 },
   { x: -7, duration: 3.8, delay: 0.5 },
@@ -85,26 +83,29 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <MotionLink
-                href="/products"
-                prefetch
+              <motion.div
                 whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(74, 84, 34, 0.28)" }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex px-8 py-4 bg-gradient-to-r from-[#4A5422] to-[#636B2F] text-white rounded-full shadow-lg transition-all"
-                style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                Shop Collection
-              </MotionLink>
-              <MotionLink
-                href="/products?trending=true"
-                prefetch
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-flex px-8 py-4 bg-white/70 backdrop-blur-sm text-[#4A5422] rounded-full border border-[#D3DAAE] hover:border-[#636B2F] transition-all"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Explore Scents
-              </MotionLink>
+                <Link
+                  href="/products"
+                  prefetch
+                  className="inline-flex px-8 py-4 bg-[#636B2F] hover:bg-[#4A5422] text-white rounded-full shadow-lg transition-all"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Shop Collection
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  href="/products?trending=true"
+                  prefetch
+                  className="inline-flex px-8 py-4 bg-white text-[#313919] rounded-full border border-[#D3DAAE] hover:border-[#636B2F] hover:bg-[#EDF1DB] transition-all"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Explore Scents
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -141,7 +142,7 @@ export function Hero() {
 
 function CandleDisplay() {
   return (
-    <div className="relative w-full max-w-sm mx-auto">
+    <div className="relative w-full max-w-[280px] md:max-w-sm mx-auto">
       {/* Glow Effect */}
       <motion.div
         animate={{
@@ -175,7 +176,7 @@ function CandleDisplay() {
             width={1080}
             height={1350}
             priority
-            sizes="(max-width: 768px) 75vw, 34vw"
+            sizes="(max-width: 768px) 64vw, 30vw"
             className="w-full h-auto object-cover rounded-2xl"
           />
 

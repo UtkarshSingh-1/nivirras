@@ -223,7 +223,7 @@ export function AddressBook({ userId, openAddAddress = false }: AddressBookProps
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 border-0 text-red-600 hover:text-red-700"
+                        className="h-8 w-8 p-0 border-0 text-[#4A5422] hover:text-[#4A5422]"
                         onClick={() => deleteAddress(address.id)}
                       >
                         <Trash2 className="h-4 w-4" />

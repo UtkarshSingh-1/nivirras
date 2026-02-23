@@ -119,7 +119,7 @@ export default function AdminPromoCodesPage() {
                     : `₹${promo.discountValue}`}
                 </td>
                 <td>
-                  <span className={promo.isActive ? "text-green-600" : "text-red-600"}>
+                  <span className={promo.isActive ? "text-[#636B2F]" : "text-[#4A5422]"}>
                     {promo.isActive ? "Active" : "Disabled"}
                   </span>
                 </td>

@@ -76,7 +76,7 @@ export default function ReviewSection({ productId }: { productId: string }) {
       {reviews.length < total && (
         <button
           onClick={() => setPage(page + 1)}
-          className="px-4 py-2 bg-gray-200 rounded"
+          className="px-4 py-2 bg-[#DDE4BE] rounded"
         >
           Load More ({reviews.length}/{total})
         </button>

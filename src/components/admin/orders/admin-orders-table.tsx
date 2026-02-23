@@ -149,21 +149,21 @@ export function AdminOrdersTable({ searchParams }: AdminOrdersTableProps) {
   }
 
   const getStatusIcon = (status: string, paymentStatus: string) => {
-    if (paymentStatus === 'FAILED') return <X className="h-4 w-4 text-red-500" />
-    if (status === 'DELIVERED') return <CheckCircle className="h-4 w-4 text-green-500" />
-    if (status === 'SHIPPED') return <Truck className="h-4 w-4 text-blue-500" />
-    return <RefreshCw className="h-4 w-4 text-yellow-500" />
+    if (paymentStatus === 'FAILED') return <X className="h-4 w-4 text-[#636B2F]" />
+    if (status === 'DELIVERED') return <CheckCircle className="h-4 w-4 text-[#636B2F]" />
+    if (status === 'SHIPPED') return <Truck className="h-4 w-4 text-[#636B2F]" />
+    return <RefreshCw className="h-4 w-4 text-[#8A9353]" />
   }
 
   const getStatusColor = (status: string, paymentStatus: string) => {
-    if (paymentStatus === 'FAILED') return 'bg-red-600'
-    if (status === 'DELIVERED') return 'bg-green-600'
-    if (status === 'SHIPPED') return 'bg-purple-600'
-    if (status === 'PROCESSING') return 'bg-yellow-600'
-    if (status === 'CONFIRMED') return 'bg-blue-600'
-    if (status === 'CANCELLED') return 'bg-red-600'
-    if (status === 'COMPLETED') return 'bg-orange-600'
-    return 'bg-gray-600'
+    if (paymentStatus === 'FAILED') return 'bg-[#4A5422]'
+    if (status === 'DELIVERED') return 'bg-[#636B2F]'
+    if (status === 'SHIPPED') return 'bg-[#596229]'
+    if (status === 'PROCESSING') return 'bg-[#8A9353]'
+    if (status === 'CONFIRMED') return 'bg-[#636B2F]'
+    if (status === 'CANCELLED') return 'bg-[#4A5422]'
+    if (status === 'COMPLETED') return 'bg-[#7A8440]'
+    return 'bg-[#4A5422]'
   }
 
   const exportOrders = async () => {

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "motion/react";
 import { Mail, Send } from "lucide-react";
@@ -21,16 +21,9 @@ export function Newsletter() {
 
   return (
     <section className="py-24 px-6 bg-gradient-to-b from-[#D3DAAE] to-[#F2F4E8] relative overflow-hidden">
-      {/* Background Glow */}
       <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.2, 0.3, 0.2],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-        }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
+        transition={{ duration: 6, repeat: Infinity }}
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-[#8A9353]/20 to-transparent blur-3xl"
       />
 
@@ -41,7 +34,6 @@ export function Newsletter() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          {/* Icon */}
           <motion.div
             animate={{ rotate: [0, 5, -5, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -50,20 +42,13 @@ export function Newsletter() {
             <Mail className="w-10 h-10 text-white" />
           </motion.div>
 
-          <h2
-            className="text-5xl md:text-6xl mb-4 text-[#313919]"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
+          <h2 className="text-5xl md:text-6xl mb-4 text-[#313919]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
             Join Our Community
           </h2>
-          <p
-            className="text-lg text-[#4A5422] mb-8 max-w-2xl mx-auto"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
+          <p className="text-lg text-[#4A5422] mb-8 max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
             Subscribe to receive exclusive offers, early access to new collections, and inspiration for creating your perfect sanctuary
           </p>
 
-          {/* Newsletter Form */}
           <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 20 }}
@@ -92,7 +77,7 @@ export function Newsletter() {
                   type="submit"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-full sm:w-auto justify-center px-6 py-3 bg-gradient-to-r from-[#636B2F] to-[#8A9353] text-white rounded-full flex items-center gap-2 shadow-md"
+                  className="w-full sm:w-auto justify-center px-6 py-3 bg-[#636B2F] hover:bg-[#4A5422] text-white rounded-full flex items-center gap-2 shadow-md transition-colors"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <span>Subscribe</span>
@@ -101,23 +86,19 @@ export function Newsletter() {
               </div>
             </div>
 
-            {/* Success Message */}
             {isSubmitted && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 text-[#636B2F]"
+                className="mt-4 text-[#4A5422]"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                ✓ Thank you for subscribing! Check your inbox soon.
+                Thank you for subscribing! Check your inbox soon.
               </motion.div>
             )}
           </motion.form>
 
-          <p
-            className="text-sm text-[#636B2F] mt-4"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
+          <p className="text-sm text-[#636B2F] mt-4" style={{ fontFamily: "'Inter', sans-serif" }}>
             We respect your privacy. Unsubscribe at any time.
           </p>
         </motion.div>
@@ -125,5 +106,3 @@ export function Newsletter() {
     </section>
   );
 }
-
-

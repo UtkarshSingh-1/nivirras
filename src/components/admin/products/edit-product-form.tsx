@@ -493,14 +493,14 @@ export function EditProductForm({ product }: EditProductFormProps) {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-yellow-600" />
-                  <span className="font-medium text-yellow-600">Unsaved Changes</span>
+                  <AlertCircle className="w-5 h-5 text-[#8A9353]" />
+                  <span className="font-medium text-[#8A9353]">Unsaved Changes</span>
                 </div>
                 <Button 
                   type="button" 
                   variant="outline" 
                   onClick={discardChanges}
-                  className="border-0 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600"
+                  className="border-0 bg-[#EDF1DB] dark:bg-[#4A5422]/20 text-[#8A9353]"
                 >
                   Discard Changes
                 </Button>
@@ -604,8 +604,8 @@ export function EditProductForm({ product }: EditProductFormProps) {
             </div>
 
             {formData.comparePrice && formData.comparePrice > formData.price && (
-              <div className="p-3 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-400">
-                <p className="text-sm text-green-700 dark:text-green-300">
+              <div className="p-3 bg-[#EDF1DB] dark:bg-[#4A5422]/20 border-l-4 border-[#8A9353]">
+                <p className="text-sm text-[#4A5422] dark:text-[#D3DAAE]">
                   Discount: {Math.round(((formData.comparePrice - formData.price) / formData.comparePrice) * 100)}% off
                 </p>
               </div>

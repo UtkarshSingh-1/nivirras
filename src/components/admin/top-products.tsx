@@ -159,14 +159,14 @@ export function TopProducts() {
                       <Package className="h-3 w-3" />
                       {product.salesCount} sold
                     </div>
-                    <div className="flex items-center gap-1 text-green-600">
+                    <div className="flex items-center gap-1 text-[#636B2F]">
                       <Star className="h-3 w-3" />
                       {formatPrice(product.revenue)} revenue
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-semibold text-green-600">
+                  <div className="text-sm font-semibold text-[#636B2F]">
                     {formatPrice(product.revenue)}
                   </div>
                   <div className="text-xs text-muted-foreground">

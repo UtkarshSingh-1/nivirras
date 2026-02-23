@@ -130,7 +130,7 @@ export function ContactForm() {
       </div>
 
       {status && (
-        <p className={status.type === "success" ? "text-sm text-green-600" : "text-sm text-red-600"}>
+        <p className={status.type === "success" ? "text-sm text-[#636B2F]" : "text-sm text-[#4A5422]"}>
           {status.message}
         </p>
       )}

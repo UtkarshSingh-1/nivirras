@@ -139,7 +139,7 @@ export function EditProductPreview({ product }: EditProductPreviewProps) {
                   </Badge>
                 )}
                 {discountPercentage > 0 && (
-                  <Badge className="bg-green-600 text-xs border-0">
+                  <Badge className="bg-[#636B2F] text-xs border-0">
                     {discountPercentage}% OFF
                   </Badge>
                 )}
@@ -163,7 +163,7 @@ export function EditProductPreview({ product }: EditProductPreviewProps) {
                   <Star
                     key={i}
                     className={`h-4 w-4 ${
-                      i < 4 ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
+                      i < 4 ? "fill-[#B6C37A] text-[#B6C37A]" : "text-muted-foreground"
                     }`}
                   />
                 ))}
@@ -217,8 +217,8 @@ export function EditProductPreview({ product }: EditProductPreviewProps) {
               {/* Stock */}
               <div className="flex items-center gap-2 text-sm">
                 <div className={`w-2 h-2 ${
-                  previewData.stock > 10 ? 'bg-green-500' : 
-                  previewData.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'
+                  previewData.stock > 10 ? 'bg-[#EDF1DB]0' : 
+                  previewData.stock > 0 ? 'bg-[#EDF1DB]0' : 'bg-[#EDF1DB]0'
                 }`}></div>
                 <span className="text-muted-foreground">
                   {previewData.stock > 10 ? 'In Stock' : 
@@ -273,10 +273,10 @@ export function EditProductPreview({ product }: EditProductPreviewProps) {
         <Card className="border-0 shadow-md border-l-4 border-l-yellow-500">
           <CardContent className="p-4">
             <div className="flex items-start gap-2">
-              <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-[#8A9353] mt-0.5" />
               <div className="space-y-2">
-                <h4 className="font-medium text-yellow-600">Warnings</h4>
-                <div className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
+                <h4 className="font-medium text-[#8A9353]">Warnings</h4>
+                <div className="text-sm text-[#6A733B] dark:text-[#D3DAAE] space-y-1">
                   {previewData.stock <= 5 && (
                     <p>• Low stock warning ({previewData.stock} left)</p>
                   )}

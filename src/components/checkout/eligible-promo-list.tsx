@@ -25,8 +25,8 @@ export function EligiblePromoList({
   if (eligiblePromos.length === 0) return null
 
   return (
-    <div className="mb-3 border rounded p-3 bg-green-50 space-y-2">
-      <p className="text-sm font-semibold text-green-700">
+    <div className="mb-3 border rounded p-3 bg-[#EDF1DB] space-y-2">
+      <p className="text-sm font-semibold text-[#4A5422]">
         Available Offers
       </p>
 
@@ -34,21 +34,21 @@ export function EligiblePromoList({
         <div
           key={promo.code}
           className={cn(
-            "p-2 border border-green-500 rounded flex justify-between items-center"
+            "p-2 border border-[#8A9353] rounded flex justify-between items-center"
           )}
         >
           <div className="flex flex-col">
             <span className="font-semibold text-sm">
               {promo.code}
             </span>
-            <span className="text-xs text-green-700">
+            <span className="text-xs text-[#4A5422]">
               {promo.description}
             </span>
           </div>
 
           <button
             onClick={() => onApply?.(promo.code)}
-            className="flex items-center gap-1 text-xs font-semibold text-green-700"
+            className="flex items-center gap-1 text-xs font-semibold text-[#4A5422]"
           >
             <BadgeCheck className="w-4 h-4" />
             APPLY

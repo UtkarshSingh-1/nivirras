@@ -74,7 +74,7 @@ export default function ContactPage() {
                 ].map(([day, hours]) => (
                   <div key={day} className="flex justify-between text-[#4A5422]">
                     <span>{day}</span>
-                    <span className={hours === "Closed" ? "text-red-400" : "font-medium text-[#3D2B1F]"}>
+                    <span className={hours === "Closed" ? "text-[#6A733B]" : "font-medium text-[#3D2B1F]"}>
                       {hours}
                     </span>
                   </div>

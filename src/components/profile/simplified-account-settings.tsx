@@ -150,20 +150,20 @@ export function SimplifiedAccountSettings({ userId: _userId }: SimplifiedAccount
       {/* Delete Account */}
       <Card className="border-0 shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-600">
+          <CardTitle className="flex items-center gap-2 text-[#4A5422]">
             <AlertTriangle className="w-5 h-5" />
             Danger Zone
           </CardTitle>
           <CardDescription>Irreversible account actions</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400">
+          <div className="p-4 bg-[#EDF1DB] dark:bg-[#4A5422]/20 border-l-4 border-[#8A9353]">
             <div className="flex items-start justify-between">
               <div>
-                <h4 className="font-medium text-red-800 dark:text-red-200">
+                <h4 className="font-medium text-[#4A5422] dark:text-[#E8ECD6]">
                   Delete Account
                 </h4>
-                <p className="text-sm text-red-700 dark:text-red-300 mt-1">
+                <p className="text-sm text-[#4A5422] dark:text-[#D3DAAE] mt-1">
                   Permanently delete your account and all associated data. This
                   action cannot be undone.
                 </p>

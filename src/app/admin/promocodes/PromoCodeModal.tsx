@@ -125,7 +125,7 @@ export default function PromoCodeModal({
           </button>
           <button
             onClick={submit}
-            className="bg-red-600 text-white px-4 py-2 rounded"
+            className="bg-[#4A5422] text-white px-4 py-2 rounded"
           >
             {promo ? "Update" : "Create"}
           </button>

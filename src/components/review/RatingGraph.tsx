@@ -10,8 +10,8 @@ export default function RatingGraph({ ratingDistribution }: { ratingDistribution
           return (
             <div key={star} className="flex items-center gap-2">
               <div className="w-10 font-medium">{star}★</div>
-              <div className="flex-1 bg-gray-200 rounded h-3">
-                <div className="bg-green-600 h-3 rounded" style={{ width: `${percent}%` }} />
+              <div className="flex-1 bg-[#DDE4BE] rounded h-3">
+                <div className="bg-[#636B2F] h-3 rounded" style={{ width: `${percent}%` }} />
               </div>
               <div className="w-12 text-right text-sm">{percent}%</div>
             </div>

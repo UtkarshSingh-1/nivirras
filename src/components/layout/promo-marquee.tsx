@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useState } from "react"
 import { X } from "lucide-react"
@@ -29,49 +29,35 @@ export function PromoMarquee() {
   if (dismissed || promos.length === 0) return null
 
   return (
-    <div className="promo-marquee bg-[#8B0000] text-white py-2 overflow-hidden">
+    <div className="promo-marquee bg-[#4A5422] text-white py-2 overflow-hidden">
       <div className="flex items-center">
         <div className="flex-1">
           <div className="flex h-full overflow-hidden gap-6">
-            {/* Track 1 */}
             <div className="flex animate-marquee1 whitespace-nowrap gap-6">
               {promos.map(promo => (
                 <div
                   key={promo.id}
                   className="flex items-center gap-2 px-4 pr-6 text-base font-medium shrink-0 min-w-fit"
                 >
-                  <span className="font-bold underline whitespace-nowrap">
-                    {promo.code}
-                  </span>
-                  <span className="opacity-90 whitespace-nowrap">
-                    {promo.description}
-                  </span>
-                  <span className="mx-2 opacity-50">•</span>
+                  <span className="font-bold underline whitespace-nowrap">{promo.code}</span>
+                  <span className="opacity-90 whitespace-nowrap">{promo.description}</span>
+                  <span className="mx-2 opacity-50">*</span>
                 </div>
               ))}
-
-              {/* 🔹 TRAILING BUFFER — critical fix */}
               <div className="w-[120px] shrink-0" />
             </div>
 
-            {/* Track 2 (duplicate) */}
             <div className="flex animate-marquee2 whitespace-nowrap gap-6">
               {promos.map(promo => (
                 <div
                   key={`${promo.id}-dup`}
                   className="flex items-center gap-2 px-4 pr-6 text-base font-medium shrink-0 min-w-fit"
                 >
-                  <span className="font-bold underline whitespace-nowrap">
-                    {promo.code}
-                  </span>
-                  <span className="opacity-90 whitespace-nowrap">
-                    {promo.description}
-                  </span>
-                  <span className="mx-2 opacity-50">•</span>
+                  <span className="font-bold underline whitespace-nowrap">{promo.code}</span>
+                  <span className="opacity-90 whitespace-nowrap">{promo.description}</span>
+                  <span className="mx-2 opacity-50">*</span>
                 </div>
               ))}
-
-              {/* 🔹 TRAILING BUFFER */}
               <div className="w-[120px] shrink-0" />
             </div>
           </div>
@@ -127,7 +113,6 @@ export function PromoMarquee() {
           animation-play-state: paused;
         }
 
-        /* Mobile */
         @media (max-width: 640px) {
           .promo-marquee {
             --speed: 24s;
@@ -139,14 +124,12 @@ export function PromoMarquee() {
           }
         }
 
-        /* Tablet */
         @media (min-width: 641px) and (max-width: 1024px) {
           .promo-marquee {
             --speed: 26s;
           }
         }
 
-        /* Desktop */
         @media (min-width: 1200px) {
           .promo-marquee {
             --speed: 32s;

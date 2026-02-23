@@ -69,14 +69,14 @@ interface AdminOrderDetailsProps {
 export function AdminOrderDetails({ order }: AdminOrderDetailsProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "DELIVERED": return "bg-green-600"
-      case "SHIPPED": return "bg-purple-600"
-      case "PROCESSING": return "bg-yellow-600"
-      case "CONFIRMED": return "bg-blue-600"
-      case "PENDING": return "bg-gray-600"
-      case "CANCELLED": return "bg-red-600"
-      case "COMPLETED": return "bg-orange-600"
-      default: return "bg-gray-600"
+      case "DELIVERED": return "bg-[#636B2F]"
+      case "SHIPPED": return "bg-[#596229]"
+      case "PROCESSING": return "bg-[#8A9353]"
+      case "CONFIRMED": return "bg-[#636B2F]"
+      case "PENDING": return "bg-[#4A5422]"
+      case "CANCELLED": return "bg-[#4A5422]"
+      case "COMPLETED": return "bg-[#7A8440]"
+      default: return "bg-[#4A5422]"
     }
   }
 
@@ -134,7 +134,7 @@ export function AdminOrderDetails({ order }: AdminOrderDetailsProps) {
             {order.trackingUrl && (
               <div>
                 <strong>Tracking URL:</strong>
-                <a href={order.trackingUrl} target="_blank" className="text-blue-600 underline ml-1">
+                <a href={order.trackingUrl} target="_blank" className="text-[#636B2F] underline ml-1">
                   Track Package
                 </a>
               </div>
@@ -149,7 +149,7 @@ export function AdminOrderDetails({ order }: AdminOrderDetailsProps) {
             )}
 
             {order.cancelledAt && (
-              <div className="text-red-600 flex items-center gap-1">
+              <div className="text-[#4A5422] flex items-center gap-1">
                 <XCircle className="w-4 h-4" />
                 <span><strong>Cancelled At:</strong> {formatDate(new Date(order.cancelledAt))}</span>
               </div>
@@ -194,7 +194,7 @@ export function AdminOrderDetails({ order }: AdminOrderDetailsProps) {
             <div className="flex justify-between"><span>Subtotal:</span> <span>{formatPrice(order.subtotal)}</span></div>
             <div className="flex justify-between"><span>Shipping:</span> <span>{order.shipping === 0 ? "Free" : formatPrice(order.shipping)}</span></div>
             {order.discount && (
-              <div className="flex justify-between text-green-600">
+              <div className="flex justify-between text-[#636B2F]">
                 <span>Discount:</span> <span>-{formatPrice(order.discount)}</span>
               </div>
             )}

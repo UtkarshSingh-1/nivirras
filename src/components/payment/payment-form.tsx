@@ -185,7 +185,7 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
               {isRetry ? 'Retry Payment' : 'Complete Payment'}
             </CardTitle>
             {isRetry && (
-              <Badge className="bg-yellow-600 border-0">Retry</Badge>
+              <Badge className="bg-[#8A9353] border-0">Retry</Badge>
             )}
           </div>
         </CardHeader>
@@ -252,9 +252,9 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
       <Card className="border-0 shadow-md">
         <CardContent className="p-6">
           <div className="flex items-start gap-3">
-            <Shield className="w-5 h-5 text-green-600 mt-0.5" />
+            <Shield className="w-5 h-5 text-[#636B2F] mt-0.5" />
             <div>
-              <h4 className="font-semibold text-green-600 mb-1">Secure Payment</h4>
+              <h4 className="font-semibold text-[#636B2F] mb-1">Secure Payment</h4>
               <p className="text-sm text-muted-foreground">
                 Your payment information is encrypted and secure. We use industry-standard
                 security measures to protect your financial data.
@@ -281,7 +281,7 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
           </Button>
           
           {error && (
-            <p className="text-sm text-red-600 mt-2 text-center">
+            <p className="text-sm text-[#4A5422] mt-2 text-center">
               Payment gateway error. Please refresh the page and try again.
             </p>
           )}

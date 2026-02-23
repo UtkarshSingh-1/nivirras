@@ -113,7 +113,7 @@ export function ReviewList({ productId, onReviewDeleted }: ReviewListProps) {
         key={i}
         className={cn(
           "h-4 w-4",
-          i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+          i < rating ? "fill-[#B6C37A] text-[#B6C37A]" : "text-[#D3DAAE]"
         )}
       />
     ))
@@ -201,13 +201,13 @@ export function ReviewList({ productId, onReviewDeleted }: ReviewListProps) {
                       {/* VOTING */}
                       <div className="flex gap-4 mt-3">
                         <button
-                          className="flex items-center gap-1 text-xs text-green-600 hover:underline"
+                          className="flex items-center gap-1 text-xs text-[#636B2F] hover:underline"
                           onClick={() => vote(review.id, "helpful")}
                         >
                           <ThumbsUp className="h-3 w-3" /> Helpful ({review.helpful})
                         </button>
                         <button
-                          className="flex items-center gap-1 text-xs text-red-600 hover:underline"
+                          className="flex items-center gap-1 text-xs text-[#4A5422] hover:underline"
                           onClick={() => vote(review.id, "notHelpful")}
                         >
                           <ThumbsDown className="h-3 w-3" /> Not Helpful ({review.notHelpful})

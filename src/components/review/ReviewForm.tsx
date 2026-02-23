@@ -59,7 +59,7 @@ export default function ReviewForm({ productId, onAdd }: any) {
       <div className="flex gap-1">
         {[1,2,3,4,5].map(n => (
           <button key={n} onClick={() => setRating(n)}>
-            <span className={`text-xl ${n <= rating ? "text-yellow-500" : "text-gray-400"}`}>★</span>
+            <span className={`text-xl ${n <= rating ? "text-[#8A9353]" : "text-[#8A9353]"}`}>★</span>
           </button>
         ))}
       </div>
@@ -101,7 +101,7 @@ export default function ReviewForm({ productId, onAdd }: any) {
       <button
         onClick={submit}
         disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+        className="bg-[#636B2F] text-white px-4 py-2 rounded disabled:opacity-50"
       >
         {loading ? "Posting..." : "Submit Review"}
       </button>

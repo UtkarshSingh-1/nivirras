@@ -129,8 +129,8 @@ export function ReviewForm({ productId, onReviewSubmitted }: ReviewFormProps) {
                     className={cn(
                       "h-6 w-6",
                       star <= (hoveredRating || rating)
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-gray-300"
+                        ? "fill-[#B6C37A] text-[#B6C37A]"
+                        : "text-[#D3DAAE]"
                     )}
                   />
                 </button>

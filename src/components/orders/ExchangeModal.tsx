@@ -54,7 +54,7 @@ export function ExchangeModal({ open, onCloseAction, item }: ExchangeModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-white dark:bg-neutral-900 p-6 rounded w-full max-w-md space-y-4">
+      <div className="bg-white dark:bg-[#313919] p-6 rounded w-full max-w-md space-y-4">
         <h2 className="text-lg font-semibold">Exchange {item.productName}</h2>
 
         <Select onValueChange={setNewSize}>

@@ -87,7 +87,7 @@ export default function ForgotPasswordPage() {
 
           {/* Alerts */}
           {alertMsg && (
-            <Alert className={alertType === "success" ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"}>
+            <Alert className={alertType === "success" ? "bg-[#EDF1DB] text-[#4A5422] border-[#D3DAAE]" : "bg-[#EDF1DB] text-[#4A5422] border-[#D3DAAE]"}>
               {alertType === "success" ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
               <AlertDescription>{alertMsg}</AlertDescription>
             </Alert>

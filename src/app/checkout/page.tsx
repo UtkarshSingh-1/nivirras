@@ -316,7 +316,7 @@ export default function CheckoutPage() {
                   </Button>
 
                   {error && (
-                    <p className="text-sm text-red-600">
+                    <p className="text-sm text-[#4A5422]">
                       Payment gateway failed to load
                     </p>
                   )}

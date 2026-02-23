@@ -102,7 +102,7 @@ export function AdminProductDetails({ product }: AdminProductDetailsProps) {
                 <div className="text-xl text-muted-foreground line-through">
                   {formatPrice(Number(product.comparePrice))}
                 </div>
-                <div className="text-sm text-green-600">
+                <div className="text-sm text-[#636B2F]">
                   {Math.round(((Number(product.comparePrice) - Number(product.price)) / Number(product.comparePrice)) * 100)}% discount
                 </div>
               </div>
@@ -191,8 +191,8 @@ export function AdminProductDetails({ product }: AdminProductDetailsProps) {
               <label className="text-sm font-medium text-muted-foreground">Stock Quantity</label>
               <div className="text-xl font-semibold flex items-center gap-2">
                 <div className={`w-3 h-3 ${
-                  product.stock > 10 ? 'bg-green-500' : 
-                  product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'
+                  product.stock > 10 ? 'bg-[#EDF1DB]0' : 
+                  product.stock > 0 ? 'bg-[#EDF1DB]0' : 'bg-[#EDF1DB]0'
                 }`}></div>
                 {product.stock} units
               </div>
