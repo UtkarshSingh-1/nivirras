@@ -128,9 +128,9 @@ export function PaymentSummary({ order }: PaymentSummaryProps) {
             <div className="flex items-center gap-3">
               <Package className="w-5 h-5 text-[#596229]" />
               <div>
-                <div className="font-medium text-sm">Easy Returns</div>
+                <div className="font-medium text-sm">Fast Dispatch</div>
                 <div className="text-xs text-muted-foreground">
-                  30-day return policy
+                  Orders ship quickly with tracking updates
                 </div>
               </div>
             </div>

@@ -111,7 +111,7 @@ export default function TermsPage() {
                 <CardContent>
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li>• All orders are subject to acceptance and availability</li>
-                    <li>• We reserve the right to refuse or cancel any order</li>
+                    <li>• We reserve the right to refuse any order</li>
                     <li>• Prices are subject to change without notice</li>
                     <li>• Payment must be received before order processing</li>
                   </ul>
@@ -132,25 +132,6 @@ export default function TermsPage() {
                 </CardContent>
               </Card>
             </div>
-          </div>
-
-          {/* Returns and Refunds */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-6">Returns and Refunds</h2>
-            <Card>
-              <CardContent className="pt-6">
-                <p className="text-muted-foreground mb-4">
-                  Our return and refund policy is detailed in our Returns & Exchanges page. Key points include:
-                </p>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• 30-day return window from delivery date</li>
-                  <li>• Items must be unworn and in original condition</li>
-                  <li>• Free return shipping within India</li>
-                  <li>• Refunds processed to original payment method</li>
-                  <li>• Custom or personalized items are non-returnable</li>
-                </ul>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Intellectual Property */}

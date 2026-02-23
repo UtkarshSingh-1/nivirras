@@ -20,7 +20,6 @@ import {
   Share2,
   Truck,
   Shield,
-  RotateCcw,
 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useCart } from "@/contexts/cart-context";
@@ -289,10 +288,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <div className="flex items-center gap-3 text-sm">
           <Truck className="h-4 w-4 text-muted-foreground" />
           <span>Free shipping on orders over ₹1000</span>
-        </div>
-        <div className="flex items-center gap-3 text-sm">
-          <RotateCcw className="h-4 w-4 text-muted-foreground" />
-          <span>30-day return policy</span>
         </div>
         <div className="flex items-center gap-3 text-sm">
           <Shield className="h-4 w-4 text-muted-foreground" />

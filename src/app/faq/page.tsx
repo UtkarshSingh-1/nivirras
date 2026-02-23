@@ -13,7 +13,7 @@ export default function FAQPage() {
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Find answers to common questions about our products, shipping, returns, and more.
+              Find answers to common questions about our products, shipping, and account.
             </p>
           </div>
 
@@ -82,63 +82,6 @@ export default function FAQPage() {
                     <p className="text-muted-foreground">
                       If your order hasn't been processed yet, you can contact our customer service team to make changes. 
                       Once the order is in processing or shipped, changes cannot be made.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
-            {/* Returns & Exchanges */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <HelpCircle className="h-6 w-6 text-crimson-600" />
-                Returns & Exchanges
-              </h2>
-              <div className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">What is your return policy?</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                      We offer a 30-day return policy for unworn items with tags attached. Items must be in original 
-                      condition and packaging. We provide free return shipping within India.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">How do I return an item?</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                      Log into your account, go to your order history, and click "Return Item" next to the order. 
-                      Follow the instructions to print a prepaid return label and send the item back to us.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Can I exchange for a different size?</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                      Yes! We offer free size exchanges within 30 days. We'll send you the new size immediately 
-                      and you can return the old size using our prepaid return label.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">How long does it take to process a return?</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                      Once we receive your return, we'll process it within 2-3 business days. Refunds are issued 
-                      to your original payment method and may take 5-10 business days to appear on your statement.
                     </p>
                   </CardContent>
                 </Card>

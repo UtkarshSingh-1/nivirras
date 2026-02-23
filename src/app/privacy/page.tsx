@@ -71,7 +71,7 @@ export default function PrivacyPage() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li>• Purchase history and order details</li>
                     <li>• Product preferences and wishlist items</li>
-                    <li>• Return and exchange information</li>
+                    <li>• Customer support and communication records</li>
                     <li>• Customer service interactions</li>
                   </ul>
                 </CardContent>
@@ -94,7 +94,7 @@ export default function PrivacyPage() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li>• Process and fulfill your orders</li>
                     <li>• Send order confirmations and updates</li>
-                    <li>• Handle returns and exchanges</li>
+                    <li>• Provide order support and issue resolution</li>
                     <li>• Provide customer support</li>
                   </ul>
                 </CardContent>

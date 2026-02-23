@@ -105,8 +105,8 @@ export default function ContactPage() {
                 a: "We process orders within 1-2 business days. Standard delivery within India takes 3-5 business days.",
               },
               {
-                q: "What is your return policy?",
-                a: "We offer a 7-day return policy for unopened candles. Reach out and we will make it right.",
+                q: "How quickly do you dispatch orders?",
+                a: "Most orders are dispatched within 1-2 business days, and tracking details are shared by email.",
               },
               {
                 q: "Are your candles safe for pets?",

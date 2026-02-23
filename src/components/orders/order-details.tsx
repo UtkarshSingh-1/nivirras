@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { formatPrice, formatDate } from "@/lib/utils"
-import { Package, MapPin, User, XCircle } from "lucide-react"
+import { Package, MapPin, User } from "lucide-react"
 import Image from "next/image"
 import { Decimal } from "@prisma/client/runtime/library"
 
@@ -36,7 +36,6 @@ interface OrderDetailsProps {
     trackingUrl?: string | null;
     shippedAt?: string | null;
     deliveredAt?: string | null;
-    cancelledAt?: string | null;
 
     items: Array<{
       id: string;
@@ -82,7 +81,6 @@ export function OrderDetails({ order }: OrderDetailsProps) {
       case "SHIPPED": return "bg-[#596229]";
       case "PROCESSING": return "bg-[#8A9353]";
       case "CONFIRMED": return "bg-[#636B2F]";
-      case "CANCELLED": return "bg-[#4A5422]";
       default: return "bg-[#4A5422]";
     }
   };
@@ -113,7 +111,7 @@ export function OrderDetails({ order }: OrderDetailsProps) {
       </Card>
 
       {/* TRACKING */}
-      {(order.trackingId || order.courierName || order.deliveredAt || order.cancelledAt) && (
+      {(order.trackingId || order.courierName || order.deliveredAt) && (
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle>Shipping & Tracking</CardTitle>
@@ -133,11 +131,6 @@ export function OrderDetails({ order }: OrderDetailsProps) {
             {order.shippedAt && <div><strong>Shipped:</strong> {formatDate(new Date(order.shippedAt))}</div>}
             {order.deliveredAt && <div><strong>Delivered:</strong> {formatDate(new Date(order.deliveredAt))}</div>}
 
-            {order.cancelledAt && (
-              <div className="text-[#4A5422] flex items-center gap-1">
-                <XCircle className="w-4 h-4" /> Cancelled at {formatDate(new Date(order.cancelledAt))}
-              </div>
-            )}
           </CardContent>
         </Card>
       )}
