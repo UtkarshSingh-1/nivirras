@@ -6,9 +6,11 @@
     "node": ">=20 <23"
   },
   "scripts": {
-    "check:node": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major < 20 || major > 22) { console.warn('Warning: use Node 20/22 for stable Next.js dev. Current: '+process.versions.node); }\"",
-    "clean": "node -e \"const fs=require('fs'); for (const p of ['.next','tsconfig.tsbuildinfo']) fs.rmSync(p,{recursive:true,force:true});\"",
-    "dev": "npm run check:node && next dev",
+    "check:node": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major < 20) { console.error('Node '+process.versions.node+' is too old. Use 20+'); process.exit(1); } if (major > 22) { console.warn('Warning: Node '+process.versions.node+' may be less stable with Next dev. Continuing.'); }\"",
+    "stop:dev": "powershell -Command \"Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -like '*node_modules\\\\next\\\\dist\\\\*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }\"",
+    "clean": "node -e \"const fs=require('fs'); for (const p of ['.next','tsconfig.tsbuildinfo']) fs.rmSync(p,{recursive:true,force:true,maxRetries:20,retryDelay:200});\"",
+    "dev": "npm run dev:reset",
+    "dev:reset": "npm run check:node && npm run stop:dev && npm run clean && next dev -p 3001",
     "dev:webpack": "npm run check:node && next dev",
     "dev:turbopack": "npm run check:node && next dev --turbopack",
     "dev:clean": "npm run check:node && npm run clean && next dev --turbopack",

@@ -1,6 +1,3 @@
-﻿"use client";
-
-import { motion } from "motion/react";
 import { Star, Quote } from "lucide-react";
 import Image from "next/image";
 
@@ -34,31 +31,21 @@ const testimonials = [
 export function Testimonials() {
   return (
     <section className="py-24 px-6 bg-gradient-to-b from-[#E8ECD6] to-[#D3DAAE] relative overflow-hidden">
-      <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-20 right-20 w-64 h-64 bg-[#8A9353] rounded-full blur-3xl"
-      />
+      <div className="absolute top-20 right-20 w-64 h-64 bg-[#8A9353] rounded-full blur-3xl opacity-20" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl mb-4 text-[#313919]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
             What Our Customers Say
           </h2>
           <p className="text-lg text-[#4A5422] max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
             Join thousands of satisfied customers who have elevated their spaces with Nivirras Collections
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} index={index} />
+          {testimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </div>
       </div>
@@ -66,16 +53,9 @@ export function Testimonials() {
   );
 }
 
-function TestimonialCard({ testimonial, index }: { testimonial: typeof testimonials[0]; index: number }) {
+function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
-      className="group"
-    >
+    <div className="group">
       <div className="relative rounded-3xl overflow-hidden bg-white/70 backdrop-blur-md p-8 shadow-lg border border-white/50 h-full hover:shadow-2xl transition-all duration-300">
         <div className="absolute top-6 right-6 opacity-10">
           <Quote className="w-16 h-16 text-[#636B2F]" />
@@ -83,15 +63,9 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
 
         <div className="flex gap-1 mb-4">
           {[...Array(testimonial.rating)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 + i * 0.05 }}
-            >
+            <div key={i}>
               <Star className="w-5 h-5 fill-[#8A9353] text-[#8A9353]" />
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -120,13 +94,8 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 0.15 }}
-          transition={{ duration: 0.3 }}
-          className="absolute inset-0 bg-gradient-radial from-[#8A9353] to-transparent blur-2xl pointer-events-none"
-        />
+        <div className="absolute inset-0 bg-gradient-radial from-[#8A9353] to-transparent blur-2xl pointer-events-none opacity-10" />
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
 import { Sparkles, Heart, Leaf } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -34,13 +31,7 @@ export function About() {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           {/* Image Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
+          <div className="relative">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <Image
                 src="https://images.unsplash.com/photo-1658511629019-39e55d37515a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwY2FuZGxlJTIwcGFja2FnaW5nJTIwZ29sZHxlbnwxfHx8fDE3NzE1MDgzMDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
@@ -55,11 +46,7 @@ export function About() {
             </div>
 
             {/* Floating Badge */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-6 -right-6 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-[#D3DAAE]"
-            >
+            <div className="absolute -bottom-6 -right-6 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-[#D3DAAE]">
               <div className="text-center">
                 <div
                   className="text-4xl text-[#636B2F] mb-1"
@@ -74,16 +61,11 @@ export function About() {
                   Happy Customers
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Text Section */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
+          <div>
             <h2
               className="text-5xl md:text-6xl mb-6 text-[#313919]"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -100,13 +82,8 @@ export function About() {
             {/* Features */}
             <div className="space-y-6 mb-8">
               {features.map((feature, index) => (
-                <motion.div
+                <div
                   key={feature.title}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ x: 5 }}
                   className="flex items-start gap-4 group cursor-pointer"
                 >
                   <div className="w-12 h-12 bg-gradient-to-br from-[#636B2F] to-[#8A9353] rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
@@ -126,21 +103,19 @@ export function About() {
                       {feature.description}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
             <Link href="/about">
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(99, 107, 47, 0.3)" }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 className="px-8 py-4 bg-[#636B2F] hover:bg-[#4A5422] text-white rounded-full shadow-lg transition-colors"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Learn More About Us
-              </motion.button>
+              </button>
             </Link>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

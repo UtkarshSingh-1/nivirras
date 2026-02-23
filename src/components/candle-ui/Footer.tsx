@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
-import { Instagram, Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react"
+import { Instagram, Youtube, MapPin, Phone, Mail } from "lucide-react"
 import Link from "next/link"
 
 const footerLinks = {
@@ -25,10 +25,12 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Mail, href: "#", label: "Email" },
+  {
+    icon: Instagram,
+    href: "https://www.instagram.com/nivirras_collection?igsh=ODJia3ljMDB3b3Z0",
+    label: "Instagram",
+  },
+  { icon: Youtube, href: "https://youtube.com/@nivirras_collection?si=akEFlY4hj6eP4RuE", label: "YouTube" },
 ]
 
 export function Footer() {
@@ -60,15 +62,15 @@ export function Footer() {
             <div className="space-y-3" style={{ fontFamily: "'Inter', sans-serif" }}>
               <div className="flex items-center gap-3 text-[#D3DAAE]">
                 <MapPin className="w-5 h-5 text-[#B6C37A]" />
-                <span className="text-sm">123 Serenity Lane, Peaceful Valley, CA 94016</span>
+                <span className="text-sm">Beside AK Music Academy near BDA Durga Mandir, Khadra, Lucknow 226020</span>
               </div>
               <div className="flex items-center gap-3 text-[#D3DAAE]">
                 <Phone className="w-5 h-5 text-[#B6C37A]" />
-                <span className="text-sm">+1 (555) 123-4567</span>
+                <span className="text-sm">8787020097</span>
               </div>
               <div className="flex items-center gap-3 text-[#D3DAAE]">
                 <Mail className="w-5 h-5 text-[#B6C37A]" />
-                <span className="text-sm">hello@nivirras.com</span>
+                <span className="text-sm">nivirrascollections02@gmail.com</span>
               </div>
             </div>
           </div>
@@ -92,6 +94,8 @@ export function Footer() {
               whileTap={{ scale: 0.95 }}
               className="w-12 h-12 bg-[#596229] hover:bg-gradient-to-br hover:from-[#636B2F] hover:to-[#8A9353] rounded-full flex items-center justify-center transition-all shadow-lg"
               aria-label={social.label}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <social.icon className="w-5 h-5" />
             </motion.a>

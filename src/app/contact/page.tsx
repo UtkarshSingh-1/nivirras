@@ -1,7 +1,8 @@
 export const revalidate = 300
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Phone, Mail, Clock, Flame } from "lucide-react"
+import Link from "next/link"
+import { Phone, Clock, Flame, MapPin, Instagram, Youtube } from "lucide-react"
 import { ContactForm } from "@/components/contact/contact-form"
 
 export default function ContactPage() {
@@ -43,20 +44,21 @@ export default function ContactPage() {
                 <h3 className="font-semibold text-[#3D2B1F]">Call Us</h3>
               </div>
               <p className="text-sm text-[#4A5422]">Customer Support</p>
-              <p className="mt-1 font-semibold text-[#3D2B1F]">+91 98765 43210</p>
+              <p className="mt-1 font-semibold text-[#3D2B1F]">8787020097</p>
               <p className="mt-1 text-xs text-[#8B7355]">Mon - Sat: 10 AM - 6 PM IST</p>
             </div>
 
             <div className="rounded-2xl border border-[#D3DAAE] bg-white p-6 shadow-sm">
               <div className="mb-3 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8ECD6]">
-                  <Mail className="h-5 w-5 text-[#8A9353]" />
+                  <MapPin className="h-5 w-5 text-[#8A9353]" />
                 </div>
-                <h3 className="font-semibold text-[#3D2B1F]">Email Us</h3>
+                <h3 className="font-semibold text-[#3D2B1F]">Visit Us</h3>
               </div>
-              <p className="text-sm text-[#4A5422]">General Inquiries</p>
-              <p className="mt-1 font-semibold text-[#3D2B1F]">hello@nivirras.com</p>
-              <p className="mt-1 text-xs text-[#8B7355]">We reply within 24 hours</p>
+              <p className="text-sm text-[#4A5422]">Store Address</p>
+              <p className="mt-1 font-semibold text-[#3D2B1F]">
+                Beside AK Music Academy near BDA Durga Mandir, Khadra, Lucknow 226020
+              </p>
             </div>
 
             <div className="rounded-2xl border border-[#D3DAAE] bg-white p-6 shadow-sm">
@@ -84,9 +86,27 @@ export default function ContactPage() {
 
             <div className="rounded-2xl border border-[#D3DAAE] bg-gradient-to-br from-[#E8ECD6] to-[#D3DAAE] p-6 text-center">
               <Flame className="mx-auto mb-2 h-8 w-8 text-[#8A9353]" />
-              <p className="text-sm leading-relaxed text-[#4A5422]">
-                Every question matters to us. We hand-pour our candles with the same care we bring to every reply.
-              </p>
+              <p className="mb-4 text-sm leading-relaxed text-[#4A5422]">Follow us</p>
+              <div className="flex items-center justify-center gap-4">
+                <Link
+                  href="https://www.instagram.com/nivirras_collection?igsh=ODJia3ljMDB3b3Z0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-[#4A5422] transition hover:bg-white"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-5 w-5" />
+                </Link>
+                <Link
+                  href="https://youtube.com/@nivirras_collection?si=akEFlY4hj6eP4RuE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-[#4A5422] transition hover:bg-white"
+                  aria-label="YouTube"
+                >
+                  <Youtube className="h-5 w-5" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
