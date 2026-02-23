@@ -48,7 +48,7 @@ export function Categories() {
             Scent Categories
           </h2>
           <p className="text-[#4A5422] mt-2">
-            Explore curated fragrance families designed to evoke a unique mood.
+            Explore curated fragrance families crafted to evoke a unique mood.
           </p>
         </div>
 
