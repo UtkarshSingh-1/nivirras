@@ -3,7 +3,10 @@ const { Pool } = require("pg");
 const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 
-const connectionString = process.env.DIRECT_URL || "postgresql://neondb_owner:npg_wN2kJ0vWYUAE@ep-long-night-a1qslm5j-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+const connectionString = process.env.DIRECT_URL;
+if (!connectionString) {
+  throw new Error("DIRECT_URL is not set in the environment.");
+}
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
