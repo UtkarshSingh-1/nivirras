@@ -1,4 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
+import { Pool } from 'pg'
+import { PrismaPg } from '@prisma/adapter-pg'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -38,20 +40,19 @@ function getDatabaseUrl() {
   }
 }
 
-const prismaOptions: Prisma.PrismaClientOptions = {
-  log: process.env.PRISMA_QUERY_LOG === 'true' ? ['query', 'error'] : ['error'],
+const dbUrl = getDatabaseUrl()
+
+let adapter
+if (dbUrl) {
+  const pool = new Pool({ connectionString: dbUrl })
+  adapter = new PrismaPg(pool)
 }
 
-const dbUrl = getDatabaseUrl()
-if (dbUrl) {
-  prismaOptions.datasources = {
-    db: {
-      url: dbUrl,
-    },
-  }
+const prismaOptions: Prisma.PrismaClientOptions = {
+  log: process.env.PRISMA_QUERY_LOG === 'true' ? ['query', 'error'] : ['error'],
+  adapter
 }
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient(prismaOptions)
-
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
