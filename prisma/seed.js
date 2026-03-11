@@ -1,7 +1,12 @@
 const { PrismaClient } = require("@prisma/client");
+const { Pool } = require("pg");
+const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DIRECT_URL || "postgresql://neondb_owner:npg_wN2kJ0vWYUAE@ep-long-night-a1qslm5j-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("🕯️  Seeding Nivirras Collections database...\n");
@@ -54,7 +59,7 @@ async function main() {
       featured: true,
       trending: true,
       categorySlug: "soy-candles",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1608181831718-c9fef52e8a52?w=600"]),
+      images: ["https://images.unsplash.com/photo-1608181831718-c9fef52e8a52?w=600"],
     },
     {
       name: "Sandalwood & Amber",
@@ -66,7 +71,7 @@ async function main() {
       featured: true,
       trending: false,
       categorySlug: "scented-candles",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1602523961358-f9f03dd557db?w=600"]),
+      images: ["https://images.unsplash.com/photo-1602523961358-f9f03dd557db?w=600"],
     },
     {
       name: "Fresh Linen",
@@ -77,7 +82,7 @@ async function main() {
       featured: false,
       trending: true,
       categorySlug: "soy-candles",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1574561840822-430016c90ea6?w=600"]),
+      images: ["https://images.unsplash.com/photo-1574561840822-430016c90ea6?w=600"],
     },
     {
       name: "Rose Petal Bliss",
@@ -88,7 +93,7 @@ async function main() {
       featured: true,
       trending: true,
       categorySlug: "scented-candles",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1572635196184-84e35138cf62?w=600"]),
+      images: ["https://images.unsplash.com/photo-1572635196184-84e35138cf62?w=600"],
     },
     {
       name: "Eucalyptus Mint",
@@ -99,7 +104,7 @@ async function main() {
       featured: false,
       trending: true,
       categorySlug: "scented-candles",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1599740219989-f2fc84e28d3e?w=600"]),
+      images: ["https://images.unsplash.com/photo-1599740219989-f2fc84e28d3e?w=600"],
     },
     {
       name: "Classic Ivory Pillar",
@@ -110,7 +115,7 @@ async function main() {
       featured: false,
       trending: false,
       categorySlug: "pillar-candles",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1585421514738-01798e348b17?w=600"]),
+      images: ["https://images.unsplash.com/photo-1585421514738-01798e348b17?w=600"],
     },
     {
       name: "Festive Gift Set",
@@ -122,7 +127,7 @@ async function main() {
       featured: true,
       trending: false,
       categorySlug: "gift-sets",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=600"]),
+      images: ["https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=600"],
     },
     {
       name: "Winter Spice",
@@ -133,7 +138,7 @@ async function main() {
       featured: false,
       trending: true,
       categorySlug: "seasonal",
-      images: JSON.stringify(["https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=600"]),
+      images: ["https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=600"],
     },
   ];
 
@@ -152,8 +157,8 @@ async function main() {
         featured: p.featured,
         trending: p.trending,
         images: p.images,
-        sizes: JSON.stringify([]),
-        colors: JSON.stringify([]),
+        sizes: [],
+        colors: [],
         categoryId: cat.id,
       },
     });
