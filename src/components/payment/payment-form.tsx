@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useRazorpay } from "react-razorpay"
+import Link from "next/link"
+import { CreditCard, Wallet, Shield, AlertCircle } from "lucide-react"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice } from "@/lib/utils"
-import { CreditCard, Wallet, Shield, AlertCircle } from "lucide-react"
 import { toast } from "@/components/ui/use-toast"
-import Link from "next/link"
+import { loadCashfreeSdk } from "@/lib/cashfree-js"
 
 interface PaymentFormProps {
   order?: {
@@ -24,23 +25,107 @@ interface PaymentFormProps {
     }>
   } | null
   isRetry?: boolean
+  shouldVerify?: boolean
 }
 
-export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
+export function PaymentForm({
+  order,
+  isRetry = false,
+  shouldVerify = false,
+}: PaymentFormProps) {
   const router = useRouter()
-  const { error, isLoading, Razorpay } = useRazorpay()
   const [processing, setProcessing] = useState(false)
-  const [selectedMethod, setSelectedMethod] = useState<'card' | 'upi' | 'netbanking' | 'wallet'>('card')
+  const [verifying, setVerifying] = useState(shouldVerify)
+  const [sdkReady, setSdkReady] = useState(false)
+  const [selectedMethod, setSelectedMethod] = useState<
+    "card" | "upi" | "netbanking" | "wallet"
+  >("card")
 
   useEffect(() => {
-    if (error) {
-      toast({
-        title: "Payment Gateway Error",
-        description: "Failed to load payment options. Please refresh the page.",
-        variant: "destructive",
+    if (shouldVerify || !order) return
+
+    loadCashfreeSdk()
+      .then(() => setSdkReady(true))
+      .catch(() => {
+        toast({
+          title: "Payment Gateway Error",
+          description: "Failed to load payment options. Please refresh the page.",
+          variant: "destructive",
+        })
       })
+  }, [order, shouldVerify])
+
+  useEffect(() => {
+    if (!shouldVerify || !order) return
+
+    let active = true
+
+    const verifyPayment = async () => {
+      try {
+        const verifyResponse = await fetch("/api/payments/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: order.id }),
+        })
+
+        const result = await verifyResponse.json()
+        if (!active) return
+
+        if (verifyResponse.ok && result.success) {
+          toast({
+            title: "Payment Successful!",
+            description: "Your order has been confirmed.",
+          })
+          router.replace(`/orders/${order.id}`)
+          return
+        }
+
+        toast({
+          title:
+            result.paymentStatus === "FAILED" ? "Payment Failed" : "Payment Pending",
+          description:
+            result.paymentMessage ||
+            (result.paymentStatus === "FAILED"
+              ? "Please try again."
+              : "We could not confirm the payment yet. Please retry in a moment."),
+          ...(result.paymentStatus === "FAILED"
+            ? { variant: "destructive" as const }
+            : {}),
+        })
+      } catch (error) {
+        console.error("Payment verification error:", error)
+        if (!active) return
+        toast({
+          title: "Verification Failed",
+          description: "We could not confirm the payment status. Please try again.",
+          variant: "destructive",
+        })
+      } finally {
+        if (active) {
+          setVerifying(false)
+        }
+      }
     }
-  }, [error])
+
+    verifyPayment()
+
+    return () => {
+      active = false
+    }
+  }, [order, router, shouldVerify])
+
+  if (verifying) {
+    return (
+      <Card className="border-0 shadow-md">
+        <CardContent className="p-12 text-center">
+          <h3 className="text-xl font-semibold mb-2">Verifying payment</h3>
+          <p className="text-muted-foreground">
+            Please wait while we confirm your Cashfree payment.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
 
   if (!order) {
     return (
@@ -60,111 +145,49 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
   }
 
   const handlePayment = async () => {
-    if (isLoading || !Razorpay) {
-      toast({
-        title: "Please wait",
-        description: "Payment gateway is loading...",
-      })
-      return
-    }
+    if (processing) return
 
     setProcessing(true)
 
     try {
-      // Prevent duplicate clicks
-      if (processing) return
-      let razorpayOrderId = order.razorpayOrderId
+      await loadCashfreeSdk()
+      setSdkReady(true)
 
-      // Create new Razorpay order if needed
-      if (!razorpayOrderId || isRetry) {
-        // Idempotent create: use order.id as an idempotency key on server side
-        const orderResponse = await fetch('/api/payments/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            orderId: order.id,
-            amount: order.total,
-            idempotencyKey: order.id,
-          }),
-        })
-
-        if (!orderResponse.ok) {
-          throw new Error('Failed to create payment order')
-        }
-
-        const orderData = await orderResponse.json()
-        razorpayOrderId = orderData.razorpayOrderId
+      if (!window.Cashfree) {
+        throw new Error("Cashfree SDK is unavailable")
       }
 
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-        amount: Math.round(order.total * 100),
-        currency: 'INR' as any,
-        name: 'ASHMARK',
-        description: `Payment for Order #${order.id.slice(-8).toUpperCase()}`,
-        order_id: razorpayOrderId,
-        handler: async (response: any) => {
-          try {
-            const verifyResponse = await fetch('/api/payments/verify', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderId: order.id,
-              }),
-            })
+      const orderResponse = await fetch("/api/payments/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idempotencyKey: order.id,
+          paymentMethod: "ONLINE",
+        }),
+      })
 
-            if (verifyResponse.ok) {
-              toast({
-                title: "Payment Successful!",
-                description: "Your order has been confirmed.",
-              })
-              router.push(`/api/orders/${order.id}/invoice`)
-            } else {
-              throw new Error('Payment verification failed')
-            }
-          } catch (error) {
-            console.error('Payment verification error:', error)
-            toast({
-              title: "Payment Verification Failed",
-              description: "Please contact support if payment was deducted.",
-              variant: "destructive",
-            })
-            router.push(`/orders/${order.id}?payment=failed`)
-          }
-        },
-        modal: {
-          ondismiss: () => {
-            setProcessing(false)
-            toast({
-              title: "Payment Cancelled",
-              description: "You cancelled the payment process.",
-            })
-          },
-        },
-        prefill: {
-          name: '',
-          email: '',
-          contact: '',
-        },
-        theme: {
-          color: '#dc2626', // Crimson red
-        },
-        method: {
-          card: selectedMethod === 'card',
-          upi: selectedMethod === 'upi',
-          netbanking: selectedMethod === 'netbanking',
-          wallet: selectedMethod === 'wallet',
-        },
+      const orderData = await orderResponse.json()
+      if (!orderResponse.ok) {
+        throw new Error(orderData.error || "Failed to create payment session")
       }
 
-      // Reuse the same instance per click
-      const razorpayInstance = new Razorpay(options as any)
-      razorpayInstance.open()
+      const cashfree = window.Cashfree({
+        mode:
+          process.env.NEXT_PUBLIC_CASHFREE_ENV === "production"
+            ? "production"
+            : "sandbox",
+      })
+
+      const result = await cashfree.checkout({
+        paymentSessionId: orderData.paymentSessionId,
+        redirectTarget: "_self",
+      })
+
+      if (result?.error?.message) {
+        throw new Error(result.error.message)
+      }
     } catch (error) {
-      console.error('Payment error:', error)
+      console.error("Payment error:", error)
       toast({
         title: "Payment Failed",
         description: "Something went wrong. Please try again.",
@@ -177,16 +200,11 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
 
   return (
     <div className="space-y-6">
-      {/* Order Info */}
       <Card className="border-0 shadow-md">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>
-              {isRetry ? 'Retry Payment' : 'Complete Payment'}
-            </CardTitle>
-            {isRetry && (
-              <Badge className="bg-[#8A9353] border-0">Retry</Badge>
-            )}
+            <CardTitle>{isRetry ? "Retry Payment" : "Complete Payment"}</CardTitle>
+            {isRetry && <Badge className="bg-[#8A9353] border-0">Retry</Badge>}
           </div>
         </CardHeader>
         <CardContent>
@@ -207,7 +225,6 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
         </CardContent>
       </Card>
 
-      {/* Payment Methods */}
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -218,10 +235,30 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
         <CardContent>
           <div className="grid gap-3 md:grid-cols-2">
             {[
-              { id: 'card', icon: CreditCard, label: 'Credit/Debit Card', desc: 'Visa, Mastercard, RuPay' },
-              { id: 'upi', icon: Wallet, label: 'UPI', desc: 'Google Pay, PhonePe, Paytm' },
-              { id: 'netbanking', icon: Shield, label: 'Net Banking', desc: 'All major banks' },
-              { id: 'wallet', icon: Wallet, label: 'Wallets', desc: 'Paytm, Mobikwik, etc.' },
+              {
+                id: "card",
+                icon: CreditCard,
+                label: "Credit/Debit Card",
+                desc: "Visa, Mastercard, RuPay",
+              },
+              {
+                id: "upi",
+                icon: Wallet,
+                label: "UPI",
+                desc: "Google Pay, PhonePe, Paytm",
+              },
+              {
+                id: "netbanking",
+                icon: Shield,
+                label: "Net Banking",
+                desc: "All major banks",
+              },
+              {
+                id: "wallet",
+                icon: Wallet,
+                label: "Wallets",
+                desc: "Paytm, Mobikwik, etc.",
+              },
             ].map((method) => {
               const Icon = method.icon
               return (
@@ -229,10 +266,10 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
                   key={method.id}
                   className={`p-4 border-2 cursor-pointer transition-colors ${
                     selectedMethod === method.id
-                      ? 'border-crimson-600 bg-crimson-50 dark:bg-crimson-900/20'
-                      : 'border-muted hover:border-muted-foreground/50'
+                      ? "border-crimson-600 bg-crimson-50 dark:bg-crimson-900/20"
+                      : "border-muted hover:border-muted-foreground/50"
                   }`}
-                  onClick={() => setSelectedMethod(method.id as any)}
+                  onClick={() => setSelectedMethod(method.id as typeof selectedMethod)}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className="w-5 h-5" />
@@ -248,7 +285,6 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
         </CardContent>
       </Card>
 
-      {/* Security Info */}
       <Card className="border-0 shadow-md">
         <CardContent className="p-6">
           <div className="flex items-start gap-3">
@@ -256,33 +292,28 @@ export function PaymentForm({ order, isRetry = false }: PaymentFormProps) {
             <div>
               <h4 className="font-semibold text-[#636B2F] mb-1">Secure Payment</h4>
               <p className="text-sm text-muted-foreground">
-                Your payment information is encrypted and secure. We use industry-standard
-                security measures to protect your financial data.
+                Your payment information is encrypted and secure. We use
+                industry-standard security measures to protect your financial data.
               </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Pay Button */}
       <Card className="border-0 shadow-md">
         <CardContent className="p-6">
           <Button
             onClick={handlePayment}
-            disabled={processing || isLoading || !!error}
+            disabled={processing}
             className="w-full bg-crimson-600 hover:bg-crimson-700 border-0"
             size="lg"
           >
-            {processing ? (
-              "Processing Payment..."
-            ) : (
-              `Pay ${formatPrice(order.total)}`
-            )}
+            {processing ? "Processing Payment..." : `Pay ${formatPrice(order.total)}`}
           </Button>
-          
-          {error && (
+
+          {!sdkReady && (
             <p className="text-sm text-[#4A5422] mt-2 text-center">
-              Payment gateway error. Please refresh the page and try again.
+              Loading Cashfree checkout...
             </p>
           )}
         </CardContent>

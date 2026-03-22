@@ -1,21 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db"
-import Razorpay from "razorpay"
 import { validatePromoCode, isNewUser } from "@/lib/promo-codes"
+import {
+  cashfreeRequest,
+  getBaseUrl,
+  isCashfreeConfigured,
+} from "@/lib/cashfree"
 
-function getRazorpayClient() {
-  const keyId = process.env.RAZORPAY_KEY_ID
-  const keySecret = process.env.RAZORPAY_KEY_SECRET
-
-  if (!keyId || !keySecret) {
-    return null
-  }
-
-  return new Razorpay({
-    key_id: keyId,
-    key_secret: keySecret,
-  })
+type CashfreeOrderResponse = {
+  cf_order_id: string
+  order_id: string
+  order_currency: string
+  order_amount: number
+  payment_session_id: string
 }
 
 export async function POST(request: NextRequest) {
@@ -35,8 +33,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const existingOrder = idempotencyKey
+      ? await prisma.order.findUnique({
+          where: { id: idempotencyKey },
+        })
+      : null
+
+    if (existingOrder && existingOrder.userId !== session.user.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const resolvedAddressId = addressId || existingOrder?.shippingAddressId
+    if (!resolvedAddressId) {
+      return NextResponse.json({ error: "Invalid address" }, { status: 400 })
+    }
+
     const address = await prisma.address.findUnique({
-      where: { id: addressId },
+      where: { id: resolvedAddressId },
     })
 
     if (!address) {
@@ -102,7 +115,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const finalAmount = subtotal + shipping - discount
+    const finalAmount = Number((subtotal + shipping - discount).toFixed(2))
 
     const orderItemsPayload = cartItems.map((ci) => ({
       productId: ci.productId,
@@ -112,25 +125,18 @@ export async function POST(request: NextRequest) {
       ...(ci.color ? { color: ci.color } : {}),
     }))
 
-    const razorpay = getRazorpayClient()
-    if (!razorpay) {
+    if (!isCashfreeConfigured()) {
       return NextResponse.json(
         { error: "Payment gateway is not configured" },
         { status: 500 }
       )
     }
 
-    const razorpayOrder = await razorpay.orders.create({
-      amount: Math.round(finalAmount * 100),
-      currency: "INR",
-      receipt: `order_${Date.now()}`,
-    })
-
     let order
 
-    if (idempotencyKey) {
+    if (existingOrder) {
       order = await prisma.order.update({
-        where: { id: idempotencyKey },
+        where: { id: existingOrder.id },
         data: {
           total: finalAmount,
           subtotal,
@@ -138,11 +144,18 @@ export async function POST(request: NextRequest) {
           shipping,
           discount: discount > 0 ? discount : null,
           promoCode: appliedPromoCode,
-          razorpayOrderId: razorpayOrder.id,
-          addressId,
-          shippingAddressId: addressId,
+          addressId: resolvedAddressId,
+          shippingAddressId: resolvedAddressId,
+          shippingName: address.name,
+          shippingPhone: address.phone,
+          shippingStreet: address.street,
+          shippingCity: address.city,
+          shippingState: address.state,
+          shippingPincode: address.pincode,
+          shippingCountry: address.country,
           paymentMethod: "ONLINE",
           paymentStatus: "PENDING",
+          razorpayPaymentId: null,
         },
       })
     } else {
@@ -155,9 +168,8 @@ export async function POST(request: NextRequest) {
           shipping,
           discount: discount > 0 ? discount : null,
           promoCode: appliedPromoCode,
-          razorpayOrderId: razorpayOrder.id,
-          addressId,
-          shippingAddressId: addressId,
+          addressId: resolvedAddressId,
+          shippingAddressId: resolvedAddressId,
           paymentMethod: "ONLINE",
           paymentStatus: "PENDING",
           status: "PENDING",
@@ -173,12 +185,45 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    const returnUrl = new URL(
+      `/payment?orderId=${order.id}&verifyCashfree=true`,
+      getBaseUrl()
+    ).toString()
+
+    const cashfreeOrder = await cashfreeRequest<CashfreeOrderResponse>("/orders", {
+      method: "POST",
+      body: JSON.stringify({
+        order_id: order.id,
+        order_amount: finalAmount,
+        order_currency: "INR",
+        customer_details: {
+          customer_id: session.user.id,
+          customer_name: address.name || session.user.name || "Customer",
+          customer_email: session.user.email || undefined,
+          customer_phone: address.phone,
+        },
+        order_meta: {
+          return_url: returnUrl,
+        },
+        order_note: `Payment for order ${order.id}`,
+      }),
+    })
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        razorpayOrderId: cashfreeOrder.cf_order_id,
+        paymentStatus: "PENDING",
+      },
+    })
+
     return NextResponse.json({
       success: true,
       orderId: order.id,
-      razorpayOrderId: razorpayOrder.id,
-      amount: razorpayOrder.amount,
-      currency: razorpayOrder.currency,
+      cashfreeOrderId: cashfreeOrder.cf_order_id,
+      paymentSessionId: cashfreeOrder.payment_session_id,
+      amount: cashfreeOrder.order_amount,
+      currency: cashfreeOrder.order_currency,
     })
   } catch (error) {
     console.error("Error creating order:", error)

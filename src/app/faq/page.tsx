@@ -159,7 +159,7 @@ export default function FAQPage() {
                   <CardContent>
                     <p className="text-muted-foreground">
                       We accept all major credit cards, debit cards, UPI, net banking, and digital wallets. 
-                      All payments are processed securely through Razorpay.
+                      All payments are processed securely through Cashfree.
                     </p>
                   </CardContent>
                 </Card>

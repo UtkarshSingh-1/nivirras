@@ -127,7 +127,7 @@ export default function TermsPage() {
                     <li>• All prices are in Indian Rupees (INR)</li>
                     <li>• Prices include applicable taxes</li>
                     <li>• We accept major credit cards, debit cards, and UPI</li>
-                    <li>• Payment is processed securely through Razorpay</li>
+                    <li>• Payment is processed securely through Cashfree</li>
                   </ul>
                 </CardContent>
               </Card>

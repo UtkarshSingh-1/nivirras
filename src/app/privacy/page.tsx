@@ -41,7 +41,7 @@ export default function PrivacyPage() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li>• Name and contact information (email address, phone number)</li>
                     <li>• Shipping and billing addresses</li>
-                    <li>• Payment information (processed securely through Razorpay)</li>
+                    <li>• Payment information (processed securely through Cashfree)</li>
                     <li>• Account credentials and preferences</li>
                     <li>• Communication preferences</li>
                   </ul>
@@ -180,7 +180,7 @@ export default function PrivacyPage() {
                 </p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li>• SSL encryption for data transmission</li>
-                  <li>• Secure payment processing through Razorpay</li>
+                  <li>• Secure payment processing through Cashfree</li>
                   <li>• Regular security audits and updates</li>
                   <li>• Limited access to personal information</li>
                   <li>• Employee training on data protection</li>

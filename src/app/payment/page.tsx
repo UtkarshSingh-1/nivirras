@@ -7,7 +7,11 @@ import { PaymentSummary } from "@/components/payment/payment-summary"
 export default async function PaymentPage({
   searchParams,
 }: {
-  searchParams: Promise<{ orderId?: string; retry?: string }>
+  searchParams: Promise<{
+    orderId?: string
+    retry?: string
+    verifyCashfree?: string
+  }>
 }) {
   const params = await searchParams
   const session = await auth()
@@ -35,6 +39,10 @@ export default async function PaymentPage({
 
     if (!rawOrder) {
       redirect('/orders')
+    }
+
+    if (rawOrder.paymentStatus === "PAID") {
+      redirect(`/orders/${rawOrder.id}`)
     }
 
     // Serialize Decimal fields to numbers for client components
@@ -68,6 +76,7 @@ export default async function PaymentPage({
               <PaymentForm 
                 order={order as any}
                 isRetry={params.retry === 'true'}
+                shouldVerify={params.verifyCashfree === 'true'}
               />
             </div>
             <div>

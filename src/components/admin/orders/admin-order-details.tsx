@@ -216,8 +216,11 @@ export function AdminOrderDetails({ order }: AdminOrderDetailsProps) {
           <CardContent className="text-sm space-y-2">
             <div><strong>Name:</strong> {order.user.name ?? "N/A"}</div>
             <div><strong>Email:</strong> {order.user.email}</div>
+            {order.razorpayOrderId && (
+              <div><strong>Cashfree Order ID:</strong> {order.razorpayOrderId}</div>
+            )}
             {order.razorpayPaymentId && (
-              <div><strong>Payment ID:</strong> {order.razorpayPaymentId}</div>
+              <div><strong>Cashfree Payment ID:</strong> {order.razorpayPaymentId}</div>
             )}
           </CardContent>
         </Card>

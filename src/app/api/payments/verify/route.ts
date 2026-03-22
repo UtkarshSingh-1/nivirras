@@ -1,80 +1,93 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
-import { prisma } from '@/lib/db'
-import crypto from 'crypto'
+import { NextRequest, NextResponse } from "next/server"
+import { auth } from "@/lib/auth"
+import { prisma } from "@/lib/db"
+import { cashfreeRequest, isCashfreeConfigured } from "@/lib/cashfree"
+
+type CashfreeFetchedOrder = {
+  cf_order_id?: string
+  order_id: string
+  order_status: string
+}
+
+type CashfreeOrderPayment = {
+  cf_payment_id: string
+  payment_status: string
+  payment_message?: string
+  payment_time?: string
+}
 
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const body = await request.json()
-    const razorpay_order_id =
-      body.razorpay_order_id || body.razorpayOrderId
-    const razorpay_payment_id =
-      body.razorpay_payment_id || body.razorpayPaymentId
-    const razorpay_signature =
-      body.razorpay_signature || body.razorpaySignature
     const orderId = body.orderId
 
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !orderId) {
+    if (!orderId) {
       return NextResponse.json(
-        { error: 'Missing payment verification details' },
+        { error: "Missing payment verification details" },
         { status: 400 }
       )
     }
 
     const order = await prisma.order.findUnique({ where: { id: orderId } })
     if (!order || order.userId !== session.user.id) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+      return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
 
-    if (order.razorpayOrderId && order.razorpayOrderId !== razorpay_order_id) {
-      return NextResponse.json(
-        { error: 'Order mismatch' },
-        { status: 400 }
-      )
-    }
-
-    if (order.paymentStatus === 'PAID') {
+    if (order.paymentStatus === "PAID") {
       return NextResponse.json({ success: true, alreadyVerified: true })
     }
 
-    const secret = process.env.RAZORPAY_KEY_SECRET
-    if (!secret) {
+    if (!isCashfreeConfigured()) {
       return NextResponse.json(
-        { error: 'Payment verification not configured' },
+        { error: "Payment verification not configured" },
         { status: 500 }
       )
     }
 
-    const expectedSignature = crypto
-      .createHmac('sha256', secret)
-      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-      .digest('hex')
+    const [cashfreeOrder, payments] = await Promise.all([
+      cashfreeRequest<CashfreeFetchedOrder>(`/orders/${order.id}`),
+      cashfreeRequest<CashfreeOrderPayment[]>(`/orders/${order.id}/payments`),
+    ])
 
-    if (expectedSignature !== razorpay_signature) {
-      return NextResponse.json(
-        { error: 'Invalid payment signature' },
-        { status: 400 }
+    const successfulPayment = payments.find(
+      (payment) => payment.payment_status === "SUCCESS"
+    )
+
+    const latestPayment = [...payments].sort((a, b) =>
+      (b.payment_time || "").localeCompare(a.payment_time || "")
+    )[0]
+
+    const isPaid =
+      cashfreeOrder.order_status === "PAID" ||
+      successfulPayment?.payment_status === "SUCCESS"
+
+    const isFailed =
+      !isPaid &&
+      ["FAILED", "CANCELLED", "VOID"].includes(
+        latestPayment?.payment_status || ""
       )
-    }
 
     await prisma.order.update({
       where: { id: orderId },
       data: {
-        razorpayOrderId: razorpay_order_id,
-        razorpayPaymentId: razorpay_payment_id,
-        paymentMethod: 'PREPAID',
-        paymentStatus: 'PAID',
-        status: order.status === 'PENDING' ? 'CONFIRMED' : order.status,
+        razorpayOrderId: cashfreeOrder.cf_order_id || order.razorpayOrderId,
+        razorpayPaymentId:
+          successfulPayment?.cf_payment_id ||
+          latestPayment?.cf_payment_id ||
+          order.razorpayPaymentId,
+        paymentMethod: isPaid ? "PREPAID" : order.paymentMethod,
+        paymentStatus: isPaid ? "PAID" : isFailed ? "FAILED" : "PENDING",
+        status: isPaid && order.status === "PENDING" ? "CONFIRMED" : order.status,
         updatedAt: new Date(),
       },
     })
 
-    if (order.promoCode) {
+    if (isPaid && order.promoCode) {
       const existingUsage = await prisma.promoCodeUsage.findUnique({
         where: { orderId },
       })
@@ -90,13 +103,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    await prisma.cartItem.deleteMany({
-      where: { userId: session.user.id },
-    })
+    if (isPaid) {
+      await prisma.cartItem.deleteMany({
+        where: { userId: session.user.id },
+      })
+    }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({
+      success: isPaid,
+      paymentStatus: isPaid ? "PAID" : isFailed ? "FAILED" : "PENDING",
+      orderStatus: cashfreeOrder.order_status,
+      paymentMessage: latestPayment?.payment_message,
+    })
   } catch (error) {
-    console.error('Payment verification error:', error)
-    return NextResponse.json({ error: 'Failed to verify payment' }, { status: 500 })
+    console.error("Payment verification error:", error)
+    return NextResponse.json(
+      { error: "Failed to verify payment" },
+      { status: 500 }
+    )
   }
 }

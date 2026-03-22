@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useRazorpay } from "react-razorpay"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,6 +16,7 @@ import { EligiblePromoList } from "@/components/checkout/eligible-promo-list"
 import { useCart } from "@/contexts/cart-context"
 import { formatPrice } from "@/lib/utils"
 import { toast } from "@/components/ui/use-toast"
+import { loadCashfreeSdk } from "@/lib/cashfree-js"
 
 /* -------------------- TYPES -------------------- */
 
@@ -31,9 +31,8 @@ type PromoDisplay = {
 export default function CheckoutPage() {
   const { status } = useSession()
   const router = useRouter()
-  const { Razorpay, error } = useRazorpay()
 
-  const { cartItems, clearCart } = useCart()
+  const { cartItems } = useCart()
 
   const [addresses, setAddresses] = useState<any[]>([])
   const [selectedAddress, setSelectedAddress] = useState<any>(null)
@@ -182,25 +181,26 @@ export default function CheckoutPage() {
       const order = await res.json()
       if (!res.ok) throw new Error(order.error)
 
-      const rzp = new Razorpay({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-        amount: order.amount,
-        currency: order.currency,
-        order_id: order.razorpayOrderId,
-        name: "Nivirras Collections",
-        handler: async (response: any) => {
-          await fetch("/api/payments/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...response, orderId: order.orderId }),
-          })
+      await loadCashfreeSdk()
+      if (!window.Cashfree) {
+        throw new Error("Cashfree SDK failed to load")
+      }
 
-          clearCart()
-          router.push(`/orders/${order.orderId}`)
-        },
+      const cashfree = window.Cashfree({
+        mode:
+          process.env.NEXT_PUBLIC_CASHFREE_ENV === "production"
+            ? "production"
+            : "sandbox",
       })
 
-      rzp.open()
+      const result = await cashfree.checkout({
+        paymentSessionId: order.paymentSessionId,
+        redirectTarget: "_self",
+      })
+
+      if (result?.error?.message) {
+        throw new Error(result.error.message)
+      }
     } catch (err: any) {
       toast({
         title: "Payment failed",
@@ -305,7 +305,7 @@ export default function CheckoutPage() {
                 <div className="pt-4 border-t space-y-4">
                   <Label>Payment Method</Label>
                   <div className="text-sm text-[#4A5422] bg-[#EDF1DB] border border-[#D3DAAE] rounded-md px-3 py-2">
-                    Online Payment (Razorpay)
+                    Online Payment (Cashfree)
                   </div>
                   <Button
                     className="w-full bg-[#636B2F] hover:bg-[#4A5422]"
@@ -314,12 +314,6 @@ export default function CheckoutPage() {
                   >
                     {`Pay ${formatPrice(total)}`}
                   </Button>
-
-                  {error && (
-                    <p className="text-sm text-[#4A5422]">
-                      Payment gateway failed to load
-                    </p>
-                  )}
                 </div>
               </CardContent>
             </Card>
