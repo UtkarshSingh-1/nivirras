@@ -185,9 +185,21 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    const requestOrigin = request.nextUrl.origin.replace(/\/+$/, "")
+    const configuredBaseUrl =
+      process.env.CASHFREE_RETURN_URL_BASE ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.NEXTAUTH_URL
+    const baseUrl =
+      process.env.NODE_ENV === "production" &&
+      !configuredBaseUrl &&
+      !requestOrigin.includes("localhost")
+        ? requestOrigin
+        : getBaseUrl()
+
     const returnUrl = new URL(
       `/payment?orderId=${order.id}&verifyCashfree=true`,
-      getBaseUrl()
+      baseUrl
     ).toString()
 
     const cashfreeOrder = await cashfreeRequest<CashfreeOrderResponse>("/orders", {

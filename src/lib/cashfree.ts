@@ -72,11 +72,16 @@ export async function cashfreeRequest<T>(
 }
 
 export function getBaseUrl() {
-  return (
-    process.env.NEXTAUTH_URL ||
+  const configuredBaseUrl =
+    process.env.CASHFREE_RETURN_URL_BASE ||
     process.env.NEXT_PUBLIC_APP_URL ||
-    "http://localhost:3001"
-  )
+    process.env.NEXTAUTH_URL
+
+  if (configuredBaseUrl) {
+    return configuredBaseUrl.replace(/\/+$/, "")
+  }
+
+  return "http://localhost:3001"
 }
 
 export function verifyCashfreeWebhookSignature({
