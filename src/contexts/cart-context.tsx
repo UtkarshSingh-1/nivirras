@@ -143,63 +143,64 @@ export function CartProvider({ children }: { children: ReactNode }) {
           body: JSON.stringify({ productId, quantity, size, color }),
         })
 
-        if (response.ok) {
-          const data = await response.json()
-          setCartItems(prev => {
-            const existingIndex = prev.findIndex(item => 
-              item.productId === productId && item.size === size && item.color === color
-            )
-            
-            if (existingIndex >= 0) {
-              const updated = [...prev]
-              updated[existingIndex] = { ...updated[existingIndex], quantity: updated[existingIndex].quantity + quantity }
-              return updated
-            } else {
-              return [...prev, data.cartItem]
-            }
-          })
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          throw new Error(
+            typeof errorData.error === 'string' ? errorData.error : 'Failed to add item to cart'
+          )
         }
-      } else {
-        // Add to localStorage for guest users
-        const response = await fetch(`/api/products/${productId}`)
-        if (response.ok) {
-          const product = await response.json()
-          const newItem: CartItem = {
-            id: `guest-${Date.now()}-${Math.random()}`,
-            productId,
-            quantity,
-            size,
-            color,
-            product: {
-              id: product.id,
-              name: product.name,
-              price: Number(product.price),
-              comparePrice: product.comparePrice ? Number(product.comparePrice) : null,
-              images: product.images,
-              slug: product.slug,
-            },
-          }
 
-          setCartItems(prev => {
-            const existingIndex = prev.findIndex(item => 
-              item.productId === productId && item.size === size && item.color === color
-            )
-            
-            let updated: CartItem[]
-            if (existingIndex >= 0) {
-              updated = [...prev]
-              updated[existingIndex] = { 
-                ...updated[existingIndex], 
-                quantity: updated[existingIndex].quantity + quantity 
-              }
-            } else {
-              updated = [...prev, newItem]
-            }
-            
-            saveGuestCart(updated)
+        const data = await response.json()
+        setCartItems(prev => {
+          const existingIndex = prev.findIndex(item => 
+            item.productId === productId && item.size === size && item.color === color
+          )
+          
+          if (existingIndex >= 0) {
+            const updated = [...prev]
+            updated[existingIndex] = { ...updated[existingIndex], quantity: updated[existingIndex].quantity + quantity }
             return updated
-          })
+          } else {
+            return [...prev, data.cartItem]
+          }
+        })
+      } else {
+        // Validate guest cart items through the API before saving locally.
+        const response = await fetch('/api/cart/guest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId, quantity, size, color }),
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          throw new Error(
+            typeof errorData.error === 'string' ? errorData.error : 'Failed to add item to cart'
+          )
         }
+
+        const data = await response.json()
+        const newItem: CartItem = data.cartItem
+
+        setCartItems(prev => {
+          const existingIndex = prev.findIndex(item => 
+            item.productId === productId && item.size === size && item.color === color
+          )
+          
+          let updated: CartItem[]
+          if (existingIndex >= 0) {
+            updated = [...prev]
+            updated[existingIndex] = { 
+              ...updated[existingIndex], 
+              quantity: updated[existingIndex].quantity + quantity 
+            }
+          } else {
+            updated = [...prev, newItem]
+          }
+          
+          saveGuestCart(updated)
+          return updated
+        })
       }
     } catch (error) {
       console.error('Error adding to cart:', error)
