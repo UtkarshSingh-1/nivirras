@@ -1,0 +1,474 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model User {
+  id               String              @id @default(cuid())
+  name             String?
+  email            String              @unique
+  emailVerified    DateTime?           @map("email_verified")
+  image            String?
+  password         String?
+  role             Role                @default(USER)
+  walletBalance    Decimal             @default(0) @db.Decimal(10, 2)
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+  exchangeRequests ExchangeRequest[]
+  returnRequests   ReturnRequest[]
+  walletHistory    WalletTransaction[]
+  accounts         Account[]
+  addresses        Address[]
+  cart             CartItem[]
+  orders           Order[]
+  promoCodeUsages  PromoCodeUsage[]
+  reviewVotes      ReviewVote[]
+  reviews          Review[]
+  sessions         Session[]
+  wishlistItems    WishlistItem[]
+
+  @@map("users")
+}
+
+model WalletTransaction {
+  id        String       @id @default(cuid())
+  userId    String
+  orderId   String?
+  amount    Decimal      @db.Decimal(10, 2)
+  type      WalletType
+  reason    WalletReason
+  createdAt DateTime     @default(now())
+  order     Order?       @relation(fields: [orderId], references: [id])
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([orderId])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id            String         @id @default(cuid())
+  name          String
+  slug          String         @unique
+  description   String?
+  price         Decimal        @db.Decimal(10, 2)
+  comparePrice  Decimal?       @db.Decimal(10, 2)
+  images        Json           @default("[]")
+  sizes         Json           @default("[]")
+  colors        Json           @default("[]")
+  stock         Int            @default(0)
+  featured      Boolean        @default(false)
+  trending      Boolean        @default(false)
+  storyTitle    String?        @map("story_title")
+  storyContent  String?        @map("story_content")
+  storyImages   Json           @default("[]") @map("story_images")
+  categoryId    String         @map("category_id")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  category      Category       @relation(fields: [categoryId], references: [id])
+  reviews       Review[]
+  wishlistItems WishlistItem[]
+
+  @@index([categoryId])
+  @@index([featured])
+  @@index([trending])
+  @@index([createdAt])
+  @@map("products")
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  productId String   @map("product_id")
+  quantity  Int      @default(1)
+  size      Size?
+  color     Color?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId, size, color])
+  @@map("cart_items")
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  productId String   @map("product_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model Order {
+  id                 String              @id @default(cuid())
+  userId             String              @map("user_id")
+  total              Decimal             @db.Decimal(10, 2)
+  subtotal           Decimal             @db.Decimal(10, 2)
+  tax                Decimal             @db.Decimal(10, 2)
+  shipping           Decimal             @db.Decimal(10, 2)
+  discount           Decimal?            @db.Decimal(10, 2)
+  promoCode          String?
+  status             OrderStatus         @default(PENDING)
+  paymentStatus      PaymentStatus       @default(PENDING) @map("payment_status")
+  paymentMethod      String?             @map("payment_method")
+  razorpayOrderId    String?             @map("razorpay_order_id")
+  razorpayPaymentId  String?             @map("razorpay_payment_id")
+  addressId          String?
+  shippingAddressId  String?
+  shippingName       String?
+  shippingPhone      String?
+  shippingStreet     String?
+  shippingCity       String?
+  shippingState      String?
+  shippingPincode    String?
+  shippingCountry    String?
+  shippedAt          DateTime?
+  outForDeliveryAt   DateTime?
+  deliveredAt        DateTime?
+  completedAt        DateTime?
+  cancelledAt        DateTime?
+  returnEligibleTill DateTime?
+  trackingId         String?
+  courierName        String?
+  trackingUrl        String?
+  returnStatus       ReturnStatus        @default(NONE)
+  exchangeStatus     ExchangeStatus      @default(NONE)
+  refundMethod       RefundMethod?
+  refundStatus       RefundStatus?
+  refundAmount       Decimal?            @db.Decimal(10, 2)
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  exchangeRequests   ExchangeRequest[]
+  returnRequests     ReturnRequest[]
+  walletTransactions WalletTransaction[]
+  items              OrderItem[]
+  address            Address?            @relation("BillingAddress", fields: [addressId], references: [id])
+  shippingAddress    Address?            @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  user               User                @relation(fields: [userId], references: [id])
+  promoCodeUsage     PromoCodeUsage?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String   @map("order_id")
+  productId String   @map("product_id")
+  quantity  Int
+  price     Decimal  @db.Decimal(10, 2)
+  size      Size?
+  color     Color?
+  createdAt DateTime @default(now()) @map("created_at")
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Address {
+  id             String      @id @default(cuid())
+  name           String
+  phone          String
+  street         String
+  city           String
+  state          String
+  pincode        String
+  country        String      @default("India")
+  type           AddressType @default(home)
+  isDefault      Boolean     @default(false)
+  userId         String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  billingOrders  Order[]     @relation("BillingAddress")
+  shippingOrders Order[]     @relation("ShippingAddress")
+
+  @@map("addresses")
+}
+
+model Review {
+  id         String       @id @default(cuid())
+  userId     String       @map("user_id")
+  productId  String       @map("product_id")
+  rating     Int
+  title      String?
+  comment    String?
+  media      Json?        @default("[]")
+  helpful    Int          @default(0)
+  notHelpful Int          @default(0)
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  votes      ReviewVote[]
+  product    Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("reviews")
+}
+
+model ReviewVote {
+  id       String @id @default(cuid())
+  reviewId String
+  userId   String
+  vote     String
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewId, userId])
+  @@map("review_votes")
+}
+
+model PromoCodeUsage {
+  id      String   @id @default(cuid())
+  code    String
+  userId  String   @map("user_id")
+  orderId String?  @unique @map("order_id")
+  usedAt  DateTime @default(now()) @map("used_at")
+  order   Order?   @relation(fields: [orderId], references: [id])
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, code])
+  @@map("promo_code_usages")
+}
+
+model PromoCode {
+  id             String       @id @default(cuid())
+  code           String       @unique
+  description    String?
+  discountType   DiscountType
+  discountValue  Decimal      @db.Decimal(10, 2)
+  minOrderValue  Decimal?     @db.Decimal(10, 2)
+  maxDiscount    Decimal?
+  firstOrderOnly Boolean      @default(false)
+  showInBanner   Boolean      @default(false)
+  isActive       Boolean      @default(true)
+  expiresAt      DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("promo_codes")
+}
+
+model ReturnRequest {
+  id        String       @id @default(cuid())
+  orderId   String
+  userId    String
+  reason    String
+  images    Json?
+  status    ReturnStatus @default(REQUESTED)
+  adminNote String?
+  createdAt DateTime     @default(now())
+  order     Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ExchangeRequest {
+  id        String         @id @default(cuid())
+  orderId   String
+  userId    String
+  reason    String
+  oldSize   Size?
+  newSize   Size?
+  oldColor  Color?
+  newColor  Color?
+  status    ExchangeStatus @default(REQUESTED)
+  adminNote String?
+  createdAt DateTime       @default(now())
+  order     Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id               String   @id @default(cuid())
+  returnWindowDays Int      @default(7)
+  updatedAt        DateTime @updatedAt @map("updated_at")
+}
+
+
+
+model EmailOTP {
+  id        String     @id @default(cuid())
+  email     String
+  otp       String
+  purpose   OTPPurpose
+  expiresAt DateTime
+  createdAt DateTime   @default(now())
+
+  @@index([email])
+  @@map("email_otps")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Size {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+enum Color {
+  BLACK
+  WHITE
+  GRAY
+  RED
+  BLUE
+  GREEN
+  YELLOW
+  ORANGE
+  PURPLE
+  PINK
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum AddressType {
+  home
+  work
+  other
+}
+
+enum ReturnStatus {
+  NONE
+  REQUESTED
+  APPROVED
+  PICKUP_SCHEDULED
+  PICKUP_COMPLETED
+  REFUND_INITIATED
+  REFUND_COMPLETED
+  REJECTED
+}
+
+enum ExchangeStatus {
+  NONE
+  REQUESTED
+  APPROVED
+  PICKUP_SCHEDULED
+  PICKUP_COMPLETED
+  EXCHANGE_PROCESSING
+  EXCHANGE_COMPLETED
+  REJECTED
+}
+
+enum RefundMethod {
+  ORIGINAL_SOURCE
+  WALLET
+}
+
+enum RefundStatus {
+  INITIATED
+  COMPLETED
+}
+
+enum PaymentMethod {
+  PREPAID
+  COD
+}
+
+enum WalletType {
+  CREDIT
+  DEBIT
+}
+
+enum WalletReason {
+  REFUND
+  PURCHASE
+  MANUAL
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
+
+enum OTPPurpose {
+  VERIFY_EMAIL
+  RESET_PASSWORD
+}
+
+enum DiscountType {
+  PERCENT
+  FLAT
+}
